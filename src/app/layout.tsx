@@ -42,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang={site.locale} className={poppins.variable} suppressHydrationWarning>
+    <html lang={site.locale} className={`${poppins.variable} ${bookman.variable}`} suppressHydrationWarning>
       <body className="min-h-screen flex flex-col font-sans">
         <link
           rel="stylesheet"

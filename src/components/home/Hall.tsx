@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Users, Maximize2, ChevronRight } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import banquet from "@/assets/placeholders/placeholder-banquet.jpg";
@@ -16,9 +16,21 @@ const banquetImages = [banquet, lobby, rooftopLounge];
 const capacities = ["Up to 500 pax", "Up to 450 pax", "Up to 20 pax"];
 const types = ["Wedding · Gala · Conference", "Reception · Gala · Dinner", "Executive · Boardroom"];
 
+const AUTOPLAY_MS = 6000;
+
 export default function Hall() {
   const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const reduceMotion = useReducedMotion();
   const space = banquetSpaces[index];
+
+  useEffect(() => {
+    if (paused || reduceMotion) return;
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % banquetSpaces.length);
+    }, AUTOPLAY_MS);
+    return () => clearInterval(id);
+  }, [paused, reduceMotion]);
 
   return (
     <section id="events" className="py-12 md:py-16">
@@ -37,7 +49,11 @@ export default function Hall() {
 
         {/* Split layout */}
         <Reveal delay={80}>
-          <div className="bento-card overflow-hidden grid grid-cols-1 md:grid-cols-[1fr_420px] min-h-[540px]">
+          <div
+            className="bento-card overflow-hidden grid grid-cols-1 md:grid-cols-[1fr_420px] min-h-[540px]"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
 
             {/* ── Left: crossfading image panel ── */}
             <div className="relative min-h-[280px] md:min-h-0">

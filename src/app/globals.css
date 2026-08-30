@@ -263,3 +263,16 @@ section[id] {
     transform: none;
   }
 }
+
+.font-arial {
+  font-family: var(--font-arial);
+}
+
+.font-bookman {
+  font-family: var(--font-bookman);
+}
+
+.font-bookman-bold{
+  font-family: var(--font-bookman);
+  font-weight: 700;
+}

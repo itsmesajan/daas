@@ -1,5 +1,5 @@
 import Image from "next/image";
-import iconMark from "@/assets/icon-mark.png";
+import iconMark from "@/assets/logo.png";
 import { site, contact, address, nav, social } from "@/config/site";
 
 export default function BentoFooter() {
@@ -9,8 +9,7 @@ export default function BentoFooter() {
         <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr] gap-10 pb-10">
           <div>
             <div className="flex items-center gap-2.5 mb-5">
-              <Image src={iconMark} alt="" width={30} height={25} className="w-7 h-auto" />
-              <span className="bento-title text-sm">Hotel Daaas</span>
+              <Image src={iconMark} alt="" width={1000} height={1500} className="w-60 h-auto" />
             </div>
             <p className="text-bento-ink-soft text-sm leading-relaxed max-w-sm">
               A new 4-star landmark rising in Balaju, Kathmandu — 81 rooms,

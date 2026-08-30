@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useReducedMotion } from "framer-motion";
 import { ArrowUpRight, MapPin, Clock, Users } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import dining from "@/assets/placeholders/placeholder-dining.jpg";
 import lobby from "@/assets/placeholders/placeholder-lobby.jpg";
 import rooftopLounge from "@/assets/placeholders/placeholder-rooftop-lounge.jpg";
 import { diningVenues } from "@/data/hotel";
+
+const AUTOPLAY_MS = 6000;
 
 const images: Record<string, { src: typeof dining; alt: string }> = {
   "Coffee Shop": { src: dining, alt: "Coffee Shop at Hotel Daaas" },
@@ -17,7 +20,17 @@ const images: Record<string, { src: typeof dining; alt: string }> = {
 
 export default function Dining() {
   const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const reduceMotion = useReducedMotion();
   const venue = diningVenues[index];
+
+  useEffect(() => {
+    if (paused || reduceMotion) return;
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % diningVenues.length);
+    }, AUTOPLAY_MS);
+    return () => clearInterval(id);
+  }, [paused, reduceMotion]);
 
   return (
     <section id="dining" className="py-12 md:py-16">
@@ -88,7 +101,11 @@ export default function Dining() {
 
         {/* Main immersive card */}
         <Reveal delay={100}>
-          <div className="bento-card overflow-hidden relative min-h-[480px] md:min-h-[560px]">
+          <div
+            className="bento-card overflow-hidden relative min-h-[480px] md:min-h-[560px]"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
             {/* Full-bleed background images with crossfade */}
             <div className="absolute inset-0">
               {diningVenues.map((v, i) => {

@@ -123,6 +123,42 @@ export const nearbyLocations = [
   { name: "Tribhuvan International Airport", distance: "~11 km" },
 ] as const;
 
+// PLACEHOLDER — Hotel Daaas hasn't opened yet (Nov 2026), so there are no
+// real guest reviews. Swap every entry here for actual quotes pulled from
+// Google/Booking.com/TripAdvisor once they exist; don't ship this as-is.
+// `source` keys into the logo/label lookup in Testimonial.tsx — attribution
+// is by review platform, not by name, since no real reviewer identities exist yet.
+export const testimonials = [
+  {
+    source: "google",
+    role: "Deluxe Room stay",
+    quote:
+      "The room was spacious and spotless, and the staff made us feel welcome from the moment we arrived. A great base for exploring Kathmandu.",
+    rating: 5,
+  },
+  {
+    source: "tripadvisor",
+    role: "Jr. Suite stay",
+    quote:
+      "Loved the rooftop views and how quiet the room was despite being close to the city. Breakfast at the all-day restaurant was a highlight.",
+    rating: 5,
+  },
+  {
+    source: "booking",
+    role: "Business stay",
+    quote:
+      "Booked the board room for a client meeting and everything ran smoothly — good Wi-Fi, attentive staff, and easy parking.",
+    rating: 4,
+  },
+  {
+    source: "google",
+    role: "Family trip",
+    quote:
+      "The pool and wellness floor were perfect after a long day of sightseeing. Our kids didn't want to leave the hotel!",
+    rating: 5,
+  },
+] as const;
+
 export const policies = {
   checkIn: "2:00 PM",
   checkOut: "11:00 AM",

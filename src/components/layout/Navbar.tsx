@@ -14,7 +14,6 @@ export default function BentoNavbar() {
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto bento-card px-5 md:px-7 h-16 flex items-center justify-between">
         <a href="#home" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
           <Image src={iconMark} alt="" width={1500} height={1500} className="w-60 h-auto" priority />
-          {/* <span className="bento-title text-sm">Hotel Daaas</span> */}
         </a>
 
         <nav className="hidden lg:flex items-center gap-1">
@@ -22,7 +21,7 @@ export default function BentoNavbar() {
             <a
               key={item.href}
               href={item.href}
-              className="text-[0.78rem] font-medium text-bento-ink-soft hover:text-bento-ink px-3 py-2 rounded-full hover:bg-white/70 transition-colors"
+              className="text-[0.8rem] font-medium text-bento-ink-soft hover:text-bento-ink px-3 py-2 rounded-full hover:bg-white/70 transition-colors"
             >
               {item.label}
             </a>
