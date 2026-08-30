@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Poppins } from "next/font/google";
 import { MotionConfig } from "framer-motion";
 import { site, SITE_URL } from "@/config/site";
+import FloatingButtons from "@/components/ui/Floating";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -66,6 +67,7 @@ export default function RootLayout({
             <span className="w-[24rem] h-[24rem] bg-accent-blue opacity-20 -bottom-24 -right-10" />
           </div>
           {children}
+          <FloatingButtons />
         </MotionConfig>
       </body>
     </html>

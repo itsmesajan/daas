@@ -22,7 +22,7 @@ export default function OtaPartners() {
     <section className="py-10 md:py-12">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
         <Reveal>
-          <div className="bento-card flex flex-col md:flex-row items-center gap-6 md:gap-10 px-6 md:px-10 py-7">
+          <div className="bento-card flex flex-col md:flex-row justify-between items-center gap-6 md:gap-10 px-6 md:px-10 py-7">
             {/* Credibility block — the hotel's actual star category; no
                 guest-review numbers exist yet since it hasn't opened. */}
             <div className="flex items-center gap-4 md:pr-10 md:border-r border-white/70 shrink-0">
