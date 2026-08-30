@@ -1,0 +1,265 @@
+@import "tailwindcss";
+
+/* ============================================================
+   HOTEL DAAAS KATHMANDU — bento / glass design system
+   Soft gradient backdrop, frosted glass rounded cards, varied-size
+   bento grid. Brand orange/blue appear as pills, glows and accents.
+   ============================================================ */
+
+:root {
+  --bento-bg-top: #fbe6c8;
+  --bento-bg-bottom: #cfe7f5;
+  --bento-ink: #16181d;
+  --bento-ink-soft: #5b6270;
+  --glass-bg: #f1f1f1f7;
+  --glass-bg-strong: rgba(255, 255, 255, 0.68);
+  --glass-border: rgba(255, 255, 255, 0.85);
+  --glass-shadow: 0 20px 60px -20px rgba(16, 24, 40, 0.22);
+
+  --accent-orange: #eb9022;
+  --accent-blue: #1b75bb;
+
+  --font-sans-stack: var(--font-poppins), Arial, Helvetica, "Liberation Sans", sans-serif;
+  --font-display-stack: var(--font-poppins), Arial, Helvetica, "Liberation Sans", sans-serif;
+
+  /* --font-sans-stack: Arial, Helvetica, "Liberation Sans", sans-serif;
+  --font-display-stack: var(--font-bookman), "Bookman Old Style", Georgia, "Times New Roman", serif; */
+
+  --background: #ffffff;
+  --foreground: var(--bento-ink);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-bento-ink: var(--bento-ink);
+  --color-bento-ink-soft: var(--bento-ink-soft);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-blue: var(--accent-blue);
+  --font-sans: var(--font-sans-stack);
+  --font-display: var(--font-display-stack);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans-stack);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+section[id] {
+  scroll-margin-top: 96px;
+}
+
+::selection {
+  background: var(--accent-orange);
+  color: #ffffff;
+}
+
+/* ============================================================
+   BACKDROP — applied once, to the page wrapper, so the gradient
+   flows continuously behind every section rather than resetting.
+   ============================================================ */
+
+.bento-bg {
+  position: relative;
+  background:
+    radial-gradient(55rem 38rem at 8% 0%, var(--bento-bg-top) 0%, transparent 62%),
+    radial-gradient(55rem 38rem at 95% 10%, var(--bento-bg-bottom) 0%, transparent 62%),
+    radial-gradient(45rem 32rem at 15% 38%, rgba(235, 144, 34, 0.16) 0%, transparent 60%),
+    radial-gradient(45rem 32rem at 88% 45%, rgba(27, 117, 187, 0.16) 0%, transparent 60%),
+    radial-gradient(50rem 34rem at 12% 72%, var(--bento-bg-bottom) 0%, transparent 58%),
+    radial-gradient(50rem 34rem at 90% 80%, var(--bento-bg-top) 0%, transparent 58%),
+    radial-gradient(45rem 32rem at 50% 98%, rgba(235, 144, 34, 0.14) 0%, transparent 60%),
+    #fbfaf8;
+}
+
+/* Fixed ambient glow layer — sits behind the whole page so the glass
+   cards have real color to refract as you scroll, not just at the top. */
+.bento-glow-field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bento-glow-field span {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(70px);
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+
+.bento-title {
+  font-family: var(--font-sans-stack);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  color: var(--bento-ink);
+}
+
+.bento-kicker {
+  font-family: var(--font-display-stack);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--accent-orange);
+}
+
+/* ============================================================
+   COMPONENTS
+   ============================================================ */
+
+.bento-card {
+  position: relative;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 1.75rem;
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(28px) saturate(1.6);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, background 0.4s ease;
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
+  background: var(--glass-bg-strong);
+  box-shadow: 0 28px 70px -20px rgba(16, 24, 40, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.bento-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 20px 60px 1px #10182838, inset 0 1px 0 0px #fffc, inset 0 0 0 1px #ffffff26;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.bento-pill-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: var(--bento-ink);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  color: #ffffff;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.bento-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.75rem;
+  border-radius: 999px;
+  background: var(--bento-ink);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.bento-btn:hover {
+  transform: translateY(-2px);
+  background: var(--accent-orange);
+}
+
+.bento-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.75rem;
+  border-radius: 999px;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  color: var(--bento-ink);
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: transform 0.25s ease;
+}
+
+.bento-btn-ghost:hover {
+  transform: translateY(-2px);
+}
+
+.bento-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--bento-ink);
+  border-bottom: 1px solid var(--bento-ink);
+  padding-bottom: 0.15rem;
+  transition: color 0.25s ease, border-color 0.25s ease, gap 0.25s ease;
+}
+
+.bento-link:hover {
+  color: var(--accent-orange);
+  border-color: var(--accent-orange);
+  gap: 0.6rem;
+}
+
+.bento-glow-orange {
+  position: absolute;
+  border-radius: 999px;
+  background: var(--accent-orange);
+  filter: blur(90px);
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+.bento-glow-blue {
+  position: absolute;
+  border-radius: 999px;
+  background: var(--accent-blue);
+  filter: blur(90px);
+  opacity: 0.24;
+  pointer-events: none;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
