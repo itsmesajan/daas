@@ -56,7 +56,7 @@ export default function Nearby() {
                 </div>
                 <div className="p-4 flex items-center gap-2.5">
                   <MapPin size={15} className="text-accent-orange shrink-0" />
-                  <p className="text-sm font-semibold text-bento-ink">{loc.name}</p>
+                  <a href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-bento-ink">{loc.name}</a>
                 </div>
               </div>
             </Reveal>

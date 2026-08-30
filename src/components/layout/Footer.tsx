@@ -58,19 +58,19 @@ export default function BentoFooter() {
               </li>
               <li className="flex items-center gap-2.5">
                 <i className="fa-brands fa-whatsapp text-accent-orange text-sm w-4 text-center" aria-hidden="true" />
-                <a href={`tel:${contact.whatsapp}`} className="hover:text-bento-ink transition-colors">
+                <a href={`tel:${contact.whatsapp}`} target="_blank" rel="noopener noreferrer" className="hover:text-bento-ink transition-colors">
                   +977 {contact.whatsapp.slice(3)} (WhatsApp)
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <i className="fa-solid fa-envelope text-accent-orange text-sm w-4 text-center" aria-hidden="true" />
-                <a href={`mailto:${contact.email}`} className="hover:text-bento-ink transition-colors break-all">
+                <a href={`mailto:${contact.email}`} target="_blank" rel="noopener noreferrer" className="hover:text-bento-ink transition-colors break-all">
                   {contact.email}
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <i className="fa-solid fa-location-dot text-accent-orange text-sm w-4 text-center shrink-0" aria-hidden="true" />
-                {address.full}
+                <a href="https://maps.app.goo.gl/cR1e6XET4SXndWS88" target="_blank" rel="noopener noreferrer" className="hover:text-bento-ink transition-colors">{address.full}</a>
               </li>
             </ul>
           </div>
