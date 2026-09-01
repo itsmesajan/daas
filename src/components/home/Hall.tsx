@@ -5,9 +5,9 @@ import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Users, Maximize2, ChevronRight } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
-import banquet from "@/assets/placeholders/placeholder-banquet.jpg";
-import lobby from "@/assets/placeholders/placeholder-lobby.jpg";
-import rooftopLounge from "@/assets/placeholders/placeholder-rooftop-lounge.jpg";
+import banquet from "@/assets/Banquet/Bitmap 4.jpg";
+import lobby from "@/assets/Banquet/Bitmap.jpg";
+import rooftopLounge from "@/assets/Banquet/Bitmap 13.jpg";
 import { banquetSpaces } from "@/data/hotel";
 
 const banquetImages = [banquet, lobby, rooftopLounge];
@@ -71,7 +71,7 @@ export default function Hall() {
                     alt={`${space.name} at Hotel Daaas`}
                     fill
                     className="object-cover"
-                    sizes="(min-width: 768px) 50vw, 100vw"
+                    sizes="(min-width: 1920px) 50vw, 100vw"
                     priority={index === 0}
                   />
                 </motion.div>

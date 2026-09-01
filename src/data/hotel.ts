@@ -106,8 +106,8 @@ export const experiences = [
 // highlights band — icon is a lookup key, mapped to a lucide component
 // where it's rendered so this file stays free of React imports.
 export const highlights = [
-  { icon: "wifi", title: "Free Wi-Fi", desc: "Stay connected throughout your stay" },
-  { icon: "waves", title: "Swimming Pool", desc: "Relax and unwind at our pool" },
+  { icon: "wifi", title: "Complimentary Wi-Fi", desc: "Stay connected throughout your stay" },
+  { icon: "waves", title: "Rooftop Swimming Pool", desc: "Relax and unwind at our pool" },
   { icon: "dumbbell", title: "Fitness Center", desc: "Fully equipped gym, open daily" },
   { icon: "sparkles", title: "Wellness & Spa", desc: "Jacuzzi, sauna and steam room" },
   { icon: "bell", title: "24-Hour Room Service", desc: "Whenever you need it" },

@@ -5,9 +5,9 @@ import Image from "next/image";
 import { useReducedMotion } from "framer-motion";
 import { ArrowUpRight, MapPin, Clock, Users } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
-import dining from "@/assets/placeholders/placeholder-dining.jpg";
-import lobby from "@/assets/placeholders/placeholder-lobby.jpg";
-import rooftopLounge from "@/assets/placeholders/placeholder-rooftop-lounge.jpg";
+import dining from "@/assets/dinning/Bitmap 6.jpg";
+import lobby from "@/assets/dinning/Bitmap 4.jpg";
+import rooftopLounge from "@/assets/dinning/Bitmap.jpg";
 import { diningVenues } from "@/data/hotel";
 
 const AUTOPLAY_MS = 6000;
@@ -121,7 +121,7 @@ export default function Dining() {
                       alt={img.alt}
                       fill
                       className={`object-cover transition-transform duration-700 ease-out ${i === index ? "scale-100" : "scale-105"}`}
-                      sizes="(min-width: 768px) 80vw, 100vw"
+                      sizes="(min-width: 1920px) 80vw, 100vw"
                       priority={i === 0}
                     />
                   </div>

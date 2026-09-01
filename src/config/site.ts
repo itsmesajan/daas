@@ -33,10 +33,10 @@ export const address = {
 // `icon` is a Font Awesome class string (e.g. "fa-brands fa-facebook-f") so
 // these can later be swapped for CMS-managed values without changing markup.
 export const social = [
-  { name: "Facebook", href: "https://facebook.com/hoteldaaas", icon: "fa-brands fa-facebook-f" },
-  { name: "Instagram", href: "https://instagram.com/hoteldaaas", icon: "fa-brands fa-instagram" },
-  { name: "WhatsApp", href: `https://wa.me/${contact.whatsapp}`, icon: "fa-brands fa-whatsapp" },
-  { name: "TikTok", href: "https://tiktok.com/@hoteldaaas", icon: "fa-brands fa-tiktok" },
+  { name: "Facebook", href: "https://www.facebook.com/HotelDaaasKathmandu", icon: "fa-brands fa-facebook-f" },
+  { name: "Instagram", href: "https://www.instagram.com/hotel_daaas_kathmandu/", icon: "fa-brands fa-instagram" },
+  { name: "Linkedin", href: "https://www.linkedin.com/company/hotel-daaas-kathmandu/", icon: "fa-brands fa-linkedin" },
+  { name: "TikTok", href: "https://www.tiktok.com/@hoteldaaaskathman", icon: "fa-brands fa-tiktok" },
 ] as const;
 
 export const nav = [

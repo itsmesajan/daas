@@ -4,12 +4,13 @@ import Image from "next/image";
 import { ArrowUpRight, BedDouble } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import imgDeluxe from "@/assets/room-deluxe-real.jpg";
-import imgSuite from "@/assets/placeholders/placeholder-room-suite.jpg";
+import imgSuite from "@/assets/room/suite.jpg";
+import imgJrSuite from "@/assets/room/jrsuite.jpg";
 import { roomCategories, roomAmenities } from "@/data/hotel";
 
 const images: Record<string, typeof imgDeluxe> = {
   "Deluxe Room": imgDeluxe,
-  "Jr. Suite Room": imgSuite,
+  "Jr. Suite Room": imgJrSuite,
   "Suite Room": imgSuite,
 };
 
@@ -51,7 +52,7 @@ export default function Rooms() {
                 alt={`${first.name} at Hotel Daaas`}
                 fill
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                sizes="(min-width: 768px) 55vw, 100vw"
+                sizes="(min-width: 1920px) 55vw, 100vw"
                 priority
               />
               {/* Gradient veil */}
@@ -111,7 +112,7 @@ export default function Rooms() {
                     alt={`${room.name} at Hotel Daaas`}
                     fill
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    sizes="(min-width: 768px) 28vw, 100vw"
+                    sizes="(min-width: 1920px) 28vw, 100vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 

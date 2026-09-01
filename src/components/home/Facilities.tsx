@@ -5,9 +5,6 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Wifi, Waves, Dumbbell, Sparkles, Bell, Plane, ArrowUpRight, type LucideIcon } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
-import banquet from "@/assets/placeholders/placeholder-banquet.jpg";
-import lobby from "@/assets/placeholders/placeholder-lobby.jpg";
-import rooftopLounge from "@/assets/placeholders/placeholder-rooftop-lounge.jpg";
 import hotelIllustration from "@/assets/hotel-illustration.png";
 import { banquetSpaces, highlights } from "@/data/hotel";
 
