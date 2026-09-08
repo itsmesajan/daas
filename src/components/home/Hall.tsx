@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Users, Maximize2, ChevronRight } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
@@ -11,10 +12,6 @@ import rooftopLounge from "@/assets/Banquet/Bitmap 13.jpg";
 import { banquetSpaces } from "@/data/hotel";
 
 const banquetImages = [banquet, lobby, rooftopLounge];
-
-// Capacity in pax derived from sq.ft (approximate)
-const capacities = ["Up to 500 pax", "Up to 450 pax", "Up to 20 pax"];
-const types = ["Wedding · Gala · Conference", "Reception · Gala · Dinner", "Executive · Boardroom"];
 
 const AUTOPLAY_MS = 6000;
 
@@ -41,10 +38,10 @@ export default function Hall() {
             <p className="bento-pill mb-4">Banquet &amp; Events</p>
             <h2 className="bento-title text-3xl md:text-4xl">Grand occasions, perfectly hosted</h2>
           </div>
-          <a href="#contact" className="bento-link w-fit shrink-0 mb-1 hidden sm:inline-flex">
-            Plan your event
+          <Link href="/events" className="bento-link w-fit shrink-0 mb-1 hidden sm:inline-flex">
+            View all event spaces
             <ArrowUpRight size={14} />
-          </a>
+          </Link>
         </Reveal>
 
         {/* Split layout */}
@@ -91,7 +88,7 @@ export default function Hall() {
                     transition={{ duration: 0.35, ease: "easeOut" }}
                   >
                     <p className="text-white/60 text-[0.65rem] font-semibold tracking-widest uppercase mb-1">
-                      {types[index]}
+                      {space.setupType}
                     </p>
                     <h3
                       className="text-white font-bold tracking-tight leading-tight"
@@ -166,7 +163,7 @@ export default function Hall() {
                           </span>
                           <span className="flex items-center gap-1.5 text-[0.65rem] text-bento-ink-soft font-semibold bg-white/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/50">
                             <Users size={10} className="text-accent-orange" />
-                            {capacities[i]}
+                            {s.capacity}
                           </span>
                         </div>
 
@@ -182,14 +179,14 @@ export default function Hall() {
                               <p className="text-bento-ink-soft/90 text-[0.75rem] leading-relaxed mb-4 pt-2">
                                 {s.description}
                               </p>
-                              <a
-                                href="#contact"
+                              <Link
+                                href={`/events/${s.slug}`}
                                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent-blue/10 text-[0.75rem] font-bold text-accent-blue hover:bg-accent-blue hover:text-white transition-all duration-300"
                                 onClick={(e) => e.stopPropagation()}
                               >
-                                Enquire &amp; Book
+                                View Space
                                 <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                              </a>
+                              </Link>
                             </motion.div>
                           )}
                         </AnimatePresence>
@@ -207,10 +204,10 @@ export default function Hall() {
 
         {/* Mobile CTA */}
         <Reveal delay={200} className="mt-6 flex justify-center sm:hidden">
-          <a href="#contact" className="bento-link w-fit">
-            Plan your event
+          <Link href="/events" className="bento-link w-fit">
+            View all event spaces
             <ArrowUpRight size={14} />
-          </a>
+          </Link>
         </Reveal>
       </div>
     </section>

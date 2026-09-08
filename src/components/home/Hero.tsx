@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import HeroMedia, { type HeroMediaConfig } from "@/components/home/HeroMedia";
@@ -57,10 +58,10 @@ export default function Hero() {
                 floor, and rooftop dining above the skyline — rising in Balaju.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
-                <a href="#contact" className="bento-btn">
+                <Link href="/contact-us" className="bento-btn">
                   Enquire Now
                   <ArrowUpRight size={15} />
-                </a>
+                </Link>
                 <a href={`tel:${contact.phoneE164}`} className="bento-btn-ghost">
                   Call {contact.phone}
                 </a>

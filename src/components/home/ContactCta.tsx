@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
 import { contact } from "@/config/site";
 
@@ -19,9 +20,9 @@ export default function ContactCta() {
                 Hotel Daaas Kathmandu.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <a href={`mailto:${contact.email}`} className="bento-btn">
-                  {contact.email}
-                </a>
+                <Link href="/contact-us" className="bento-btn">
+                  Send a Message
+                </Link>
                 <a href={`tel:${contact.phoneE164}`} className="bento-btn-ghost">
                   {contact.phone}
                 </a>

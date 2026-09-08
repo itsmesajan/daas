@@ -2,25 +2,29 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight, Waves, Dumbbell, Sparkles, Scissors, ChevronRight } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, Waves, Dumbbell, Sparkles, Scissors } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Reveal from "@/components/ui/Reveal";
 import sauna from "@/assets/placeholders/placeholder-sauna.jpg";
 import gym from "@/assets/placeholders/placeholder-gym.jpg";
 import pool from "@/assets/placeholders/placeholder-infinity-pool.jpg";
 
+// Slugs match the "facility" entries in src/data/hotel.ts's `services` array
+// 1:1, so each tab's "View Details" links straight to its real
+// /service/[slug] page (mock content today, real content once the CMS is
+// updated with it — see src/lib/data.ts's getServicesGrouped).
 const tabIconMap: Record<string, React.ElementType> = {
-  "Sauna & Steam": Sparkles,
-  fitness: Dumbbell,
-  swimming: Waves,
-  Restaurant: ChevronRight,
-  Jacuzzi: Waves,
-  "Hair Salon": Scissors,
+  "sauna-steam": Sparkles,
+  gym: Dumbbell,
+  "swimming-pool": Waves,
+  jacuzzi: Waves,
+  "hair-salon": Scissors,
 };
 
 const tabs = [
   {
-    key: "Sauna & Steam",
+    key: "sauna-steam",
     label: "Sauna & Steam",
     title: "Sauna & Steam",
     desc: "Unwind and restore balance with our jacuzzi, sauna and steam room — a dedicated wellness floor built for slowing down.",
@@ -29,16 +33,16 @@ const tabs = [
     highlights: ["Jacuzzi", "Sauna Room", "Steam Room", "Wellness Floor"],
   },
   {
-    key: "fitness",
+    key: "gym",
     label: "Fitness",
-    title: "Fitness Center",
+    title: "Gym",
     desc: "A fully equipped gym open daily for guests, whatever your training routine looks like while you're away from home.",
     image: gym,
-    alt: "Fitness center at Hotel Daaas",
+    alt: "Gym at Hotel Daaas",
     highlights: ["Cardio Machines", "Free Weights", "Open Daily", "Expert Staff"],
   },
   {
-    key: "swimming",
+    key: "swimming-pool",
     label: "Swimming",
     title: "Swimming Pool",
     desc: "Relax and unwind at our swimming pool, set above the Kathmandu skyline for a swim with a view.",
@@ -47,16 +51,7 @@ const tabs = [
     highlights: ["Skyline Views", "Heated Pool", "Towel Service", "Sunbeds"],
   },
   {
-    key: "Restaurant",
-    label: "Restaurant",
-    title: "Restaurant",
-    desc: "Our in-house specialty restaurant celebrates traditional Newari cuisine in an intimate, refined setting.",
-    image: pool,
-    alt: "Restaurant at Hotel Daaas",
-    highlights: ["Newari Cuisine", "Private Dining", "Chef's Table", "All-Day Menu"],
-  },
-  {
-    key: "Jacuzzi",
+    key: "jacuzzi",
     label: "Jacuzzi",
     title: "Jacuzzi",
     desc: "Soak away the day in our private jacuzzi — warm, relaxing, and perfectly secluded.",
@@ -65,7 +60,7 @@ const tabs = [
     highlights: ["Hydrotherapy", "Private Bay", "Heated Jets", "Towel Service"],
   },
   {
-    key: "Hair Salon",
+    key: "hair-salon",
     label: "Hair Salon",
     title: "Hair Salon",
     desc: "Look and feel your best with professional in-house salon services tailored to your style.",
@@ -89,10 +84,10 @@ export default function WellnessExperiences() {
             <p className="bento-pill mb-4">Wellness Experiences</p>
             <h2 className="bento-title text-3xl md:text-4xl">Spa, fitness &amp; swimming</h2>
           </div>
-          <a href="#contact" className="bento-link w-fit shrink-0 mb-1 hidden sm:inline-flex">
-            Enquire
+          <Link href="/facilities#wellness" className="bento-link w-fit shrink-0 mb-1 hidden sm:inline-flex">
+            View all facilities
             <ArrowUpRight size={14} />
-          </a>
+          </Link>
         </Reveal>
 
         {/* Scrollable pill tab strip */}
@@ -175,10 +170,10 @@ export default function WellnessExperiences() {
                     ))}
                   </ul>
 
-                  <a href="#contact" className="bento-link w-fit">
-                    Enquire
+                  <Link href={`/service/${tab.key}`} className="bento-link w-fit">
+                    View Details
                     <ArrowUpRight size={14} />
-                  </a>
+                  </Link>
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -187,10 +182,10 @@ export default function WellnessExperiences() {
 
         {/* Mobile CTA */}
         <Reveal delay={160} className="mt-6 flex justify-center sm:hidden">
-          <a href="#contact" className="bento-link w-fit">
-            Enquire
+          <Link href="/facilities#wellness" className="bento-link w-fit">
+            View all facilities
             <ArrowUpRight size={14} />
-          </a>
+          </Link>
         </Reveal>
       </div>
     </section>

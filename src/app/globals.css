@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+/* `scrollbar-none` was already used (Navbar/WellnessExperiences tab strips)
+   without ever being defined — Tailwind has no built-in scrollbar utilities,
+   so it was silently a no-op. Defined for real here. */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* ============================================================
    HOTEL DAAAS KATHMANDU — bento / glass design system
    Soft gradient backdrop, frosted glass rounded cards, varied-size
@@ -27,6 +38,22 @@
 
   --background: #ffffff;
   --foreground: var(--bento-ink);
+
+  /* CMS rich-text fields (description/content_1) are rendered as raw HTML
+     and were authored assuming the reference template's own design tokens —
+     alias them to our bento palette so that content isn't left unstyled. */
+  --luxury-dark: var(--bento-ink);
+  --luxury-dark-alt: var(--bento-ink);
+  --luxury-charcoal: var(--bento-ink);
+  --luxury-muted: var(--bento-ink-soft);
+  --luxury-cream: var(--bento-bg-top);
+  --luxury-cream-alt: var(--bento-bg-top);
+  --luxury-ivory: #ffffff;
+  --luxury-gold: var(--accent-orange);
+  --luxury-gold-light: var(--accent-orange);
+  --luxury-gold-dim: var(--accent-orange);
+  --luxury-gold-text: var(--accent-orange);
+  --luxury-border: var(--glass-border);
 }
 
 @theme inline {
@@ -270,6 +297,26 @@ section[id] {
 
 .font-bookman {
   font-family: var(--font-bookman);
+}
+
+/* ============================================================
+   SWIPER — bento/glass pagination bullets, used by any Swiper
+   instance on the site (image galleries, related-item sliders).
+   ============================================================ */
+
+.swiper-pagination-bullet {
+  width: 6px;
+  height: 6px;
+  background: #ffffff;
+  opacity: 0.6;
+  transition: width 0.3s ease, opacity 0.3s ease, background 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  width: 20px;
+  border-radius: 999px;
+  background: var(--accent-orange);
+  opacity: 1;
 }
 
 .font-bookman-bold{

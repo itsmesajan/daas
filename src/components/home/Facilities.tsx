@@ -2,21 +2,11 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Wifi, Waves, Dumbbell, Sparkles, Bell, Plane, ArrowUpRight, type LucideIcon } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import hotelIllustration from "@/assets/hotel-illustration.png";
 import { banquetSpaces, highlights } from "@/data/hotel";
-
-const iconMap: Record<string, LucideIcon> = {
-  wifi: Wifi,
-  waves: Waves,
-  dumbbell: Dumbbell,
-  sparkles: Sparkles,
-  bell: Bell,
-  plane: Plane,
-};
-
 
 
 function HighlightItem({
@@ -28,22 +18,22 @@ function HighlightItem({
   delay: number;
   reverse?: boolean;
 }) {
-  const Icon = iconMap[item.icon];
   return (
     <Reveal delay={delay} className="w-full">
-      <div
+      <Link
+        href={`/service/${item.slug}`}
         className={`bento-card flex items-center gap-4 p-4 md:p-5 group hover:border-accent-orange/30 transition-colors ${
           reverse ? "flex-row-reverse text-right" : ""
         }`}
       >
         <div className="w-11 h-11 shrink-0 rounded-full bg-accent-orange/10 border border-accent-orange/20 flex items-center justify-center transition-all duration-300 group-hover:bg-accent-orange/15 group-hover:border-accent-orange/35">
-          <Icon size={17} className="text-accent-orange" strokeWidth={1.75} />
+          <i className={`${item.icon} text-accent-orange text-base`} aria-hidden="true" />
         </div>
         <div className="min-w-0">
           <p className="text-sm font-semibold text-bento-ink">{item.title}</p>
           <p className="text-xs text-bento-ink-soft mt-0.5 leading-snug">{item.desc}</p>
         </div>
-      </div>
+      </Link>
     </Reveal>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowUpRight, BedDouble } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import imgDeluxe from "@/assets/room-deluxe-real.jpg";
@@ -32,18 +33,18 @@ export default function Rooms() {
             <p className="bento-pill mb-4">Accommodations</p>
             <h2 className="bento-title text-3xl md:text-4xl">Stay with us in style</h2>
           </div>
-          <a href="#contact" className="bento-link w-fit shrink-0 mb-1 hidden sm:inline-flex">
-            Book a room
+          <Link href="/rooms" className="bento-link w-fit shrink-0 mb-1 hidden sm:inline-flex">
+            View all rooms
             <ArrowUpRight size={14} />
-          </a>
+          </Link>
         </Reveal>
 
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
           {/* ── Featured hero card ── */}
           <Reveal className="md:col-span-2">
-            <a
-              href="#contact"
+            <Link
+              href={`/rooms/${first.slug}`}
               className="group block relative overflow-hidden rounded-3xl h-full"
               style={{ minHeight: 420 }}
             >
@@ -91,19 +92,19 @@ export default function Rooms() {
                 </div>
 
                 <div className="inline-flex items-center gap-2 text-[0.8rem] font-semibold text-white border-b border-white/40 pb-0.5 transition-all duration-300 group-hover:border-accent-orange group-hover:text-accent-orange group-hover:gap-3">
-                  Enquire &amp; Book
+                  View Room
                   <ArrowUpRight size={14} />
                 </div>
               </div>
-            </a>
+            </Link>
           </Reveal>
 
           {/* ── Secondary cards column ── */}
           <div className="flex flex-col gap-4 md:gap-5">
             {rest.map((room, i) => (
               <Reveal key={room.name} delay={100 + i * 80} className="flex-1">
-                <a
-                  href="#contact"
+                <Link
+                  href={`/rooms/${room.slug}`}
                   className="group block relative overflow-hidden rounded-3xl h-full"
                   style={{ minHeight: 195 }}
                 >
@@ -139,7 +140,7 @@ export default function Rooms() {
                       </div>
                     </div>
                   </div>
-                </a>
+                </Link>
               </Reveal>
             ))}
           </div>
@@ -147,10 +148,10 @@ export default function Rooms() {
 
         {/* Mobile CTA */}
         <Reveal delay={200} className="mt-6 flex justify-center sm:hidden">
-          <a href="#contact" className="bento-link w-fit">
-            Book a room
+          <Link href="/rooms" className="bento-link w-fit">
+            View all rooms
             <ArrowUpRight size={14} />
-          </a>
+          </Link>
         </Reveal>
 
         {/* Amenities strip */}

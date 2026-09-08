@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useReducedMotion } from "framer-motion";
 import { ArrowUpRight, MapPin, Clock, Users } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
@@ -41,10 +42,10 @@ export default function Dining() {
             <p className="bento-pill mb-4">Dining &amp; Rooftop</p>
             <h2 className="bento-title text-3xl md:text-4xl">Above the city skyline</h2>
           </div>
-          <a href="#contact" className="bento-link w-fit shrink-0 mb-1 hidden sm:inline-flex">
-            Make a reservation
+          <Link href="/dining" className="bento-link w-fit shrink-0 mb-1 hidden sm:inline-flex">
+            View all dining
             <ArrowUpRight size={14} />
-          </a>
+          </Link>
         </Reveal>
 
         {/* Venue selector cards */}
@@ -192,13 +193,13 @@ export default function Dining() {
                   </span>
                 </div>
 
-                <a
-                  href="#contact"
+                <Link
+                  href={`/dining/${venue.slug}`}
                   className="inline-flex items-center gap-2 text-[0.78rem] font-semibold text-white border-b border-white/50 pb-0.5 transition-all duration-300 hover:border-accent-orange hover:text-accent-orange hover:gap-3"
                 >
-                  Enquire &amp; Reserve
+                  View Venue
                   <ArrowUpRight size={13} />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -206,10 +207,10 @@ export default function Dining() {
 
         {/* Mobile CTA */}
         <Reveal delay={200} className="mt-6 flex justify-center sm:hidden">
-          <a href="#contact" className="bento-link w-fit">
-            Make a reservation
+          <Link href="/dining" className="bento-link w-fit">
+            View all dining
             <ArrowUpRight size={14} />
-          </a>
+          </Link>
         </Reveal>
       </div>
     </section>
