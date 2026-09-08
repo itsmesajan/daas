@@ -21,6 +21,22 @@ export interface FaqItem {
   a: string;
 }
 
+export interface NavItem {
+  id: string;
+  title: string;
+  link: string;
+  /** CMS link type: "0" → internal route, "1" → external URL (opens in a new tab). */
+  linktype?: string | number;
+  subLinks?: NavItem[];
+  /** Icon URL — used by the mobile bottom nav (menu type 3). */
+  image?: string;
+}
+
+export interface MenuContainer {
+  type: string | number;
+  items: NavItem[];
+}
+
 export interface Package {
   id: string;
   slug: string;
@@ -186,4 +202,10 @@ export interface OfferItem {
   meta_title?: string;
   meta_keywords?: string;
   meta_description?: string;
+}
+
+export interface NavbarClientProps {
+  menu: NavItem[];
+  logoUrl?: string;
+  site:any;
 }

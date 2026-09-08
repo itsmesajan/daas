@@ -22,11 +22,8 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "images.unsplash.com", pathname: "/**" },
       { protocol: "https", hostname: "plus.unsplash.com", pathname: "/**" },
       { protocol: "https", hostname: "upload.wikimedia.org", pathname: "/**" },
-      // Shared CMS backend host (confirmed from a real sample payload) — this
-      // is where the same backend hosts other properties' images too.
-      // TODO: confirm/replace once Hotel Daaas's own CMS instance is live —
-      // it may end up on this same host under a different path, or its own.
       { protocol: "https", hostname: "www.mayurstay.com", pathname: "/**" },
+      { protocol: "https", hostname: "mayurstay.com" },
     ],
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],

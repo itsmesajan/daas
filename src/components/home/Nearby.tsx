@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { MapPin } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
-import { nearbyLocations } from "@/data/hotel";
+// import { nearbyLocations } from "@/data/hotel";
+import { fetchAPI } from "@/lib/api";
 
 // Sourced from Wikimedia Commons and checked against each article's own
 // infobox photo — the earlier Unsplash picks here were wrong (two showed an
@@ -23,7 +24,10 @@ const images: Record<string, string> = {
     "https://images.unsplash.com/photo-1704870872623-472e2568a1ac?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 };
 
-export default function Nearby() {
+export default async function Nearby() {
+  const nearbyLocations = await fetchAPI<any>("nearby") || []; 
+  const siteRegulars = await fetchAPI<any>("siteRegulars") || []; 
+
   return (
     <section className="py-12 md:py-16">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
@@ -38,13 +42,13 @@ export default function Nearby() {
         </Reveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {nearbyLocations.map((loc, i) => (
-            <Reveal key={loc.name} delay={i * 50}>
+          {nearbyLocations.map((loc : any, i : number) => (
+            <Reveal key={loc.title} delay={i * 50}>
               <div className="bento-card group overflow-hidden h-full flex flex-col">
                 <div className="relative aspect-[4/3]">
                   <Image
-                    src={images[loc.name]}
-                    alt={loc.name}
+                    src={loc.image_upload || images[loc.title] || siteRegulars.logo_upload}
+                    alt={loc.title}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
@@ -56,7 +60,7 @@ export default function Nearby() {
                 </div>
                 <div className="p-4 flex items-center gap-2.5">
                   <MapPin size={15} className="text-accent-orange shrink-0" />
-                  <a href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-bento-ink">{loc.name}</a>
+                  <a href={loc.map_url} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-bento-ink">{loc.title}</a>
                 </div>
               </div>
             </Reveal>

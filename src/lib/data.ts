@@ -16,6 +16,8 @@ import type {
   DealOfTheDay,
   FaqItemEntry,
   GalleryImageEntry,
+  MenuContainer,
+  NavItem,
   OfferItem,
   Package,
   VirtualTourData,
@@ -35,8 +37,8 @@ import {
 
 // ── Site-wide ────────────────────────────────────────────────────────────────
 
-export function getSiteRegulars(): Promise<Record<string, unknown> | null> {
-  return fetchAPI<Record<string, unknown>>("siteregulars");
+export function getSiteRegulars(): Promise<any | null> {
+  return fetchAPI<any>("siteregulars");
 }
 
 /** Falls back to an empty object so all consumers degrade gracefully. */
@@ -49,6 +51,26 @@ export async function getSiteMetadata(): Promise<SiteMetadata> {
 export async function getCmsSchemaEntries<T = unknown>(): Promise<T[]> {
   const data = await fetchAPI<T[]>("schema");
   return Array.isArray(data) ? data : [];
+}
+
+/** One `schema` entry by its CMS `slug` (carries `image`/`fb_upload`, meta fields, JSON-LD), or null. */
+export async function findSchemaEntryBySlug(slug: string): Promise<any | null> {
+  const entries = await getCmsSchemaEntries();
+  return entries.find((entry: any) => entry.slug === slug) ?? null;
+}
+
+// ── Navigation & social ──────────────────────────────────────────────────────
+
+/** Menu items for one container: type 1 = header nav, type 2 = footer nav. */
+export async function getMenuItems(type: number): Promise<NavItem[]> {
+  const menu = (await fetchAPI<MenuContainer[]>("menu")) || [];
+  return menu.find((item) => Number(item.type) === type)?.items || [];
+}
+
+/** Social-link group: type 1 = footer icons, type 2 = partner/OTA logos. */
+export async function getSocialGroup(type: number): Promise<any | null> {
+  const social = await fetchAPI<any[]>("social");
+  return social?.find((item: any) => Number(item.type) === type) ?? null;
 }
 
 // ── Packages & categories (rooms / restaurant / events) ─────────────────────
