@@ -21,6 +21,7 @@ import type {
   OfferItem,
   Package,
   PackageCategory,
+  TestimonialEntry,
   VirtualTourData,
 } from "@/types";
 import type { SiteMetadata } from "@/types/metadata";
@@ -119,6 +120,12 @@ function diningToItems(): Package[] {
         items: [{ title: venue.seats }, { title: venue.timing }, { title: venue.cuisine }],
       },
     ],
+    // Live CMS restaurant items repurpose the shared package fields: `breakfast`
+    // carries the venue's timing text, `lunch` carries its seating/size text
+    // (not literal meal info) — matched here so local fallback items read the
+    // same way as live ones on the homepage carousel.
+    breakfast: venue.timing,
+    lunch: venue.seats,
   }));
 }
 
@@ -351,9 +358,30 @@ export async function findServiceBySlug(slug: string): Promise<Package | null> {
   return items.find((item) => item.slug === slug) ?? null;
 }
 
-export async function getTestimonials(): Promise<any[]> {
-  const data = await fetchAPI<any[]>("testimonial");
-  return Array.isArray(data) ? data : [];
+interface RawTestimonial {
+  id?: string | number;
+  name?: string;
+  title?: string;
+  via?: string;
+  rating?: string | number;
+  image?: string;
+  content?: string;
+}
+
+export async function getTestimonials(): Promise<TestimonialEntry[]> {
+  const data = await fetchAPI<RawTestimonial[]>("testimonial");
+  if (!Array.isArray(data)) return [];
+  return data
+    .filter((t) => t.content)
+    .map((t) => ({
+      id: t.id,
+      name: t.name,
+      role: t.title,
+      quoteHtml: t.content!,
+      via: t.via,
+      image: t.image,
+      rating: Number(t.rating) || 0,
+    }));
 }
 
 export async function getFaqs(): Promise<{ question: string; answer: string }[]> {

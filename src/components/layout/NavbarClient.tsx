@@ -95,14 +95,16 @@ export default function BentoNavbar({ site, menu }: NavbarClientProps) {
           className="flex items-center gap-2.5"
           onClick={() => setOpen(false)}
         >
-          <Image
-            src={site.logo_upload}
-            alt={site.sitename}
-            width={1500}
-            height={1500}
-            className="w-60 h-auto"
-            priority
-          />
+          {site?.logo_upload && (
+            <Image
+              src={site.logo_upload}
+              alt={site?.sitename || "Logo"}
+              width={1500}
+              height={1500}
+              className="w-60 h-auto"
+              priority
+            />
+          )}
         </Link>
 
         <nav

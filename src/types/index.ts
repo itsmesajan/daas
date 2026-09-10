@@ -156,6 +156,22 @@ export interface BlogPost {
   meta_description?: string;
 }
 
+/** Normalised `testimonial` endpoint entry — CMS field names (title/via/content) renamed to what the UI expects. */
+export interface TestimonialEntry {
+  id?: string | number;
+  /** Reviewer's own name, when the CMS has one (not just the platform). */
+  name?: string;
+  /** Trip type / stay label, e.g. "Family trip" — CMS field is `title`. */
+  role?: string;
+  /** Rich HTML as the CMS stores it — callers strip it for plain-text display. */
+  quoteHtml: string;
+  /** Review platform key, e.g. "google", "agoda" — CMS field is `via`. */
+  via?: string;
+  /** Platform/reviewer badge image the CMS supplies per entry. */
+  image?: string;
+  rating: number;
+}
+
 export interface DealOfTheDay {
   id?: string;
   title?: string;

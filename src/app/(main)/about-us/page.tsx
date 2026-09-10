@@ -13,7 +13,7 @@ import {
 import Reveal from "@/components/ui/Reveal";
 import ImageGallery from "@/components/ui/ImageGallery";
 import { buildMetadata } from "@/lib/metadata";
-import { findArticleById, findCategoryItem } from "@/lib/data";
+import { findArticleById, getPackageCategories } from "@/lib/data";
 import { resolveHeroImages } from "@/lib/images";
 import { site, address, business, links, ARTICLE_IDS } from "@/config/site";
 import { banquetSpaces, roomCategories, diningVenues } from "@/data/hotel";
@@ -32,9 +32,10 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function AboutUsPage() {
   const [about, packages, nearbyLocations] = await Promise.all([
     findArticleById(ARTICLE_IDS.aboutUs),
-    fetchAPI<any>("package"),
-    fetchAPI<any>("nearby"),
+    getPackageCategories(),
+    fetchAPI<any[]>("nearby"),
   ]);
+  const nearby = nearbyLocations ?? [];
   const images = resolveHeroImages(about, imgExterior1.src);
 
   const stats = [
@@ -234,7 +235,7 @@ const offerings = packages.map((item:any) => ({
                 {address.full}
               </p>
               <div className="flex flex-wrap gap-2 mb-6">
-                {nearbyLocations.slice(0, 3).map((loc:any) => (
+                {nearby.slice(0, 3).map((loc:any) => (
                   <span key={loc.name} className="text-[0.65rem] font-semibold tracking-wide text-white/80 border border-white/20 rounded-full px-3 py-1 bg-white/10 backdrop-blur-sm">
                     {loc.title} · {loc.distance}
                   </span>

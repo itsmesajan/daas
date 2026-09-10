@@ -1,19 +1,10 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, BedDouble } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
-import imgDeluxe from "@/assets/room-deluxe-real.jpg";
-import imgSuite from "@/assets/room/suite.jpg";
-import imgJrSuite from "@/assets/room/jrsuite.jpg";
-import { roomCategories, roomAmenities } from "@/data/hotel";
-
-const images: Record<string, typeof imgDeluxe> = {
-  "Deluxe Room": imgDeluxe,
-  "Jr. Suite Room": imgJrSuite,
-  "Suite Room": imgSuite,
-};
+import { getCategoryItems } from "@/lib/data";
+import { toImageUrls, htmlToPlainText } from "@/lib/images";
+import { CATEGORY_IDS, business } from "@/config/site";
 
 const tagColors = [
   "bg-amber-900/70 text-amber-100",
@@ -21,8 +12,22 @@ const tagColors = [
   "bg-emerald-900/70 text-emerald-100",
 ];
 
-export default function Rooms() {
-  const [first, ...rest] = roomCategories;
+// Same "only a real, positive rate — never invent one" rule and currency
+// fallback as the room detail page (rooms/[slug]/page.tsx).
+function formatPrice(price?: string | null, currency?: string): string | null {
+  const priceNumber = price ? Number(price) : NaN;
+  if (!Number.isFinite(priceNumber) || priceNumber <= 0) return null;
+  const symbol = business.currency === "NPR" ? "Rs." : (currency ?? "$");
+  return `${symbol} ${priceNumber.toLocaleString()}`;
+}
+
+export default async function Rooms() {
+  const rooms = await getCategoryItems(CATEGORY_IDS.rooms);
+  if (rooms.length === 0) return null;
+
+  const [first, ...rest] = rooms;
+  const firstAmenities = first.amenities?.[0]?.items ?? [];
+  const firstPrice = formatPrice(first.price, first.currency);
 
   return (
     <section id="rooms" className="py-12 md:py-16">
@@ -49,8 +54,8 @@ export default function Rooms() {
               style={{ minHeight: 420 }}
             >
               <Image
-                src={images[first.name]}
-                alt={`${first.name} at Hotel Daaas`}
+                src={toImageUrls(first.img)[0] ?? ""}
+                alt={`${first.title} at Hotel Daaas`}
                 fill
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 sizes="(min-width: 1920px) 55vw, 100vw"
@@ -62,34 +67,40 @@ export default function Rooms() {
               {/* Top badges */}
               <div className="absolute top-5 left-5 right-5 flex items-start justify-between">
                 <span className="bento-pill-dark text-xs">Most Popular</span>
-                <span className={`text-[0.62rem] font-semibold tracking-wide px-3 py-1 rounded-full ${tagColors[0]}`}>
-                  {first.count} Rooms
-                </span>
+                {firstPrice && (
+                  <span className={`text-[0.62rem] font-semibold tracking-wide px-3 py-1 rounded-full ${tagColors[0]}`}>
+                    {firstPrice}
+                  </span>
+                )}
               </div>
 
               {/* Bottom content */}
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                 <h3 className="text-white font-bold tracking-tight leading-tight text-2xl md:text-[1.85rem] mb-2">
-                  {first.name}
+                  {first.title}
                 </h3>
                 <p className="text-white/70 text-sm leading-relaxed max-w-sm mb-5">
-                  {first.description}
+                  {htmlToPlainText(first.sub_title)}
                 </p>
 
                 {/* Amenity chips */}
-                <div className="flex flex-wrap gap-1.5 mb-5">
-                  {roomAmenities.slice(0, 4).map((a) => (
-                    <span
-                      key={a}
-                      className="text-[0.58rem] font-semibold tracking-wide text-white/80 border border-white/25 rounded-full px-2.5 py-0.5 bg-white/10 backdrop-blur-sm"
-                    >
-                      {a}
-                    </span>
-                  ))}
-                  <span className="text-[0.58rem] font-semibold tracking-wide text-white/60 border border-white/15 rounded-full px-2.5 py-0.5 bg-white/5 backdrop-blur-sm">
-                    +{roomAmenities.length - 4} more
-                  </span>
-                </div>
+                {firstAmenities.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mb-5">
+                    {firstAmenities.slice(0, 4).map((a) => (
+                      <span
+                        key={a.title}
+                        className="text-[0.58rem] font-semibold tracking-wide text-white/80 border border-white/25 rounded-full px-2.5 py-0.5 bg-white/10 backdrop-blur-sm"
+                      >
+                        {a.title}
+                      </span>
+                    ))}
+                    {firstAmenities.length > 4 && (
+                      <span className="text-[0.58rem] font-semibold tracking-wide text-white/60 border border-white/15 rounded-full px-2.5 py-0.5 bg-white/5 backdrop-blur-sm">
+                        +{firstAmenities.length - 4} more
+                      </span>
+                    )}
+                  </div>
+                )}
 
                 <div className="inline-flex items-center gap-2 text-[0.8rem] font-semibold text-white border-b border-white/40 pb-0.5 transition-all duration-300 group-hover:border-accent-orange group-hover:text-accent-orange group-hover:gap-3">
                   View Room
@@ -101,38 +112,42 @@ export default function Rooms() {
 
           {/* ── Secondary cards column ── */}
           <div className="flex flex-col gap-4 md:gap-5">
-            {rest.map((room, i) => (
-              <Reveal key={room.name} delay={100 + i * 80} className="flex-1">
+            {rest.map((room, i) => {
+              const roomPrice = formatPrice(room.price, room.currency);
+              return (
+              <Reveal key={room.slug} delay={100 + i * 80} className="flex-1">
                 <Link
                   href={`/rooms/${room.slug}`}
                   className="group block relative overflow-hidden rounded-3xl h-full"
                   style={{ minHeight: 195 }}
                 >
                   <Image
-                    src={images[room.name]}
-                    alt={`${room.name} at Hotel Daaas`}
+                    src={toImageUrls(room.img)[0] ?? ""}
+                    alt={`${room.title} at Hotel Daaas`}
                     fill
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     sizes="(min-width: 1920px) 28vw, 100vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                  {/* Room count badge */}
-                  <div className="absolute top-4 right-4">
-                    <span className={`text-[0.58rem] font-semibold tracking-wide px-3 py-1 rounded-full ${tagColors[i + 1]}`}>
-                      {room.count} Rooms
-                    </span>
-                  </div>
+                  {/* Room badge */}
+                  {roomPrice && (
+                    <div className="absolute top-4 right-4">
+                      <span
+                        className={`text-[0.58rem] font-semibold tracking-wide px-3 py-1 rounded-full ${tagColors[(i + 1) % tagColors.length]}`}
+                      >
+                        {roomPrice}
+                      </span>
+                    </div>
+                  )}
 
                   {/* Bottom info */}
                   <div className="absolute bottom-0 left-0 right-0 p-5">
                     <div className="flex items-end justify-between gap-3">
                       <div>
-                        <h3 className="text-white font-bold text-base leading-tight mb-1">
-                          {room.name}
-                        </h3>
+                        <h3 className="text-white font-bold text-base leading-tight mb-1">{room.title}</h3>
                         <p className="text-white/65 text-[0.7rem] leading-relaxed line-clamp-2">
-                          {room.description}
+                          {room.sub_title}
                         </p>
                       </div>
                       <div className="shrink-0 w-8 h-8 rounded-full bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center transition-all duration-300 group-hover:bg-accent-orange group-hover:border-accent-orange">
@@ -142,7 +157,8 @@ export default function Rooms() {
                   </div>
                 </Link>
               </Reveal>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -153,19 +169,6 @@ export default function Rooms() {
             <ArrowUpRight size={14} />
           </Link>
         </Reveal>
-
-        {/* Amenities strip */}
-        {/* <Reveal delay={180} className="mt-6 px-0">
-          <div className="bento-card p-5 md:p-6 flex flex-wrap items-center gap-3">
-            <span className="flex items-center gap-2 text-bento-ink-soft text-[0.72rem] font-semibold tracking-wide mr-2">
-              <BedDouble size={14} className="text-accent-orange" />
-              All rooms include:
-            </span>
-            {roomAmenities.map((a) => (
-              <span key={a} className="bento-pill !py-1 !text-[0.62rem]">{a}</span>
-            ))}
-          </div>
-        </Reveal> */}
       </div>
     </section>
   );
