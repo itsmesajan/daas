@@ -94,7 +94,7 @@ export default function GalleryGrid({ items }: { items: GalleryImageEntry[] }) {
                 aria-pressed={active === cat}
                 className={`rounded-full px-4 py-2 text-xs font-semibold transition-colors ${
                   active === cat
-                    ? "bg-bento-ink text-white"
+                    ? "bg-[#1176bb] text-white"
                     : "border border-white/70 bg-white/50 text-bento-ink-soft hover:bg-white/80"
                 }`}
               >

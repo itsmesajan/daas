@@ -85,6 +85,36 @@ export interface ApiResponse {
   items?: Package[];
 }
 
+/** `banner_img`/`fb_img`-style entry from the `package` endpoint — `{id,url,alt}`, not `{src,title}` like ImageItem. */
+export interface BannerImage {
+  id?: number;
+  url: string;
+  alt?: string;
+}
+
+/**
+ * Parent-category landing-page record from the `package` endpoint — one per
+ * CATEGORY_IDS entry (rooms/events/restaurant), distinct from `subpackage`'s
+ * individual items. Carries the category's own banner image + short
+ * description, used on the /rooms, /dining, /events listing pages.
+ */
+export interface PackageCategory {
+  id: string;
+  slug: string;
+  title: string;
+  /** Admin-assigned per property — not a reliable category discriminator (match by `id`/`slug` instead). */
+  type?: string | number;
+  banner_img?: BannerImage[];
+  fb_img?: string;
+  /** Short plain-text summary (not HTML). */
+  description?: string;
+  schema_code?: string;
+  faq_schema?: FaqItem[];
+  meta_title?: string;
+  meta_keywords?: string;
+  meta_description?: string;
+}
+
 /** Generic CMS "article" — used for static pages like About Us. */
 export interface ArticleItem {
   id?: string | number;
@@ -186,6 +216,23 @@ export interface VirtualTourData {
   };
   categories: TourCategory[];
   scenes: Record<string, TourScene>;
+}
+
+/**
+ * Guest testimonial from OTA platforms (Agoda, Booking.com, TripAdvisor, Google).
+ * API response includes `id`, `name`, `title`, `via`, `rating` (string), `image`, and `content` (HTML).
+ * Transformed into component-friendly format with extracted text and normalized source.
+ */
+export interface Testimonial {
+  id: string;
+  name: string;
+  image: string;
+  title: string;
+  via: string;
+  rating: number;
+  quote: string;
+  source: string;
+  role: string;
 }
 
 export interface OfferItem {

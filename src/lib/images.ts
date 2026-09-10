@@ -24,3 +24,9 @@ export function resolveHeroImages(
   if (images.length > 0) return images;
   return fallback ? [fallback] : [];
 }
+
+/** Strips tags from a CMS rich-text field (e.g. `Package.description`) for plain-text display, like a card teaser. */
+export function htmlToPlainText(html?: string): string {
+  if (!html) return "";
+  return html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+}

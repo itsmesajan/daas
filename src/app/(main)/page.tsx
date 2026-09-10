@@ -8,10 +8,15 @@ import Nearby from "@/components/home/Nearby";
 import OtaPartners from "@/components/home/OtaPartners";
 import ContactCta from "@/components/home/ContactCta";
 import Hall from "@/components/home/Hall";
+import Popup from "@/components/popup/Popup";
+import { getPopupItems } from "@/lib/data";
 
-export default function Home() {
+export default async function Home() {
+  const popupData = await getPopupItems();
+
   return (
     <>
+      <Popup popupData={popupData} />
       <Hero />
       <Rooms />
       <Dining />

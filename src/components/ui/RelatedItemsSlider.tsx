@@ -11,9 +11,11 @@ import "swiper/css";
 export interface RelatedItem {
   slug: string;
   title: string;
-  image: StaticImageData;
-  /** Overlay badge, top-right of the image — matches the listing page's card. */
+  image: StaticImageData | string;
   badge?: string;
+  sub_title?:string;
+  size?:string;
+  price?:string;
   description?: string;
   features?: { icon?: ReactNode; label: string }[];
   ctaLabel?: string;
@@ -80,8 +82,10 @@ export default function RelatedItemsSlider({
               </div>
               <div className="p-5 md:p-6">
                 <h3 className="bento-title text-lg mb-2">{item.title}</h3>
-                {item.description && (
-                  <p className="text-bento-ink-soft text-sm leading-relaxed mb-4 line-clamp-2">{item.description}</p>
+                {(item.sub_title || item.description) && (
+                  <p className="text-bento-ink-soft text-sm leading-relaxed mb-4 line-clamp-2">
+                    {item.sub_title || item.description}
+                  </p>
                 )}
                 {item.features && item.features.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-4">

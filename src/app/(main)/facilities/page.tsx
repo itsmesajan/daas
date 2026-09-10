@@ -28,8 +28,7 @@ function ServiceGrid({ items }: { items: Package[] }) {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
       {items.map((item, i) => (
         <Reveal key={item.slug} delay={i * 60}>
-          <Link
-            href={`/service/${item.slug}`}
+          <div
             className="group flex items-start gap-4 bento-card p-6 h-full hover:border-accent-orange/30 transition-colors"
           >
             <CardIcon />
@@ -41,12 +40,8 @@ function ServiceGrid({ items }: { items: Package[] }) {
                   dangerouslySetInnerHTML={{ __html: item.description }}
                 />
               )}
-              <span className="bento-link !text-xs mt-2">
-                Learn more
-                <ArrowUpRight size={11} />
-              </span>
             </div>
-          </Link>
+          </div>
         </Reveal>
       ))}
     </div>
@@ -54,7 +49,7 @@ function ServiceGrid({ items }: { items: Package[] }) {
 }
 
 export default async function FacilitiesPage() {
-  const { facilities, services } = await getServicesGrouped();
+  const { services } = await getServicesGrouped();
 
   return (
     <section className="pt-28 md:pt-32 pb-16">
@@ -67,20 +62,8 @@ export default async function FacilitiesPage() {
           </p>
         </Reveal>
 
-        {facilities.length > 0 && (
-          <div id="wellness" className="scroll-mt-28 mb-12">
-            <Reveal className="mb-5 px-2">
-              <h2 className="bento-title text-xl md:text-2xl">Facilities</h2>
-            </Reveal>
-            <ServiceGrid items={facilities} />
-          </div>
-        )}
-
         {services.length > 0 && (
           <div id="services" className="scroll-mt-28">
-            <Reveal className="mb-5 px-2">
-              <h2 className="bento-title text-xl md:text-2xl">Services</h2>
-            </Reveal>
             <ServiceGrid items={services} />
           </div>
         )}

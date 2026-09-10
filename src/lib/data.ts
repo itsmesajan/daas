@@ -20,6 +20,7 @@ import type {
   NavItem,
   OfferItem,
   Package,
+  PackageCategory,
   VirtualTourData,
 } from "@/types";
 import type { SiteMetadata } from "@/types/metadata";
@@ -45,6 +46,20 @@ export function getSiteRegulars(): Promise<any | null> {
 export async function getSiteMetadata(): Promise<SiteMetadata> {
   const data = await fetchAPI<SiteMetadata>("metadata");
   return data ?? {};
+}
+
+/** `popup` arrives in several wrapper shapes; normalise to a flat array. */
+export async function getPopupItems(): Promise<any[]> {
+  try {
+    const data = await fetchAPI<any>("popup");
+    if (Array.isArray(data)) return data;
+    if (data?.data && Array.isArray(data.data)) return data.data;
+    if (data?.items && Array.isArray(data.items)) return data.items;
+    if (data && typeof data === "object") return [data];
+  } catch (err) {
+    console.error("Failed to fetch popup data", err);
+  }
+  return [];
 }
 
 /** Raw CMS `schema` entries (JSON-LD blocks); [] when unavailable. */
@@ -159,6 +174,21 @@ export async function findCategoryItem(parentId: string, slug: string): Promise<
   return items.find((item) => item.slug === slug) ?? null;
 }
 
+// ── Package categories (parent-category landing pages) ──────────────────────
+// The `package` endpoint returns one record per CATEGORY_IDS entry — the
+// /rooms, /dining, /events landing page's own banner image + short
+// description — separate from `subpackage`'s individual items above.
+
+export async function getPackageCategories(): Promise<PackageCategory[]> {
+  const data = await fetchAPI<PackageCategory[]>("package");
+  return Array.isArray(data) ? data : [];
+}
+
+export async function findPackageCategory(id: string): Promise<PackageCategory | null> {
+  const categories = await getPackageCategories();
+  return categories.find((c) => String(c.id) === id) ?? null;
+}
+
 // ── About Us (generic CMS "article", looked up by slug) ─────────────────────
 // The reference site actually looks this page up by a hardcoded numeric CMS
 // id, not a slug — that's fragile (a per-instance id, not a portable name),
@@ -195,9 +225,16 @@ function aboutFallback(): ArticleItem {
   };
 }
 
-export async function findArticleBySlug(slug: string): Promise<ArticleItem> {
+/** Generic `article_all` lookup by slug for the catch-all /[slug] route — null (→ 404) on no match, not the About Us fallback. */
+export async function findArticleBySlug(slug: string): Promise<ArticleItem | null> {
   const articles = await getArticles();
-  return articles.find((a) => a.slug === slug) ?? aboutFallback();
+  return articles.find((a) => a.slug === slug) ?? null;
+}
+
+/** Preferred lookup for `article_all` — the CMS `slug` field isn't reliably route-shaped, but `id` is stable (see ARTICLE_IDS). */
+export async function findArticleById(id: string): Promise<ArticleItem> {
+  const articles = await getArticles();
+  return articles.find((a) => String(a.id) === id) ?? aboutFallback();
 }
 
 // ── Gallery ──────────────────────────────────────────────────────────────────
@@ -206,12 +243,23 @@ function galleryFallback(): GalleryImageEntry[] {
   return galleryImages.map((g) => ({ src: g.image.src, title: g.title, category: g.category }));
 }
 
+/** Raw `gallery` endpoint item shape — the photo URL comes back as `image`, not `src`. */
+interface RawGalleryItem {
+  id?: number | string;
+  title?: string;
+  category?: string;
+  image?: string;
+}
+
 /** Images of one gallery group, selected by its CMS `display` label. */
 export async function getGalleryImages(display = "Inner Page"): Promise<GalleryImageEntry[]> {
-  const data = await fetchAPI<{ display?: string; items?: GalleryImageEntry[] }[]>("gallery");
+  const data = await fetchAPI<{ display?: string; items?: RawGalleryItem[] }[]>("gallery");
   const group = Array.isArray(data) ? data.find((g) => g.display === display) : null;
   const liveItems = Array.isArray(group?.items) ? group.items : [];
-  return liveItems.length > 0 ? liveItems : galleryFallback();
+  const normalised = liveItems
+    .filter((item): item is RawGalleryItem & { image: string } => Boolean(item.image))
+    .map((item) => ({ src: item.image, title: item.title, category: item.category }));
+  return normalised.length > 0 ? normalised : galleryFallback();
 }
 
 // ── Offers ───────────────────────────────────────────────────────────────────
@@ -303,17 +351,14 @@ export async function findServiceBySlug(slug: string): Promise<Package | null> {
   return items.find((item) => item.slug === slug) ?? null;
 }
 
-// ── FAQ ──────────────────────────────────────────────────────────────────────
-// Merges the same way getCategoryItems does: live entries win, and any
-// question the CMS doesn't have yet keeps showing our local fallback (see
-// the `faqs` disclaimer in src/data/hotel.ts).
+export async function getTestimonials(): Promise<any[]> {
+  const data = await fetchAPI<any[]>("testimonial");
+  return Array.isArray(data) ? data : [];
+}
 
-export async function getFaqs(): Promise<FaqItemEntry[]> {
-  const data = await fetchAPI<FaqItemEntry[]>("faq");
-  const liveItems = Array.isArray(data) ? data : [];
-  const liveQuestions = new Set(liveItems.map((f) => f.question.trim().toLowerCase()));
-  const fallbackOnly = faqs.filter((f) => !liveQuestions.has(f.question.trim().toLowerCase()));
-  return [...liveItems, ...fallbackOnly];
+export async function getFaqs(): Promise<{ question: string; answer: string }[]> {
+  const data = await fetchAPI<{ question: string; answer: string }[]>("faq");
+  return Array.isArray(data) ? data : [];
 }
 
 // ── Blog ─────────────────────────────────────────────────────────────────────
@@ -333,8 +378,8 @@ export async function getBlogs(): Promise<BlogPost[]> {
   const data = await fetchAPI<BlogPost[]>("blog");
   const liveItems = Array.isArray(data) ? data : [];
   const liveSlugs = new Set(liveItems.map((b) => b.slug));
-  const fallbackOnly = blogFallback().filter((b) => !liveSlugs.has(b.slug));
-  return [...liveItems, ...fallbackOnly];
+  // const fallbackOnly = blogFallback().filter((b) => !liveSlugs.has(b.slug));
+  return [...liveItems];
 }
 
 /** Robust slug match — tolerates leading slashes and nested CMS slugs. */

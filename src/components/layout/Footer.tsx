@@ -1,28 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import iconMark from "@/assets/logo.png";
-import {
-  site,
-  contact,
-  address,
-  nav,
-  social,
-  type NavChild,
-} from "@/config/site";
 import { getMenuItems, getSiteRegulars, getSocialGroup } from "@/lib/data";
-
-function flattenLinks(
-  children: readonly NavChild[],
-): { label: string; href: string }[] {
-  return children.flatMap((child) =>
-    child.children
-      ? flattenLinks(child.children)
-      : child.href
-        ? [{ label: child.label, href: child.href }]
-        : [],
-  );
-}
-
 
 export default async function BentoFooter() {
   const exploreLinks = await getMenuItems(2);
@@ -31,15 +9,15 @@ export default async function BentoFooter() {
   const socialLinks = await getSocialGroup(1);
 
   const logoUrl = siteRegulars?.logo_upload || "";
-  const fiscalAddress = siteRegulars?.fiscal_address || address.full;
+  const fiscalAddress = siteRegulars?.fiscal_address || "";
   const toList = (value?: string) =>
     (value ?? "")
       .split(",")
       .map((s) => s.trim())
       .filter(Boolean);
   const landlineNumbers = toList(siteRegulars?.landline_info);
-  const phoneNumbers = toList(siteRegulars?.contact_info || contact.phone);
-  const emailAddresses = toList(siteRegulars?.email_address || contact.email);
+  const phoneNumbers = toList(siteRegulars?.contact_info || "");
+  const emailAddresses = toList(siteRegulars?.email_address || "");
 
   return (
     <footer id="contact" className="p-4">

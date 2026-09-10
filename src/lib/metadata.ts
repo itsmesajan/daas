@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getSiteMetadata, getSiteRegulars, getCmsSchemaEntries } from "./data";
+import { getSiteMetadata, getSiteRegulars, getCmsSchemaEntries, findPackageCategory } from "./data";
 import { PageMetaKey } from "@/types/metadata";
 import { SITE_URL, site, contact, address, business, links } from "@/config/site";
 
@@ -106,6 +106,23 @@ export async function buildMetadata(
       ...(twOverride ?? {}),
     },
   };
+}
+
+/**
+ * Metadata for a /rooms, /dining, /events listing page: same "look up the
+ * `package` category record, let its meta_title/meta_description override
+ * the generic page defaults" logic each of those pages used to repeat.
+ */
+export async function buildCategoryListingMetadata(
+  pageKey: PageMetaKey,
+  categoryId: string,
+  pathSegment: string
+): Promise<Metadata> {
+  const category = await findPackageCategory(categoryId);
+  const overrides: Partial<Metadata> = {};
+  if (category?.meta_title) overrides.title = category.meta_title;
+  if (category?.meta_description) overrides.description = category.meta_description;
+  return buildMetadata(pageKey, overrides, pathSegment);
 }
 
 /**

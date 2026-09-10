@@ -3,6 +3,7 @@ import { MapPin } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 // import { nearbyLocations } from "@/data/hotel";
 import { fetchAPI } from "@/lib/api";
+import { getSiteRegulars } from "@/lib/data";
 
 // Sourced from Wikimedia Commons and checked against each article's own
 // infobox photo — the earlier Unsplash picks here were wrong (two showed an
@@ -26,7 +27,7 @@ const images: Record<string, string> = {
 
 export default async function Nearby() {
   const nearbyLocations = await fetchAPI<any>("nearby") || []; 
-  const siteRegulars = await fetchAPI<any>("siteRegulars") || []; 
+  const siteRegulars = await getSiteRegulars() || [];
 
   return (
     <section className="py-12 md:py-16">

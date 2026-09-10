@@ -4,9 +4,13 @@
  * read from here.
  */
 
+import { getSiteRegulars } from "@/lib/data";
+
 export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.hoteldaaas.com"
 ).replace(/\/$/, "");
+
+const siteMetadata = getSiteRegulars();
 
 export const site = {
   name: "Hotel Daaas Kathmandu",
@@ -115,6 +119,16 @@ export const CATEGORY_IDS = {
 } as const;
 
 /**
+ * CMS `article_all` ids. This endpoint's own `slug` doesn't reliably match a
+ * page's route slug (the About article's live slug is
+ * "about-hotel-daaas-kathmandu", not "about-us"), so lookups go by id
+ * instead — confirmed live 2026-09-09.
+ */
+export const ARTICLE_IDS = {
+  aboutUs: "1",
+} as const;
+
+/**
  * `services` endpoint category `type` values — confirmed live 2026-09-07.
  * Not a universal CMS convention (this numbering is admin-assigned per
  * property; manakamanahillcrest's own instance uses these two numbers the
@@ -139,32 +153,3 @@ export interface NavItem {
   href?: string;
   children?: readonly NavChild[];
 }
-
-export const nav: readonly NavItem[] = [
-  { label: "About Us", href: "/about-us" },
-  { label: "Rooms", href: "/rooms" },
-  { label: "Dining", href: "/dining" },
-  { label: "Events", href: "/events" },
-  {
-    label: "Services",
-    children: [
-      { label: "All Facilities", href: "/facilities" },
-      { label: "Sauna & Steam", href: "/service/sauna-steam" },
-      { label: "Gym", href: "/service/gym" },
-      { label: "Swimming Pool", href: "/service/swimming-pool" },
-      { label: "Jacuzzi", href: "/service/jacuzzi" },
-      { label: "Hair Salon", href: "/service/hair-salon" },
-    ],
-  },
-  { label: "Gallery", href: "/gallery" },
-  { label: "Offers", href: "/offers" },
-  {
-    label: "More",
-    children: [
-      { label: "Blog", href: "/blog" },
-      { label: "Virtual Tour", href: "/virtual-tour" },
-      { label: "FAQ", href: "/faq" },
-    ],
-  },
-  { label: "Contact", href: "/contact-us" },
-] as const;
