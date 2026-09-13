@@ -129,6 +129,12 @@ export default function HeroClient({ slideshow = [] }: HeroClientProps) {
     const videoDesc = cleanText(videoItem?.description);
     const videoCtaLink = cleanLink(videoItem?.buttonLink);
     const videoCtaText = videoItem?.text || "Explore More";
+    const hasVideoText = Boolean(
+      videoItem?.tagline ||
+        videoTitle ||
+        videoDesc ||
+        (videoCtaLink && videoCtaLink !== "#")
+    );
 
     return (
       <section id="home" className="relative w-full h-[85vh] sm:h-screen min-h-[550px] overflow-hidden bg-black text-white">
@@ -169,44 +175,48 @@ export default function HeroClient({ slideshow = [] }: HeroClientProps) {
             </video>
           ) : null}
 
-          {/* Dark Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80 z-10" />
+          {/* Dark Gradient Overlay - Only rendered if there is text content */}
+          {hasVideoText && (
+            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80 z-10" />
+          )}
 
           {/* Foreground Text Content */}
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center">
-            <div className="max-w-4xl mx-auto flex flex-col items-center">
-              {videoItem?.tagline && (
-                <span className="bento-pill mb-6 bg-black/40 border border-white/20 text-white/90 backdrop-blur-md px-4 py-1.5 text-xs sm:text-sm tracking-wide uppercase font-medium">
-                  {videoItem.tagline}
-                </span>
-              )}
+          {hasVideoText && (
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center">
+              <div className="max-w-4xl mx-auto flex flex-col items-center">
+                {videoItem?.tagline && (
+                  <span className="bento-pill mb-6 bg-black/40 border border-white/20 text-white/90 backdrop-blur-md px-4 py-1.5 text-xs sm:text-sm tracking-wide uppercase font-medium">
+                    {videoItem.tagline}
+                  </span>
+                )}
 
-              {videoTitle && (
-                <h1 className="text-white text-3xl sm:text-5xl lg:text-6xl font-light tracking-tight leading-[1.15] max-w-4xl text-balance drop-shadow-md">
-                  {videoTitle}
-                </h1>
-              )}
+                {videoTitle && (
+                  <h1 className="text-white text-3xl sm:text-5xl lg:text-6xl font-light tracking-tight leading-[1.15] max-w-4xl text-balance drop-shadow-md">
+                    {videoTitle}
+                  </h1>
+                )}
 
-              {videoDesc && (
-                <p className="mt-5 text-white/80 text-base sm:text-lg lg:text-xl font-normal max-w-2xl text-balance leading-relaxed drop-shadow">
-                  {videoDesc}
-                </p>
-              )}
+                {videoDesc && (
+                  <p className="mt-5 text-white/80 text-base sm:text-lg lg:text-xl font-normal max-w-2xl text-balance leading-relaxed drop-shadow">
+                    {videoDesc}
+                  </p>
+                )}
 
-              {videoCtaLink && videoCtaLink !== "#" && (
-                <div className="mt-8">
-                  <NavLink
-                    href={videoCtaLink}
-                    linktype={videoItem?.linktype}
-                    className="bento-btn bg-accent-orange hover:bg-amber-600 text-white shadow-lg hover:shadow-orange-500/20 px-7 py-3.5 rounded-full inline-flex items-center gap-2 transition-all duration-300 font-medium"
-                  >
-                    {videoCtaText}
-                    <ArrowUpRight className="w-4 h-4" />
-                  </NavLink>
-                </div>
-              )}
+                {videoCtaLink && videoCtaLink !== "#" && (
+                  <div className="mt-8">
+                    <NavLink
+                      href={videoCtaLink}
+                      linktype={videoItem?.linktype}
+                      className="bento-btn bg-accent-orange hover:bg-amber-600 text-white shadow-lg hover:shadow-orange-500/20 px-7 py-3.5 rounded-full inline-flex items-center gap-2 transition-all duration-300 font-medium"
+                    >
+                      {videoCtaText}
+                      <ArrowUpRight className="w-4 h-4" />
+                    </NavLink>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Interactive Controls */}
           <div className="absolute bottom-8 right-6 sm:right-10 z-30 flex items-center gap-3">
