@@ -68,6 +68,10 @@ export async function fetchAPI<T>(endpoint: string, slug?: string): Promise<T | 
       },
     });
 
+    if (res.status === 404) {
+      return null;
+    }
+
     if (!res.ok) {
       throw new Error(`API Error: ${endpoint} (Status: ${res.status})`);
     }
