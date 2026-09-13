@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 import NavLink from "./NavLink";
+import MobileMenu from "./MobileMenu";
 import { SITE_FALLBACK } from "@/config/site";
 import { NavbarClientProps, NavItem } from "@/types";
 
@@ -85,11 +86,11 @@ export default function BentoNavbar({ site, menu, phone, phoneE164, bookingUrl }
   }
 
   return (
-    <header className="fixed top-4 left-0 right-0 z-50 px-4">
-      <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto bento-card px-5 md:px-7 h-16 flex items-center justify-between">
+    <header className="fixed top-2 sm:top-4 left-0 right-0 z-50 px-3 sm:px-4">
+      <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto bento-card px-4 sm:px-5 md:px-7 h-16 flex items-center gap-2 justify-between [&:hover]:transform-none">
         <Link
           href="/"
-          className="flex items-center gap-2.5"
+          className="flex items-center shrink-0 min-w-0"
           onClick={() => setOpen(false)}
         >
           {site?.logo_upload && (
@@ -98,7 +99,7 @@ export default function BentoNavbar({ site, menu, phone, phoneE164, bookingUrl }
               alt={site?.sitename || "Logo"}
               width={1500}
               height={1500}
-              className="w-60 h-auto"
+              className="w-[160px] sm:w-[300px] lg:w-[240px] h-auto max-h-10 sm:max-h-12 object-contain object-left"
               priority
             />
           )}
@@ -106,7 +107,7 @@ export default function BentoNavbar({ site, menu, phone, phoneE164, bookingUrl }
 
         <nav
           ref={desktopNavRef}
-          className="hidden lg:flex items-center gap-0.5"
+          className="hidden lg:flex items-center gap-0.5 min-w-0"
         >
           {menu &&
             menu.map((item) => {
@@ -247,124 +248,18 @@ export default function BentoNavbar({ site, menu, phone, phoneE164, bookingUrl }
           type="button"
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((v) => !v)}
-          className="lg:hidden text-bento-ink"
+          className="lg:hidden text-bento-ink p-2 rounded-xl hover:bg-black/5 active:bg-black/10 transition-colors cursor-pointer flex items-center justify-center shrink-0"
         >
-          {open ? <X size={20} /> : <Menu size={20} />}
+          {open ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
-      {open && (
-        <div className="lg:hidden max-w-[1200px] 2xl:max-w-[1440px] mx-auto bento-card mt-3 px-6 py-6 flex flex-col gap-4 max-h-[calc(100vh-7rem)] overflow-y-auto">
-          {menu && menu.map((item) => {
-            const active = isGroupActive(pathname, item);
-
-            if (item.subLinks && item.subLinks.length > 0) {
-              const isGroupOpen = openGroups.has(item.title);
-              return (
-                <div key={item.id}>
-                  <button
-                    type="button"
-                    onClick={() => toggleGroup(item.title)}
-                    aria-expanded={isGroupOpen}
-                    className={`w-full flex items-center justify-between text-sm font-medium ${
-                      active ? "text-accent-orange" : "text-bento-ink"
-                    }`}
-                  >
-                    {item.title}
-                    <ChevronDown
-                      size={16}
-                      className={`transition-transform duration-200 ${isGroupOpen ? "rotate-180" : ""}`}
-                    />
-                  </button>
-                  {isGroupOpen && (
-                    <div className="mt-3 pl-4 flex flex-col gap-3 border-l border-white/70">
-                      {item.subLinks.map((child) => {
-                        if (child.subLinks && child.subLinks.length > 0) {
-                          const isSubOpen = openGroups.has(child.title);
-                          const subActive = isChildActive(pathname, child);
-                          return (
-                            <div key={child.id}>
-                              <button
-                                type="button"
-                                onClick={() => toggleGroup(child.title)}
-                                aria-expanded={isSubOpen}
-                                className={`w-full flex items-center justify-between text-sm ${
-                                  subActive
-                                    ? "text-accent-orange"
-                                    : "text-bento-ink-soft"
-                                }`}
-                              >
-                                {child.title}
-                                <ChevronDown
-                                  size={14}
-                                  className={`transition-transform duration-200 ${isSubOpen ? "rotate-180" : ""}`}
-                                />
-                              </button>
-                              {isSubOpen && (
-                                <div className="mt-3 pl-4 flex flex-col gap-3 border-l border-white/50">
-                                  {child.subLinks.map((grandchild) => (
-                                    <NavLink
-                                      key={grandchild.id}
-                                      href={grandchild.link.replace(/\/\/+/g, '/')}
-                                      linktype={grandchild.linktype}
-                                      onClick={() => setOpen(false)}
-                                      className={`text-sm ${
-                                        isActivePath(pathname, grandchild.link)
-                                          ? "text-accent-orange"
-                                          : "text-bento-ink-soft"
-                                      }`}
-                                    >
-                                      {grandchild.title}
-                                    </NavLink>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        }
-
-                        return (
-                          <NavLink
-                            key={child.id}
-                            href={child.link.replace(/\/\/+/g, '/')}
-                            linktype={child.linktype}
-                            onClick={() => setOpen(false)}
-                            className={`text-sm ${
-                              isActivePath(pathname, child.link)
-                                ? "text-accent-orange"
-                                : "text-bento-ink-soft"
-                            }`}
-                          >
-                            {child.title}
-                          </NavLink>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            }
-
-            return (
-              <NavLink
-                key={item.id}
-                href={item.link.replace(/\/\/+/g, '/')}
-                linktype={item.linktype}
-                onClick={() => setOpen(false)}
-                className={`text-sm font-medium ${active ? "text-accent-orange" : "text-bento-ink"}`}
-              >
-                {item.title}
-              </NavLink>
-            );
-          })}
-          <a
-            href={`tel:${(phoneE164 || SITE_FALLBACK.phoneE164).trim()}`}
-            className="text-sm text-bento-ink-soft"
-          >
-            {phone || SITE_FALLBACK.phone}
-          </a>
-        </div>
-      )}
+      <MobileMenu
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        menu={menu}
+        bookingUrl={bookingUrl}
+      />
     </header>
   );
 }

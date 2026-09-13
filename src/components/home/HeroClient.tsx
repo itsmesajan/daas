@@ -269,7 +269,7 @@ export default function HeroClient({ slideshow = [] }: HeroClientProps) {
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4 relative">
         <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_1fr] gap-5 items-stretch lg:h-[520px]">
           {/* Big Text Bento Card */}
-          <Reveal className="h-[380px] sm:h-[420px] lg:h-full">
+          <Reveal className="h-[340px] sm:h-[420px] lg:h-full">
             <div className="bento-card h-full p-6 sm:p-8 md:p-12 flex flex-col justify-center overflow-hidden">
               <span className="bento-pill w-fit mb-4 sm:mb-6 shrink-0">
                 {currentTagline}
@@ -303,7 +303,7 @@ export default function HeroClient({ slideshow = [] }: HeroClientProps) {
           </Reveal>
 
           {/* Media Slider Bento Card */}
-          <div className="bento-card overflow-hidden relative h-full group">
+          <div className="bento-card overflow-hidden relative h-[280px] sm:h-[340px] lg:h-full group">
             <Swiper
               modules={[Autoplay, EffectFade, Navigation]}
               effect="fade"

@@ -122,7 +122,7 @@ export default function FloatingButtons({ whatsappNumber, bookingUrl }: Floating
       variants={listVariants}
       initial={reduceMotion ? "visible" : "hidden"}
       animate="visible"
-      className="fixed right-4 md:right-6 bottom-6 z-50 flex flex-col items-center gap-3"
+      className="fixed right-4 md:right-6 bottom-24 lg:bottom-6 z-50 flex flex-col items-center gap-3"
     >
       {/* 360° Virtual Tour */}
       <motion.div variants={itemVariants}>

@@ -21,7 +21,7 @@ export default async function BentoFooter() {
   const emailAddresses = toList(siteRegulars?.email_address || "");
 
   return (
-    <footer id="contact" className="p-4">
+    <footer id="contact" className="p-4 pb-20 lg:pb-4">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-6 md:px-10 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.85fr_0.85fr_1fr] gap-10 pb-10">
           <div>

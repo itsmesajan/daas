@@ -44,7 +44,7 @@ export default function HallCarousel({ venues }: { venues: Package[] }) {
         {/* Split layout */}
         <Reveal delay={80}>
           <div
-            className="bento-card overflow-hidden grid grid-cols-1 md:grid-cols-[1fr_420px] min-h-[540px]"
+            className="bento-card overflow-hidden grid grid-cols-1 md:grid-cols-[1fr_min(420px,40%)] min-h-[540px]"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
           >
