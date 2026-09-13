@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getMenuItems, getSiteRegulars, getSocialGroup } from "@/lib/data";
-import { site } from "@/config/site";
+import { SITE_FALLBACK } from "@/config/site";
 
 export default async function BentoFooter() {
   const exploreLinks = await getMenuItems(2);
@@ -184,7 +184,7 @@ export default async function BentoFooter() {
 
         <div className="pt-6 border-t border-white/70 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs text-bento-ink-soft">
           <p>
-            &copy; {new Date().getFullYear()} {siteRegulars?.sitename || site.name}. All rights reserved.
+            &copy; {new Date().getFullYear()} {siteRegulars?.sitename || SITE_FALLBACK.name}. All rights reserved.
           </p>
           <p>
             Developed by{" "}

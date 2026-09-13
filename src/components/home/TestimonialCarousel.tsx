@@ -1,65 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
 import { ChevronLeft, ChevronRight, MessageCircle, Quote, Star } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import type { TestimonialEntry } from "@/types";
-import booking from "@/assets/OTA/booking.jpg";
-import tripadvisor from "@/assets/OTA/tripadvisor.jpg";
 
 const AUTOPLAY_MS = 6000;
-
-// Curated local logos for the platforms most reviews come through — used
-// when a live entry's own `via` matches one of these but has no `image` of
-// its own. A CMS-supplied `item.image` is always checked first, in
-// resolveSource() below, so any other platform still gets its real badge.
-const sourceMeta: Record<string, { label: string; logo: ReactNode }> = {
-  google: {
-    label: "Google",
-    logo: <i className="fa-brands fa-google text-[#4285F4] text-sm" aria-hidden="true" />,
-  },
-  booking: {
-    label: "Booking.com",
-    logo: (
-      <span className="relative block h-4 w-4">
-        <Image src={booking} alt="" fill sizes="16px" className="rounded-sm object-contain" />
-      </span>
-    ),
-  },
-  tripadvisor: {
-    label: "Tripadvisor",
-    logo: (
-      <span className="relative block h-4 w-4">
-        <Image src={tripadvisor} alt="" fill sizes="16px" className="rounded-sm object-contain" />
-      </span>
-    ),
-  },
-};
-
-function capitalize(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
-function resolveSource(item: TestimonialItem): { label: string; logo: ReactNode } {
-  const known = item.via ? sourceMeta[item.via.toLowerCase()] : undefined;
-  if (item.image) {
-    return {
-      label: known?.label ?? (item.via ? capitalize(item.via) : "Guest"),
-      logo: (
-        <span className="relative block h-4 w-4">
-          <Image src={item.image} alt="" fill sizes="16px" className="rounded-sm object-contain" unoptimized />
-        </span>
-      ),
-    };
-  }
-  if (known) return known;
-  return {
-    label: item.via ? capitalize(item.via) : "Guest",
-    logo: <MessageCircle size={14} className="text-bento-ink-soft" />,
-  };
-}
 
 const slideVariants: Variants = {
   enter: (direction: number) => ({ opacity: 0, x: direction >= 0 ? 32 : -32 }),
@@ -83,8 +31,10 @@ export default function TestimonialCarousel({ items }: { items: TestimonialItem[
     return () => clearInterval(id);
   }, [paused, reduceMotion, total, go]);
 
+  if (!items || items.length === 0) return null;
+
   const active = items[index];
-  const activeSource = resolveSource(active);
+  const rating = active.rating && active.rating > 0 ? active.rating : 5;
 
   return (
     <section className="py-12 md:py-16">
@@ -103,11 +53,11 @@ export default function TestimonialCarousel({ items }: { items: TestimonialItem[
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
           >
-            {/* Ambient color so the glass card has something to refract */}
+            {/* Ambient color glow */}
             <div className="bento-glow-orange w-56 h-56 -top-12 -left-12 opacity-25" aria-hidden="true" />
             <div className="bento-glow-blue w-56 h-56 -bottom-12 -right-12 opacity-20" aria-hidden="true" />
 
-            {/* Glass quote badge, floating above the card edge */}
+            {/* Glass quote badge */}
             <div
               aria-hidden="true"
               className="absolute -top-6 left-1/2 z-20 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full border border-white/80 bg-white/70 shadow-[0_10px_24px_-10px_rgba(16,24,40,0.35),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md backdrop-saturate-150"
@@ -140,26 +90,42 @@ export default function TestimonialCarousel({ items }: { items: TestimonialItem[
                         key={i}
                         size={16}
                         className={
-                          i < active.rating ? "fill-accent-orange text-accent-orange" : "text-bento-ink-soft/30"
+                          i < rating ? "fill-accent-orange text-accent-orange" : "text-bento-ink-soft/30"
                         }
                       />
                     ))}
                   </div>
+
                   <p className="font-display italic text-lg md:text-xl leading-relaxed text-bento-ink max-w-xl h-28 md:h-32 overflow-y-auto px-1">
                     &ldquo;{active.quote}&rdquo;
                   </p>
+
                   <div className="flex items-center justify-center gap-2.5">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/70 bg-white/50 backdrop-blur-sm">
-                      {activeSource.logo}
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/70 bg-white/50 backdrop-blur-sm overflow-hidden p-1">
+                      {active.image ? (
+                        <Image
+                          src={active.image}
+                          alt={active.via || active.name || "Review source"}
+                          width={36}
+                          height={36}
+                          className="object-contain w-full h-full rounded-full"
+                          unoptimized
+                        />
+                      ) : (
+                        <MessageCircle size={14} className="text-bento-ink-soft" />
+                      )}
                     </span>
                     <div className="text-left">
                       <p className="text-sm font-semibold text-bento-ink">
-                        {active.name || `via ${activeSource.label}`}
+                        {active.name || (active.via ? `Review via ${active.via}` : "Guest Review")}
                       </p>
-                      <p className="text-xs text-bento-ink-soft mt-0.5">
-                        {active.role}
-                        {active.name && ` · via ${activeSource.label}`}
-                      </p>
+                      {(active.role || active.via) && (
+                        <p className="text-xs text-bento-ink-soft mt-0.5">
+                          {active.role}
+                          {active.role && active.via ? " · " : ""}
+                          {active.via ? `via ${active.via}` : ""}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </motion.div>

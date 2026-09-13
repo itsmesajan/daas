@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Poppins } from "next/font/google";
 import { MotionConfig } from "framer-motion";
-import { site, SITE_URL } from "@/config/site";
+import { SITE_URL, SITE_FALLBACK } from "@/config/site";
+import { getSiteRegulars } from "@/lib/data";
 import FloatingButtons from "@/components/ui/Floating";
 import "./globals.css";
 
@@ -26,23 +27,27 @@ const bookman = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: site.title,
-  description: site.description,
+  title: SITE_FALLBACK.title,
+  description: SITE_FALLBACK.description,
   openGraph: {
-    title: site.title,
-    description: site.description,
-    siteName: site.name,
+    title: SITE_FALLBACK.title,
+    description: SITE_FALLBACK.description,
+    siteName: SITE_FALLBACK.name,
     type: "website",
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteRegulars = await getSiteRegulars();
+  const whatsapp = siteRegulars?.whatsapp_a || SITE_FALLBACK.whatsapp;
+  const bookingUrl = siteRegulars?.booking_code || SITE_FALLBACK.bookingUrl;
+
   return (
-    <html lang={site.locale} className={`${poppins.variable} ${bookman.variable}`} suppressHydrationWarning>
+    <html lang={SITE_FALLBACK.locale} className={`${poppins.variable} ${bookman.variable}`} suppressHydrationWarning>
       <body className="min-h-screen flex flex-col font-sans">
         <link
           rel="stylesheet"
@@ -67,7 +72,7 @@ export default function RootLayout({
             <span className="w-[24rem] h-[24rem] bg-accent-blue opacity-20 -bottom-24 -right-10" />
           </div>
           {children}
-          <FloatingButtons />
+          <FloatingButtons whatsappNumber={whatsapp} bookingUrl={bookingUrl} />
         </MotionConfig>
       </body>
     </html>

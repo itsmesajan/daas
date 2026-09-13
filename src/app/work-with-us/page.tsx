@@ -3,10 +3,12 @@ import UnderConstructionShell from "@/components/ui/UnderConstructionShell";
 import CareerIntro from "@/components/careers/CareerIntro";
 import CareerForm from "@/components/careers/CareerForm";
 import { getSiteRegulars } from "@/lib/data";
-import { site } from "@/config/site";
+import { SITE_FALLBACK } from "@/config/site";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: `Work With Us | ${site.shortName}` };
+  const siteRegulars = await getSiteRegulars();
+  const shortName = siteRegulars?.sitename || SITE_FALLBACK.shortName;
+  return { title: `Work With Us | ${shortName}` };
 }
 
 export default async function WorkWithUsPage() {

@@ -15,7 +15,7 @@ import ImageGallery from "@/components/ui/ImageGallery";
 import { buildMetadata } from "@/lib/metadata";
 import { findArticleById, getPackageCategories } from "@/lib/data";
 import { resolveHeroImages } from "@/lib/images";
-import { site, address, business, links, ARTICLE_IDS } from "@/config/site";
+import { address, business, ARTICLE_IDS, SITE_FALLBACK } from "@/config/site";
 import { banquetSpaces, roomCategories, diningVenues } from "@/data/hotel";
 import imgExterior1 from "@/assets/exterior1.jpg";
 import { fetchAPI } from "@/lib/api";
@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const about = await findArticleById(ARTICLE_IDS.aboutUs);
   return buildMetadata(
     "about",
-    { title: about.meta_title || `About Us | ${site.name}`, description: about.meta_description || site.description },
+    { title: about.meta_title, description: about.meta_description },
     "/about-us"
   );
 }
@@ -253,7 +253,7 @@ const offerings = packages.map((item:any) => ({
               Opening November 2026 in Balaju, Kathmandu — get in touch to learn more or plan your stay.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <Link href={links.booking} className="bento-btn shadow-lg shadow-bento-ink/20">
+              <Link href={SITE_FALLBACK.bookingUrl} className="bento-btn shadow-lg shadow-bento-ink/20">
                 Get in Touch
                 <ArrowUpRight size={16} />
               </Link>

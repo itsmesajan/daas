@@ -7,17 +7,11 @@ import expedia from "@/assets/OTA/expedia.jpg";
 import makemytrip from "@/assets/OTA/makemytrip.jpg";
 import goibibo from "@/assets/OTA/goibibio.jpg";
 import tripadvisor from "@/assets/OTA/tripadvisor.jpg";
+import { getSocialGroup } from "@/lib/data";
 
-const otas = [
-  { name: "Booking.com", logo: booking },
-  { name: "Agoda", logo: agoda },
-  { name: "Expedia", logo: expedia },
-  { name: "MakeMyTrip", logo: makemytrip },
-  { name: "Goibibo", logo: goibibo },
-  { name: "TripAdvisor", logo: tripadvisor },
-];
 
-export default function OtaPartners() {
+export default async function OtaPartners() {
+  const otas = await getSocialGroup(2);
   return (
     <section className="py-10 md:py-12">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
@@ -41,11 +35,28 @@ export default function OtaPartners() {
 
             {/* Flat OTA logo row */}
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-7 gap-y-4">
-              {otas.map((ota) => (
-                <div key={ota.name} className="relative w-10 h-10 md:w-11 md:h-11 shrink-0">
-                  <Image src={ota.logo} alt={ota.name} fill sizes="44px" className="object-cover rounded-xl" />
-                </div>
-              ))}
+              {otas?.items?.map((item: any, index: number) => (
+                    <a
+                      key={index}
+                      href={item?.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={item?.title || "Social media link"}
+                      className="relative w-10 h-10 md:w-11 md:h-11 shrink-0"
+                    >
+                      {item?.image ? (
+                        <Image
+                          src={item?.image}
+                          alt={item?.title}
+                          width={100}
+                          height={100}
+                          className="object-contain w-full h-full"
+                        />
+                      ) : (
+                        <i className={item?.icon}></i>
+                      )}
+                    </a>
+                  ))}
             </div>
           </div>
         </Reveal>

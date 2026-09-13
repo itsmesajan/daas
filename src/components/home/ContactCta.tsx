@@ -1,8 +1,11 @@
 import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
-import { contact } from "@/config/site";
+import { getSiteRegulars } from "@/lib/data";
+import { SITE_FALLBACK } from "@/config/site";
 
-export default function ContactCta() {
+export default async function ContactCta() {
+  const siteRegulars = await getSiteRegulars();
+  const phone = siteRegulars?.contact_info || SITE_FALLBACK.phone;
   return (
     <section className="py-12 md:py-16">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
@@ -23,8 +26,8 @@ export default function ContactCta() {
                 <Link href="/contact-us" className="bento-btn">
                   Send a Message
                 </Link>
-                <a href={`tel:${contact.phoneE164}`} className="bento-btn-ghost">
-                  {contact.phone}
+                <a href={`tel:${phone}`} className="bento-btn-ghost">
+                  {phone}
                 </a>
               </div>
             </div>

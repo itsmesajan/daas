@@ -4,17 +4,20 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CalendarCheck } from "lucide-react";
 import DateField from "@/components/ui/DateField";
-import { links } from "@/config/site";
+import { SITE_FALLBACK } from "@/config/site";
 
-export default function BookingWidget() {
+interface BookingWidgetProps {
+  bookingUrl?: string;
+}
+
+export default function BookingWidget({ bookingUrl }: BookingWidgetProps) {
   const router = useRouter();
   const [checkIn, setCheckIn] = useState<Date | undefined>();
   const [checkOut, setCheckOut] = useState<Date | undefined>();
   const [error, setError] = useState<string | null>(null);
 
-  // No booking engine exists yet (links.booking points at the contact page) —
-  // the picked dates aren't sent anywhere, matching how the reference
-  // BookingWidget only opens `bookUrl` as-is without appending them either.
+  const resolvedUrl = bookingUrl || SITE_FALLBACK.bookingUrl;
+
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!checkIn || !checkOut) {
@@ -22,7 +25,7 @@ export default function BookingWidget() {
       return;
     }
     setError(null);
-    router.push(links.booking);
+    router.push(resolvedUrl);
   };
 
   return (

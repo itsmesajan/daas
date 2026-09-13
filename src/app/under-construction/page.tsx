@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import UnderConstructionShell from "@/components/ui/UnderConstructionShell";
-import { site } from "@/config/site";
+import { SITE_FALLBACK } from "@/config/site";
 import { getMenuItems, getSiteRegulars } from "@/lib/data";
 
 // Only ever reached via the proxy rewrite in src/proxy.ts while the CMS
@@ -17,7 +17,7 @@ export default async function UnderConstructionPage() {
   // reachable.
   const [siteRegulars, quickLinks] = await Promise.all([getSiteRegulars(), getMenuItems(0)]);
 
-  const siteName = siteRegulars?.sitename || site.name;
+  const siteName = siteRegulars?.sitename || SITE_FALLBACK.name;
   const message =
     siteRegulars?.constrcution_content ||
     "We're putting the finishing touches on Hotel Daaas Kathmandu — check back soon.";

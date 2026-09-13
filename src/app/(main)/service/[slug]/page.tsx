@@ -4,11 +4,11 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Phone } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import ImageGallery from "@/components/ui/ImageGallery";
-import AmenitiesGroups from "@/components/ui/AmenitiesGroups";
 import { buildMetadata } from "@/lib/metadata";
-import { findServiceBySlug } from "@/lib/data";
+import { getSiteRegulars, findServiceBySlug } from "@/lib/data";
 import { resolveHeroImages } from "@/lib/images";
-import { SITE_URL, contact } from "@/config/site";
+import { SITE_URL, SITE_FALLBACK } from "@/config/site";
+import imgExterior1 from "@/assets/exterior1.jpg";
 
 export async function generateMetadata({
   params,
@@ -34,10 +34,17 @@ export default async function ServiceDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const service = await findServiceBySlug(slug);
+  const [service, siteRegulars] = await Promise.all([
+    findServiceBySlug(slug),
+    getSiteRegulars(),
+  ]);
   if (!service) notFound();
 
-  const images = resolveHeroImages(service, service.fb_img);
+  const phone = siteRegulars?.contact_info || SITE_FALLBACK.phone;
+
+  const galleryImg = service?.gallery_images?.[0]?.src;
+
+  const images = resolveHeroImages(service, galleryImg || service.fb_img || imgExterior1.src);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -71,18 +78,17 @@ export default async function ServiceDetailPage({
           <Reveal delay={100} className="bento-card p-6 md:p-8 flex flex-col">
             <h1 className="bento-title text-3xl md:text-4xl mb-4">{service.title}</h1>
 
-            {service.description && (
+            {service.content_1 && (
               <div
-                className="text-bento-ink-soft text-sm leading-relaxed mb-6 max-w-2xl"
-                dangerouslySetInnerHTML={{ __html: service.description }}
+                className="text-bento-ink-soft text-sm leading-relaxed mb-6 max-w-6xl"
+                dangerouslySetInnerHTML={{ __html: service.content_1 }}
               />
             )}
+            {/* {service.amenities && service.amenities.length > 0 && <AmenitiesGroups groups={service.amenities} />} */}
 
-            {service.amenities && service.amenities.length > 0 && <AmenitiesGroups groups={service.amenities} />}
-
-            <a href={`tel:${contact.phoneE164}`} className="bento-btn w-fit">
+            <a href={`tel:${phone}`} className="bento-btn w-fit">
               <Phone size={14} />
-              {contact.phone}
+              {phone}
             </a>
             <Link href="/contact-us" className="bento-link w-fit mt-4">
               Or send us a message

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { getSiteMetadata, getSiteRegulars, getCmsSchemaEntries, findPackageCategory } from "./data";
 import { PageMetaKey } from "@/types/metadata";
-import { SITE_URL, site, contact, address, business, links } from "@/config/site";
+import { SITE_URL, SITE_FALLBACK, SCHEMA_TYPES, business, address } from "@/config/site";
 
 /**
  * Builds a complete Next.js `Metadata` object for any page.
@@ -23,30 +23,26 @@ export async function buildMetadata(
   overrides: Partial<Metadata> = {},
   pathSegment: string = ""
 ): Promise<Metadata> {
-  const meta = await getSiteMetadata();
+  const [meta, siteRegulars] = await Promise.all([
+    getSiteMetadata(),
+    getSiteRegulars().catch(() => null),
+  ]);
 
   let faviconUrl = "/logo.png";
-  try {
-    const siteRegulars = await getSiteRegulars();
-    const favIcon = siteRegulars?.fav_icon;
-    const logoUpload = siteRegulars?.logo_upload;
-    if (typeof favIcon === "string" && favIcon) {
-      faviconUrl = favIcon;
-    } else if (typeof logoUpload === "string" && logoUpload) {
-      faviconUrl = logoUpload;
-    }
-  } catch {
-    // noop
+  if (siteRegulars?.fav_icon) {
+    faviconUrl = siteRegulars.fav_icon;
+  } else if (siteRegulars?.logo_upload) {
+    faviconUrl = siteRegulars.logo_upload;
   }
 
   // Resolve the per-page meta block
   const pageMeta = pageKey === "home" ? meta.home_meta : (meta.pages_meta ?? {})[pageKey];
 
-  const title = pageMeta?.meta_title ?? meta.site?.title ?? site.title;
+  const title = pageMeta?.meta_title ?? meta.site?.title ?? siteRegulars?.sitetitle ?? SITE_FALLBACK.title;
 
-  const description = pageMeta?.meta_description ?? meta.site?.title ?? site.description;
+  const description = pageMeta?.meta_description ?? meta.site?.title ?? siteRegulars?.sitetitle ?? SITE_FALLBACK.description;
 
-  const keywords = pageMeta?.meta_keywords ?? site.keywords;
+  const keywords = pageMeta?.meta_keywords ?? SITE_FALLBACK.keywords;
 
   const ogImage = meta.social?.fb_img ?? meta.social?.x_img ?? "";
   const ogType = (meta.social?.og_type as "website" | "article") ?? "website";
@@ -80,7 +76,7 @@ export async function buildMetadata(
       description,
       type: ogType,
       ...(canonical && { url: canonical }),
-      siteName: meta.site?.name ?? site.name,
+      siteName: meta.site?.name ?? siteRegulars?.sitename ?? SITE_FALLBACK.name,
       ...(ogImage && { images: [{ url: ogImage }] }),
     },
     twitter: {
@@ -130,18 +126,21 @@ export async function buildCategoryListingMetadata(
  * metadata. Used once in the root layout.
  */
 export async function buildOrganizationSchema(): Promise<Record<string, unknown>[]> {
-  const meta = await getSiteMetadata();
+  const [meta, siteRegulars] = await Promise.all([
+    getSiteMetadata(),
+    getSiteRegulars().catch(() => null),
+  ]);
   const ogImage = meta.social?.fb_img ?? meta.social?.x_img ?? "";
 
   const organization: Record<string, unknown> = {
     "@context": "https://schema.org",
-    "@type": [...site.schemaType],
-    name: meta.site?.name ?? site.name,
-    alternateName: site.shortName,
+    "@type": [...SCHEMA_TYPES],
+    name: meta.site?.name ?? siteRegulars?.sitename ?? SITE_FALLBACK.name,
+    alternateName: siteRegulars?.sitename ?? SITE_FALLBACK.shortName,
     url: SITE_URL,
-    description: meta.home_meta?.meta_description ?? site.description,
-    telephone: contact.phone,
-    email: contact.email,
+    description: meta.home_meta?.meta_description ?? siteRegulars?.sitetitle ?? SITE_FALLBACK.description,
+    telephone: siteRegulars?.contact_info ?? SITE_FALLBACK.phone,
+    email: siteRegulars?.email_address ?? SITE_FALLBACK.email,
     priceRange: business.priceRange,
     starRating: { "@type": "Rating", ratingValue: String(business.starRating) },
     // Only emit aggregateRating when real, on-page-verifiable numbers are set.
@@ -172,7 +171,7 @@ export async function buildOrganizationSchema(): Promise<Record<string, unknown>
     })),
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: contact.phone,
+      telephone: siteRegulars?.contact_info ?? SITE_FALLBACK.phone,
       contactType: "reservations",
       availableLanguage: business.languages,
     },
@@ -183,7 +182,7 @@ export async function buildOrganizationSchema(): Promise<Record<string, unknown>
       closes: "23:59",
     },
     ...(ogImage && { image: ogImage }),
-    sameAs: links.social,
+    sameAs: [],
   };
 
   // No site search exists yet, so no WebSite.potentialAction/SearchAction —
@@ -191,7 +190,7 @@ export async function buildOrganizationSchema(): Promise<Record<string, unknown>
   const webSite: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: meta.site?.name ?? site.name,
+    name: meta.site?.name ?? siteRegulars?.sitename ?? SITE_FALLBACK.name,
     url: SITE_URL,
   };
 

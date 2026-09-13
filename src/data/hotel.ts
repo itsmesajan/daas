@@ -140,6 +140,50 @@ export const wellnessFacilities = [
   { name: "Hair Salon", detail: "In-house salon services" },
 ] as const;
 
+// LOCAL FALLBACK for the homepage wellness tabs — getWellnessTabs() in
+// lib/data.ts merges these with the live CMS `services` (type 2 = facility)
+// entries by slug, live always wins. No images here: the CMS has no photo
+// field for these entries, and these slugs' photos in WellnessTabs.tsx are
+// stock placeholders, not real property photos — same reason the gallery
+// excludes src/assets/placeholders/ entirely.
+export const wellnessTabs = [
+  {
+    slug: "sauna-steam",
+    label: "Sauna & Steam",
+    title: "Sauna & Steam",
+    desc: "Unwind and restore balance with our jacuzzi, sauna and steam room — a dedicated wellness floor built for slowing down.",
+    highlights: ["Jacuzzi", "Sauna Room", "Steam Room", "Wellness Floor"],
+  },
+  {
+    slug: "gym",
+    label: "Fitness",
+    title: "Gym",
+    desc: "A fully equipped gym open daily for guests, whatever your training routine looks like while you're away from home.",
+    highlights: ["Cardio Machines", "Free Weights", "Open Daily", "Expert Staff"],
+  },
+  {
+    slug: "swimming-pool",
+    label: "Swimming",
+    title: "Swimming Pool",
+    desc: "Relax and unwind at our swimming pool, set above the Kathmandu skyline for a swim with a view.",
+    highlights: ["Skyline Views", "Heated Pool", "Towel Service", "Sunbeds"],
+  },
+  {
+    slug: "jacuzzi",
+    label: "Jacuzzi",
+    title: "Jacuzzi",
+    desc: "Soak away the day in our private jacuzzi — warm, relaxing, and perfectly secluded.",
+    highlights: ["Hydrotherapy", "Private Bay", "Heated Jets", "Towel Service"],
+  },
+  {
+    slug: "hair-salon",
+    label: "Hair Salon",
+    title: "Hair Salon",
+    desc: "Look and feel your best with professional in-house salon services tailored to your style.",
+    highlights: ["Cuts & Styling", "Color Services", "Treatments", "By Appointment"],
+  },
+] as const;
+
 export const guestServices = [
   "24-Hour Room Service",
   "Doctor on Call",

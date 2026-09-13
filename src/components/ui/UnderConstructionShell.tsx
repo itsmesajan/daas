@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { site } from "@/config/site";
+import { SITE_FALLBACK } from "@/config/site";
 import { getSiteRegulars, getSocialGroup } from "@/lib/data";
 
 /**
@@ -13,7 +13,7 @@ export default async function UnderConstructionShell({ children }: { children: R
   const [siteRegulars, socialLinks] = await Promise.all([getSiteRegulars(), getSocialGroup(1)]);
 
   const logoUrl = siteRegulars?.logo_upload || "";
-  const siteName = siteRegulars?.sitename || site.name;
+  const siteName = siteRegulars?.sitename || SITE_FALLBACK.name;
 
   return (
     <div className="min-h-screen flex flex-col bento-bg">

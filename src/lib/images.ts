@@ -28,5 +28,14 @@ export function resolveHeroImages(
 /** Strips tags from a CMS rich-text field (e.g. `Package.description`) for plain-text display, like a card teaser. */
 export function htmlToPlainText(html?: string): string {
   if (!html) return "";
-  return html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  return html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }

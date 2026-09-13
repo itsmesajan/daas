@@ -76,11 +76,7 @@ export default async function EventDetailPage({
       </span>
       <span className="flex items-center gap-1.5 bento-pill !py-1.5">
         <Users size={11} className="text-accent-orange" />
-        {space.occupancy}
-      </span>
-      <span className="flex items-center gap-1.5 bento-pill !py-1.5">
-        <Tag size={11} className="text-accent-orange" />
-        {space.rooms_Size}
+        {space.cover}
       </span>
     </div>
   );

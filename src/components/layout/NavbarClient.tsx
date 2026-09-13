@@ -6,10 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 import NavLink from "./NavLink";
-import {
-  contact,
-  links,
-} from "@/config/site";
+import { SITE_FALLBACK } from "@/config/site";
 import { NavbarClientProps, NavItem } from "@/types";
 
 /** In-page anchors (e.g. "/#wellness") never match a real pathname. */
@@ -34,7 +31,7 @@ function isGroupActive(pathname: string, item: NavItem): boolean {
 
 
 
-export default function BentoNavbar({ site, menu }: NavbarClientProps) {
+export default function BentoNavbar({ site, menu, phone, phoneE164, bookingUrl }: NavbarClientProps) {
   const [open, setOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
@@ -240,7 +237,7 @@ export default function BentoNavbar({ site, menu }: NavbarClientProps) {
         </nav>
 
         <Link
-          href={links.booking}
+          href={bookingUrl || SITE_FALLBACK.bookingUrl}
           className="hidden lg:inline-flex  py-3 px-5 text-sm rounded-full text-white bg-[#1176bb]"
         >
           Book Now
@@ -361,10 +358,10 @@ export default function BentoNavbar({ site, menu }: NavbarClientProps) {
             );
           })}
           <a
-            href={`tel:${contact.phoneE164}`}
+            href={`tel:${(phoneE164 || SITE_FALLBACK.phoneE164).trim()}`}
             className="text-sm text-bento-ink-soft"
           >
-            {contact.phone}
+            {phone || SITE_FALLBACK.phone}
           </a>
         </div>
       )}

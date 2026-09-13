@@ -46,6 +46,8 @@ export interface Package {
   /** Social-share image. */
   fb_img?: string;
   img: ImageItem[];
+  icon?: string;
+  image?: string;
   /** Preferred photo set for the hero/gallery when present — see resolveHeroImages(). */
   gallery_images?: ImageItem[];
   /** Rich HTML — may embed its own inclusions/check-in/check-out sub-sections. */
@@ -139,6 +141,15 @@ export interface GalleryImageEntry {
 export interface FaqItemEntry {
   question: string;
   answer: string;
+}
+
+/** Homepage wellness-tab entry (CMS `services` type 2 = facility). `contentHtml` is the CMS's `content_0` rich block (desc paragraph + highlights list) rendered as-is — no separate desc/highlights fields exist on the live item. */
+export interface WellnessTabItem {
+  slug: string;
+  title: string;
+  label: string;
+  contentHtml: string;
+  image?: string;
 }
 
 export interface BlogPost {
@@ -269,6 +280,28 @@ export interface OfferItem {
 
 export interface NavbarClientProps {
   menu: NavItem[];
-  logoUrl?: string;
-  site:any;
+  site: any;
+  /** CMS contact_info phone number for the mobile menu tel: link. */
+  phone?: string;
+  phoneE164?: string;
+  /** Booking engine URL from siteregulars.booking_code. */
+  bookingUrl?: string;
 }
+
+export interface SlideItem {
+  title?: string;
+  src: string;
+  description?: string;
+  buttonLink?: string;
+  /** CTA button label. API key: `text`. */
+  text?: string;
+  /** CMS link type: "0" → internal route, "1" → external URL (opens in a new tab). */
+  linktype?: string | number;
+  tagline?: string;
+}
+
+export interface SlideShowGroup {
+  mediaType: "image" | "video";
+  items: SlideItem[];
+}
+

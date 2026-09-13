@@ -4,8 +4,8 @@ import Link from "next/link";
 import { ArrowUpRight, Gift } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import { buildMetadata } from "@/lib/metadata";
-import { getDealOfTheDay } from "@/lib/data";
-import { contact } from "@/config/site";
+import { getDealOfTheDay, getSiteRegulars } from "@/lib/data";
+import { SITE_FALLBACK } from "@/config/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata(
@@ -22,7 +22,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function DealOfTheDayPage() {
-  const deal = await getDealOfTheDay();
+  const [deal, siteRegulars] = await Promise.all([
+    getDealOfTheDay(),
+    getSiteRegulars(),
+  ]);
 
   return (
     <section className="pt-28 md:pt-32 pb-16">
@@ -68,7 +71,7 @@ export default async function DealOfTheDayPage() {
                   Enquire on WhatsApp
                 </a>
               ) : (
-                <a href={`mailto:${deal.mail || contact.email}`} className="bento-btn mx-auto w-fit">
+                <a href={`mailto:${deal.mail || siteRegulars?.email_address || SITE_FALLBACK.email}`} className="bento-btn mx-auto w-fit">
                   Enquire by Email
                   <ArrowUpRight size={15} />
                 </a>

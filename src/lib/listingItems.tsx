@@ -45,16 +45,25 @@ export function toDiningItems(venues: Package[]): RelatedItem[] {
     // "Venue Details" amenity group is [seats, timing, cuisine], in that
     // order (see diningToItems() in lib/data.ts) — cuisine is already shown
     // as the corner badge below, so only the first two are repeated here.
-    const details = venue.amenities?.[0]?.items ?? [];
-    const features: RelatedItem["features"] = [];
-    if (details[0]) features.push({ icon: <Users size={11} className="text-accent-orange" />, label: details[0].title });
-    if (details[1]) features.push({ icon: <Clock size={11} className="text-accent-orange" />, label: details[1].title });
+    const features: NonNullable<RelatedItem["features"]> = [];
+    if (venue.lunch) {
+      features.push({
+        icon: <Users size={11} className="text-accent-orange" />,
+        label: venue.lunch,
+      });
+    }
+    if (venue.breakfast) {
+      features.push({
+        icon: <Clock size={11} className="text-accent-orange" />,
+        label: venue.breakfast,
+      });
+    }
 
     return {
       slug: venue.slug,
       title: venue.title,
       image: toImageUrls(venue.img)[0] ?? "",
-      badge: venue.sub_title,
+      badge: venue.size ?? undefined,
       // The blurb line reads the venue's own description, not sub_title —
       // sub_title already appears above as the corner badge, and showing it
       // twice would just repeat "Newari Cuisine" as both badge and blurb.
@@ -67,23 +76,25 @@ export function toDiningItems(venues: Package[]): RelatedItem[] {
 
 export function toEventItems(spaces: Package[]): RelatedItem[] {
   return spaces.map((space) => {
-    // "Space Details" amenity group is [size, capacity, setupType], in that
-    // order (see eventsToItems() in lib/data.ts) — size is already shown as
-    // the corner badge below, but is repeated here too (as in the original
-    // card), alongside capacity.
-    const details = space.amenities?.[0]?.items ?? [];
-    const features: RelatedItem["features"] = [];
-    if (details[0]) features.push({ icon: <Maximize2 size={11} className="text-accent-orange" />, label: details[0].title });
-    if (details[1]) features.push({ icon: <Users size={11} className="text-accent-orange" />, label: details[1].title });
+    const features: NonNullable<RelatedItem["features"]> = [];
+    if (space.size) {
+      features.push({
+        icon: <Maximize2 size={11} className="text-accent-orange" />,
+        label: space.size,
+      });
+    }
+    if (space.cover) {
+      features.push({
+        icon: <Users size={11} className="text-accent-orange" />,
+        label: space.cover,
+      });
+    }
 
     return {
       slug: space.slug,
       title: space.title,
       image: toImageUrls(space.img)[0] ?? "",
       badge: space.size ?? undefined,
-      // The blurb line reads the space's own description, not sub_title —
-      // sub_title already appears above as the corner badge, and showing it
-      // twice would just repeat "4,900 sq. ft" as both badge and blurb.
       sub_title: space.sub_title,
       features,
       ctaLabel: "View Space",

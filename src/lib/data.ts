@@ -23,15 +23,18 @@ import type {
   PackageCategory,
   TestimonialEntry,
   VirtualTourData,
+  WellnessTabItem,
+  SlideShowGroup,
 } from "@/types";
 import type { SiteMetadata } from "@/types/metadata";
-import { CATEGORY_IDS, SERVICE_TYPE_IDS, site } from "@/config/site";
+import { CATEGORY_IDS, SERVICE_TYPE_IDS, SITE_FALLBACK } from "@/config/site";
 import {
   roomCategories,
   roomAmenities,
   diningVenues,
   banquetSpaces,
   services,
+  wellnessTabs,
   galleryImages,
   faqs,
   blogPosts,
@@ -134,7 +137,7 @@ function eventsToItems(): Package[] {
     id: space.slug,
     slug: space.slug,
     title: space.name,
-    sub_title: space.size,
+    sub_title: space.description,
     img: space.images.map((img) => ({ src: img.src, title: space.name })),
     description: `<p>${space.description}</p>`,
     amenities: [
@@ -143,6 +146,12 @@ function eventsToItems(): Package[] {
         items: [{ title: space.size }, { title: space.capacity }, { title: space.setupType }],
       },
     ],
+    // Live CMS event items use `size` for floor area and `cover` for pax
+    // capacity — the literal fields, not repurposed like dining's
+    // breakfast/lunch — matched here so local fallback items read the same
+    // way as live ones on the homepage carousel.
+    size: space.size,
+    cover: space.capacity,
     // No real per-layout capacity numbers (theater/classroom/u-shape/round
     // table) exist yet — left unset rather than invented; the setup-style
     // table only renders when at least one of these is present.
@@ -228,7 +237,7 @@ function aboutFallback(): ArticleItem {
   return {
     slug: "about-us",
     title: "About Hotel Daaas Kathmandu",
-    description: `<p>${site.description}</p>`,
+    description: `<p>${SITE_FALLBACK.description}</p>`,
   };
 }
 
@@ -291,61 +300,24 @@ export async function findOfferBySlug(slug: string): Promise<OfferItem | null> {
 // Merges the same way getCategoryItems does: live items win by slug, any
 // slug the CMS doesn't have yet keeps showing our real local content.
 
-function servicesToItems(): Package[] {
-  return services.map((s) => ({
-    id: s.slug,
-    slug: s.slug,
-    title: s.name,
-    img: s.images.map((img) => ({ src: img.src, title: s.name })),
-    description: `<p>${s.description}</p>`,
-    amenities: s.features.length > 0 ? [{ group_title: "Details", items: s.features.map((f) => ({ title: f })) }] : [],
-  }));
-}
-
-// Local fallback items don't carry a live `type`, so they're tagged by hand
-// in src/data/hotel.ts (`category: "facility" | "service"`) instead.
-const facilitySlugs = new Set<string>(services.filter((s) => s.category === "facility").map((s) => s.slug));
-
 interface ServiceCategory {
   type?: number | string;
   items?: Package[];
 }
 
-/**
- * Same shape as getCategoryItems, but the live CMS's category `type` (see
- * SERVICE_TYPE_IDS) is the source of truth for grouping — not a slug guess —
- * so a brand-new live item the local fallback has never heard of still ends
- * up in the right bucket. Local fallback items (tagged by hand, see above)
- * only fill in slugs the live CMS doesn't have yet, same as getCategoryItems.
- */
-// TEMPORARY — live fetch paused while the Facilities/Services UI is still
-// being designed against mock content, so a real (but not-yet-final-looking)
-// CMS entry doesn't get mistaken for the finished design. Flip this back to
-// `true` once the UI is signed off, to resume the live-wins-by-slug merge.
-const SERVICES_LIVE_FETCH_ENABLED = false;
-
 export async function getServicesGrouped(): Promise<{ facilities: Package[]; services: Package[] }> {
-  const data = SERVICES_LIVE_FETCH_ENABLED ? await fetchAPI<ServiceCategory[]>("services") : null;
-  const liveCategories = Array.isArray(data) ? data : [];
+  const data = await fetchAPI<ServiceCategory[]>("services");
+  const categories = Array.isArray(data) ? data : [];
 
-  const liveFacilities = liveCategories
+  const facilities = categories
     .filter((c) => String(c.type) === SERVICE_TYPE_IDS.facility)
     .flatMap((c) => (Array.isArray(c.items) ? c.items : []));
-  // Anything not explicitly the facility type defaults to Services (the
-  // clickable, detail-page-having group) — a permissive default so a future
-  // live category we don't yet recognize stays reachable rather than
-  // silently vanishing.
-  const liveServices = liveCategories
+
+  const services = categories
     .filter((c) => String(c.type) !== SERVICE_TYPE_IDS.facility)
     .flatMap((c) => (Array.isArray(c.items) ? c.items : []));
 
-  const liveSlugs = new Set([...liveFacilities, ...liveServices].map((item) => item.slug));
-  const localItems = servicesToItems().filter((item) => !liveSlugs.has(item.slug));
-
-  return {
-    facilities: [...liveFacilities, ...localItems.filter((item) => facilitySlugs.has(item.slug))],
-    services: [...liveServices, ...localItems.filter((item) => !facilitySlugs.has(item.slug))],
-  };
+  return { facilities, services };
 }
 
 export async function getServices(): Promise<Package[]> {
@@ -356,6 +328,67 @@ export async function getServices(): Promise<Package[]> {
 export async function findServiceBySlug(slug: string): Promise<Package | null> {
   const items = await getServices();
   return items.find((item) => item.slug === slug) ?? null;
+}
+
+// ── Homepage wellness tabs (services `type` 2 = facility) ───────────────────
+// A separate, narrower read of the same `services` endpoint used by
+// since that flag exists to hold back the still-in-design /facilities and
+// /service/[slug] pages, not this homepage teaser. The CMS entries here have
+// no separate description/highlights fields — both are baked into one
+// `content_0` rich-text block (desc paragraph + bullet list), rendered as-is
+// rather than parsed apart.
+
+interface RawServiceItem {
+  slug?: string;
+  title?: string;
+  sub_title?: string;
+  content_0?: string;
+  description?: string;
+  image?: string;
+  fb_img?: string;
+  gallery_images?: (string | { src?: string; url?: string })[];
+  img?: (string | { src?: string; url?: string })[];
+}
+
+interface RawServiceCategory {
+  type?: number | string;
+  items?: RawServiceItem[];
+}
+
+function extractServiceImage(item: RawServiceItem): string | undefined {
+  if (item.image) return item.image;
+  if (item.fb_img) return item.fb_img;
+
+  const galleryImg = item.gallery_images?.[0];
+  if (typeof galleryImg === "string") return galleryImg;
+  if (galleryImg && typeof galleryImg === "object") {
+    return galleryImg.src || galleryImg.url;
+  }
+
+  const rawImg = item.img?.[0];
+  if (typeof rawImg === "string") return rawImg;
+  if (rawImg && typeof rawImg === "object") {
+    return rawImg.src || rawImg.url;
+  }
+
+  return undefined;
+}
+
+export async function getWellnessTabs(): Promise<WellnessTabItem[]> {
+  const data = await fetchAPI<RawServiceCategory[]>("services");
+  const categories = Array.isArray(data) ? data : [];
+  const facilityCategory = categories.find((c) => String(c.type) === SERVICE_TYPE_IDS.facility);
+  const liveItems = Array.isArray(facilityCategory?.items) ? facilityCategory.items : [];
+
+  return liveItems
+    .filter((item): item is RawServiceItem & { slug: string; title: string } => Boolean(item.slug && item.title))
+    .map((item) => ({
+      slug: item.slug,
+      title: item.title,
+      label: item.sub_title || item.title,
+      contentHtml: item.content_0 || item.description || "",
+      image: extractServiceImage(item),
+    }));
 }
 
 interface RawTestimonial {
@@ -438,3 +471,11 @@ export function getDealOfTheDay(): Promise<DealOfTheDay | null> {
 export function getVirtualTour(): Promise<VirtualTourData | null> {
   return fetchAPI<VirtualTourData>("virtual_tour");
 }
+
+// ── Slideshow ─────────────────────────────────────────────────────────────────
+
+export async function getSlideshow(): Promise<SlideShowGroup[]> {
+  const data = await fetchAPI<SlideShowGroup[]>("slideshow");
+  return Array.isArray(data) ? data : [];
+}
+

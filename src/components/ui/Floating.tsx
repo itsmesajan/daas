@@ -3,10 +3,9 @@
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
-import { contact } from "@/config/site";
-
 interface FloatingButtonsProps {
   whatsappNumber?: string;
+  bookingUrl?: string;
 }
 
 function WhatsAppIcon() {
@@ -102,7 +101,7 @@ const itemVariants: Variants = {
   visible: { opacity: 1, scale: 1, x: 0, transition: { duration: 0.35, ease: "easeOut" } },
 };
 
-export default function FloatingButtons({ whatsappNumber }: FloatingButtonsProps) {
+export default function FloatingButtons({ whatsappNumber, bookingUrl }: FloatingButtonsProps) {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const reduceMotion = useReducedMotion();
 
@@ -116,9 +115,7 @@ export default function FloatingButtons({ whatsappNumber }: FloatingButtonsProps
   const scrollToTop = () =>
     window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
 
-  const cleanNumber = whatsappNumber
-    ? whatsappNumber.replace(/[^0-9]/g, "")
-    : contact.whatsapp;
+  const cleanNumber = (whatsappNumber ?? "").replace(/[^0-9]/g, "");
 
   return (
     <motion.div
