@@ -257,28 +257,28 @@ export default function HeroClient({ slideshow = [] }: HeroClientProps) {
   return (
     <section id="home" className="relative pt-28 pb-12 md:pt-32 md:pb-16">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4 relative">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_1fr] gap-5 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_1fr] gap-5 items-stretch lg:h-[520px]">
           {/* Big Text Bento Card */}
-          <Reveal className="h-full">
-            <div className="bento-card h-full p-8 md:p-12 flex flex-col justify-center">
-              <span className="bento-pill w-fit mb-6">
+          <Reveal className="h-[380px] sm:h-[420px] lg:h-full">
+            <div className="bento-card h-full p-6 sm:p-8 md:p-12 flex flex-col justify-center overflow-hidden">
+              <span className="bento-pill w-fit mb-4 sm:mb-6 shrink-0">
                 {currentTagline}
               </span>
 
               {currentTitle && (
-                <h1 className="bento-title text-[2.6rem] sm:text-[3.4rem] lg:text-[4rem]">
+                <h1 className="bento-title text-[2.2rem] sm:text-[3rem] lg:text-[3.8rem] leading-[1.15] line-clamp-2 shrink-0">
                   {currentTitle}
                 </h1>
               )}
 
               {currentDesc && (
-                <p className="text-bento-ink-soft mt-6 max-w-md text-[0.95rem] leading-relaxed">
+                <p className="text-bento-ink-soft mt-4 sm:mt-6 max-w-md text-[0.9rem] sm:text-[0.95rem] leading-relaxed line-clamp-3 shrink-0">
                   {currentDesc}
                 </p>
               )}
 
               {currentCtaLink && currentCtaLink !== "#" && (
-                <div className="mt-8 flex flex-wrap items-center gap-4">
+                <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-4 shrink-0">
                   <NavLink
                     href={currentCtaLink}
                     linktype={activeSlide?.linktype}
@@ -293,76 +293,74 @@ export default function HeroClient({ slideshow = [] }: HeroClientProps) {
           </Reveal>
 
           {/* Media Slider Bento Card */}
+          <div className="bento-card overflow-hidden relative h-full group">
+            <Swiper
+              modules={[Autoplay, EffectFade, Navigation]}
+              effect="fade"
+              fadeEffect={{ crossFade: true }}
+              speed={1200}
+              loop={sliderImages.length > 1}
+              navigation={{
+                prevEl: prevRef.current,
+                nextEl: nextRef.current,
+              }}
+              onBeforeInit={(swiper) => {
+                const nav = swiper.params.navigation;
+                if (nav && typeof nav !== "boolean") {
+                  nav.prevEl = prevRef.current;
+                  nav.nextEl = nextRef.current;
+                }
+              }}
+              onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+              autoplay={{ delay: 4500, disableOnInteraction: false }}
+              allowTouchMove={true}
+              className="w-full h-full"
+            >
+              {sliderImages.map((img, idx) => (
+                <SwiperSlide key={idx} className="w-full h-full relative">
+                  <Image
+                    src={img.src}
+                    alt={img.title || "Hero image"}
+                    fill
+                    priority={idx === 0}
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 35vw, 90vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60" />
+                </SwiperSlide>
+              ))}
+            </Swiper>
 
-            <div className="bento-card overflow-hidden relative h-[320px] sm:h-[400px] lg:h-full lg:min-h-[420px] group">
-              <Swiper
-                modules={[Autoplay, EffectFade, Navigation]}
-                effect="fade"
-                fadeEffect={{ crossFade: true }}
-                speed={1200}
-                loop={sliderImages.length > 1}
-                navigation={{
-                  prevEl: prevRef.current,
-                  nextEl: nextRef.current,
-                }}
-                onBeforeInit={(swiper) => {
-                  const nav = swiper.params.navigation;
-                  if (nav && typeof nav !== "boolean") {
-                    nav.prevEl = prevRef.current;
-                    nav.nextEl = nextRef.current;
-                  }
-                }}
-                onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-                autoplay={{ delay: 4500, disableOnInteraction: false }}
-                allowTouchMove={true}
-                className="w-full h-full"
-              >
-                {sliderImages.map((img, idx) => (
-                  <SwiperSlide key={idx} className="w-full h-full relative">
-                    <Image
-                      src={img.src}
-                      alt={img.title || "Hero image"}
-                      fill
-                      priority={idx === 0}
-                      className="object-cover"
-                      sizes="(min-width: 1024px) 35vw, 90vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60" />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+            {/* Navigation Arrows */}
+            {sliderImages.length > 1 && (
+              <>
+                <button
+                  ref={prevRef}
+                  type="button"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 items-center justify-center rounded-full border border-white/70 bg-white/70 text-bento-ink backdrop-blur-sm transition-all hover:bg-white hover:scale-105 opacity-0 group-hover:opacity-100"
+                  aria-label="Previous slide"
+                >
+                  <ChevronLeft size={16} />
+                </button>
 
-              {/* Navigation Arrows */}
-              {sliderImages.length > 1 && (
-                <>
-                  <button
-                    ref={prevRef}
-                    type="button"
-                    className="absolute left-4 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 items-center justify-center rounded-full border border-white/70 bg-white/70 text-bento-ink backdrop-blur-sm transition-all hover:bg-white hover:scale-105 opacity-0 group-hover:opacity-100"
-                    aria-label="Previous slide"
-                  >
-                    <ChevronLeft size={16} />
-                  </button>
+                <button
+                  ref={nextRef}
+                  type="button"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 items-center justify-center rounded-full border border-white/70 bg-white/70 text-bento-ink backdrop-blur-sm transition-all hover:bg-white hover:scale-105 opacity-0 group-hover:opacity-100"
+                  aria-label="Next slide"
+                >
+                  <ChevronRight size={16} />
+                </button>
 
-                  <button
-                    ref={nextRef}
-                    type="button"
-                    className="absolute right-4 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 items-center justify-center rounded-full border border-white/70 bg-white/70 text-bento-ink backdrop-blur-sm transition-all hover:bg-white hover:scale-105 opacity-0 group-hover:opacity-100"
-                    aria-label="Next slide"
-                  >
-                    <ChevronRight size={16} />
-                  </button>
-
-                  {/* Slide Counter Badge */}
-                  <div className="absolute bottom-4 right-4 z-30 font-mono text-[0.7rem] tracking-wider text-white/90 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
-                    <span className="font-bold text-white">{String(activeIndex + 1).padStart(2, "0")}</span>
-                    <span className="opacity-40"> / </span>
-                    <span>{String(sliderImages.length).padStart(2, "0")}</span>
-                  </div>
-                </>
-              )}
-            </div>
-
+                {/* Slide Counter Badge */}
+                <div className="absolute bottom-4 right-4 z-30 font-mono text-[0.7rem] tracking-wider text-white/90 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
+                  <span className="font-bold text-white">{String(activeIndex + 1).padStart(2, "0")}</span>
+                  <span className="opacity-40"> / </span>
+                  <span>{String(sliderImages.length).padStart(2, "0")}</span>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
