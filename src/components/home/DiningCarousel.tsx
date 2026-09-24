@@ -167,7 +167,7 @@ export default function DiningCarousel({ venues }: { venues: Package[] }) {
                 {/* Description */}
                 <div key={`desc-${index}`} className="animate-fade-in-up" style={{ animationDelay: "80ms" }}>
                   <p className="text-white/75 text-[0.82rem] leading-relaxed mb-5">
-                    {htmlToPlainText(venue.description)}
+                    {venue.sub_title}
                   </p>
                 </div>
 

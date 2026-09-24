@@ -2,12 +2,9 @@
 // itself. Pages/components never import fetchAPI directly; they call the
 // named helpers below.
 //
-// The live CMS is only partially populated (e.g. one room entered, not all
-// three), so getCategoryItems merges by slug rather than switching all-or-
-// nothing: a slug present live uses live content, any slug only known
-// locally (src/data/hotel.ts) keeps showing our accurate fallback instead of
-// 404ing. Once every real item exists in the CMS, the local half of the
-// merge simply stops contributing anything — no code change needed then.
+// getCategoryItems (rooms/restaurant/events) is live-CMS-only — the CMS is
+// fully populated for all three categories, so there's no local fallback to
+// merge in here.
 
 import { fetchAPI } from "./api";
 import type {
@@ -27,18 +24,8 @@ import type {
   SlideShowGroup,
 } from "@/types";
 import type { SiteMetadata } from "@/types/metadata";
-import { CATEGORY_IDS, SERVICE_TYPE_IDS, SITE_FALLBACK } from "@/config/site";
-import {
-  roomCategories,
-  roomAmenities,
-  diningVenues,
-  banquetSpaces,
-  services,
-  wellnessTabs,
-  galleryImages,
-  faqs,
-  blogPosts,
-} from "@/data/hotel";
+import { SERVICE_TYPE_IDS, SITE_FALLBACK } from "@/config/site";
+import { services, wellnessTabs, galleryImages, faqs, blogPosts } from "@/data/hotel";
 
 // ── Site-wide ────────────────────────────────────────────────────────────────
 
@@ -95,76 +82,6 @@ export async function getSocialGroup(type: number): Promise<any | null> {
 // ── Packages & categories (rooms / restaurant / events) ─────────────────────
 // Parent-category ids live in CATEGORY_IDS (src/config/site.ts).
 
-function roomsToItems(): Package[] {
-  return roomCategories.map((room) => ({
-    id: room.slug,
-    slug: room.slug,
-    title: room.name,
-    sub_title: `${room.count} Rooms`,
-    img: room.images.map((img) => ({ src: img.src, title: room.name })),
-    description: `<p>${room.description}</p>`,
-    amenities: [{ group_title: "Room Amenities", items: roomAmenities.map((name) => ({ title: name })) }],
-    // No real per-night rate yet — price stays unset rather than invented;
-    // the detail page only renders a price tag when this is present.
-  }));
-}
-
-function diningToItems(): Package[] {
-  return diningVenues.map((venue) => ({
-    id: venue.slug,
-    slug: venue.slug,
-    title: venue.name,
-    sub_title: venue.cuisine,
-    img: venue.images.map((img) => ({ src: img.src, title: venue.name })),
-    description: `<p>${venue.description}</p>`,
-    amenities: [
-      {
-        group_title: "Venue Details",
-        items: [{ title: venue.seats }, { title: venue.timing }, { title: venue.cuisine }],
-      },
-    ],
-    // Live CMS restaurant items repurpose the shared package fields: `breakfast`
-    // carries the venue's timing text, `lunch` carries its seating/size text
-    // (not literal meal info) — matched here so local fallback items read the
-    // same way as live ones on the homepage carousel.
-    breakfast: venue.timing,
-    lunch: venue.seats,
-  }));
-}
-
-function eventsToItems(): Package[] {
-  return banquetSpaces.map((space) => ({
-    id: space.slug,
-    slug: space.slug,
-    title: space.name,
-    sub_title: space.description,
-    img: space.images.map((img) => ({ src: img.src, title: space.name })),
-    description: `<p>${space.description}</p>`,
-    amenities: [
-      {
-        group_title: "Space Details",
-        items: [{ title: space.size }, { title: space.capacity }, { title: space.setupType }],
-      },
-    ],
-    // Live CMS event items use `size` for floor area and `cover` for pax
-    // capacity — the literal fields, not repurposed like dining's
-    // breakfast/lunch — matched here so local fallback items read the same
-    // way as live ones on the homepage carousel.
-    size: space.size,
-    cover: space.capacity,
-    // No real per-layout capacity numbers (theater/classroom/u-shape/round
-    // table) exist yet — left unset rather than invented; the setup-style
-    // table only renders when at least one of these is present.
-  }));
-}
-
-function localFallbackFor(parentId: string): Package[] {
-  if (parentId === CATEGORY_IDS.rooms) return roomsToItems();
-  if (parentId === CATEGORY_IDS.restaurant) return diningToItems();
-  if (parentId === CATEGORY_IDS.events) return eventsToItems();
-  return [];
-}
-
 interface SubpackageCategory {
   parent_id?: string | number;
   items?: Package[];
@@ -175,14 +92,11 @@ export function getSubpackages(): Promise<SubpackageCategory[] | null> {
   return fetchAPI<SubpackageCategory[]>("subpackage");
 }
 
-/** Items (rooms/venues/spaces) of one `subpackage` category — live items merged with local fallback by slug. */
+/** Items (rooms/venues/spaces) of one `subpackage` category. */
 export async function getCategoryItems(parentId: string): Promise<Package[]> {
   const subpackage = await getSubpackages();
   const category = subpackage?.find((c) => String(c.parent_id) === parentId);
-  const liveItems = Array.isArray(category?.items) ? category.items : [];
-  const liveSlugs = new Set(liveItems.map((item) => item.slug));
-  const fallbackOnly = localFallbackFor(parentId).filter((item) => !liveSlugs.has(item.slug));
-  return [...liveItems, ...fallbackOnly];
+  return Array.isArray(category?.items) ? category.items : [];
 }
 
 export async function findCategoryItem(parentId: string, slug: string): Promise<Package | null> {

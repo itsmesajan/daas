@@ -117,7 +117,7 @@ export default async function BentoFooter() {
                   aria-hidden="true"
                 />
                 <a
-                  href="https://maps.app.goo.gl/cR1e6XET4SXndWS88"
+                  href={siteRegulars.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-bento-ink transition-colors"

@@ -56,8 +56,8 @@ export default function WellnessTabs({ tabs }: { tabs: WellnessTabItem[] }) {
                       : "bg-white/50 text-bento-ink-soft border-white/80 hover:bg-white/80 hover:text-bento-ink"
                   }`}
                 >
-                  <TabIcon size={11} />
-                  {t.label}
+                  {/* <TabIcon size={11} /> */}
+                  {t.title}
                 </button>
               );
             })}
@@ -102,9 +102,9 @@ export default function WellnessTabs({ tabs }: { tabs: WellnessTabItem[] }) {
                   transition={{ duration: 0.4, ease: "easeOut" }}
                 >
                   <div className="flex items-center gap-2 mb-5">
-                    <div className="w-8 h-8 rounded-full bg-accent-orange/10 border border-accent-orange/20 flex items-center justify-center">
+                    {/* <div className="w-8 h-8 rounded-full bg-accent-orange/10 border border-accent-orange/20 flex items-center justify-center">
                       <Icon size={14} className="text-accent-orange" />
-                    </div>
+                    </div> */}
                     <p className="bento-pill !text-[0.62rem]">{tab.label}</p>
                   </div>
 

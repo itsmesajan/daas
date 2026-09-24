@@ -18,7 +18,7 @@ export default async function EventsPage() {
   return (
     <CategoryListingSection
       pillLabel="Banquet & Events"
-      heading="Grand Occasions, Perfectly Hosted"
+      heading={category?.title || "Grand Occasions, Perfectly Hosted"}
       description={category?.description || "Three event spaces for weddings, conferences, and executive gatherings."}
       basePath="/events"
       items={toEventItems(spaces)}

@@ -44,7 +44,7 @@ function ServiceIcon({ item }: { item: Package }) {
           alt={item.title || "Icon"}
           width={44}
           height={44}
-          className="object-contain w-full h-full"
+          className="object-contain w-full h-full filter-[brightness(0)_saturate(100%)_invert(58%)_sepia(96%)_saturate(902%)_hue-rotate(348deg)_brightness(98%)_contrast(88%)]"
         />
       </div>
     );

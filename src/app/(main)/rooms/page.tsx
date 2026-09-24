@@ -23,7 +23,7 @@ export default async function RoomsPage() {
   return (
     <CategoryListingSection
       pillLabel="Accommodations"
-      heading="Rooms & Suites"
+      heading={category?.title || "Rooms & Suites"}
       description={category?.description || `${totalRooms} rooms across three categories, each designed for a comfortable stay in Kathmandu.`}
       basePath="/rooms"
       items={toRoomItems(rooms)}

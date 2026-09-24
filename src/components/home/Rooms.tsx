@@ -12,14 +12,6 @@ const tagColors = [
   "bg-emerald-900/70 text-emerald-100",
 ];
 
-// Same "only a real, positive rate — never invent one" rule and currency
-// fallback as the room detail page (rooms/[slug]/page.tsx).
-function formatPrice(price?: string | null, currency?: string): string | null {
-  const priceNumber = price ? Number(price) : NaN;
-  if (!Number.isFinite(priceNumber) || priceNumber <= 0) return null;
-  const symbol = business.currency === "NPR" ? "Rs." : (currency ?? "$");
-  return `${symbol} ${priceNumber.toLocaleString()}`;
-}
 
 export default async function Rooms() {
   const rooms = await getCategoryItems(CATEGORY_IDS.rooms);
@@ -27,7 +19,7 @@ export default async function Rooms() {
 
   const [first, ...rest] = rooms;
   const firstAmenities = first.amenities?.[0]?.items ?? [];
-  const firstPrice = formatPrice(first.price, first.currency);
+  const firstPrice = first.price && first.currency ? `${first.currency}${first.price}` : undefined;
 
   return (
     <section id="rooms" className="py-12 md:py-16">
@@ -113,7 +105,7 @@ export default async function Rooms() {
           {/* ── Secondary cards column ── */}
           <div className="flex flex-col gap-4 md:gap-5">
             {rest.map((room, i) => {
-              const roomPrice = formatPrice(room.price, room.currency);
+              const roomPrice = room.price && room.currency ? `${room.currency}${room.price}` : undefined;
               return (
               <Reveal key={room.slug} delay={100 + i * 80} className="flex-1">
                 <Link

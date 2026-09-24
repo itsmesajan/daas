@@ -6,7 +6,8 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Reveal from "@/components/ui/Reveal";
 import hotelIllustration from "@/assets/hotel-illustration.png";
-import { banquetSpaces, highlights } from "@/data/hotel";
+import { banquetSpaces } from "@/data/hotel";
+import type { FacilityHighlight } from "@/lib/listingItems";
 
 
 function HighlightItem({
@@ -14,7 +15,7 @@ function HighlightItem({
   delay,
   reverse,
 }: {
-  item: (typeof highlights)[number];
+  item: FacilityHighlight;
   delay: number;
   reverse?: boolean;
 }) {
@@ -38,11 +39,13 @@ function HighlightItem({
   );
 }
 
-export default function Facilities() {
+export default function Facilities({ highlightItems }: { highlightItems: FacilityHighlight[] }) {
   const [index, setIndex] = useState(0);
   const space = banquetSpaces[index];
-  const left = highlights.slice(0, 3);
-  const right = highlights.slice(3);
+  const left = highlightItems.slice(0, 3);
+  const right = highlightItems.slice(3);
+
+  if (highlightItems.length === 0) return null;
 
   return (
     <section className="py-12 md:py-16">

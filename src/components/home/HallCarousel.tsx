@@ -44,7 +44,7 @@ export default function HallCarousel({ venues }: { venues: Package[] }) {
         {/* Split layout */}
         <Reveal delay={80}>
           <div
-            className="bento-card overflow-hidden grid grid-cols-1 md:grid-cols-[1fr_min(420px,40%)] min-h-[540px]"
+            className="bento-card overflow-hidden grid grid-cols-1 md:grid-cols-[1fr_min(420px,40%)] min-h-[540px] md:h-135"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
           >
@@ -98,7 +98,7 @@ export default function HallCarousel({ venues }: { venues: Package[] }) {
             </div>
 
             {/* ── Right: stacked space selector ── */}
-            <div className="flex flex-col p-4 md:p-6 bg-white/20 backdrop-blur-2xl border-l border-white/20">
+            <div className="flex flex-col p-4 md:p-6 bg-white/20 backdrop-blur-2xl border-l border-white/20 md:min-h-0 md:overflow-y-auto">
               {/* Top label */}
               <div className="pb-4 px-2">
                 <p className="text-[0.7rem] font-bold tracking-widest uppercase text-bento-ink-soft/80">
@@ -167,7 +167,7 @@ export default function HallCarousel({ venues }: { venues: Package[] }) {
                               exit={{ opacity: 0, height: 0 }}
                               transition={{ duration: 0.3, ease: "easeOut" }}
                             >
-                              <p className="text-bento-ink-soft/90 text-[0.75rem] leading-relaxed mb-4 pt-2">
+                              <p className="text-bento-ink-soft/90 text-[0.75rem] leading-relaxed mb-4 pt-2 line-clamp-3">
                                 {htmlToPlainText(s.sub_title)}
                               </p>
                               <Link

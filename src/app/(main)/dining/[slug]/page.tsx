@@ -96,9 +96,9 @@ export default async function DiningDetailPage({
         href={`https://wa.me/${whatsapp}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="bento-btn-ghost"
+        className="bento-btn-ghost !bg-green-500 !text-white"
       >
-        <i className="fa-brands fa-whatsapp text-base" aria-hidden="true" />
+        <i className="fa-brands fa-whatsapp text-base text-white" aria-hidden="true" />
         WhatsApp Us
       </a>
     </div>

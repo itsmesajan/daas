@@ -64,14 +64,57 @@ export function toDiningItems(venues: Package[]): RelatedItem[] {
       title: venue.title,
       image: toImageUrls(venue.img)[0] ?? "",
       badge: venue.size ?? undefined,
-      // The blurb line reads the venue's own description, not sub_title —
-      // sub_title already appears above as the corner badge, and showing it
-      // twice would just repeat "Newari Cuisine" as both badge and blurb.
-      sub_title: htmlToPlainText(venue.description),
+      sub_title: venue.sub_title,
+      description: htmlToPlainText(venue.description),
       features,
       ctaLabel: "View Venue",
     };
   });
+}
+
+// Live `services` (type 1) items rarely carry their own `icon` — only a
+// couple of entries on this CMS instance do — so unset ones fall back to a
+// hand-picked icon by slug, and anything the map doesn't recognise (a new
+// service added later) still gets a sane generic icon instead of none.
+const HIGHLIGHT_ICON_FALLBACK: Record<string, string> = {
+  "airport-pickup-drop": "fa-solid fa-plane",
+  "24-hour-room-service": "fa-solid fa-bell-concierge",
+  "doctor-on-call": "fa-solid fa-user-doctor",
+  "high-speed-internet": "fa-solid fa-wifi",
+  "parking-space": "fa-solid fa-square-parking",
+  "ev-charging-point": "fa-solid fa-charging-station",
+  "rooftop-swimming-pool": "fa-solid fa-person-swimming",
+  "fitness-center": "fa-solid fa-dumbbell",
+  "wellness-spa": "fa-solid fa-spa",
+  "restaurant-bar": "fa-solid fa-utensils",
+  "event-hall": "fa-solid fa-people-group",
+  elevator: "fa-solid fa-elevator",
+  "fire-extinguisher": "fa-solid fa-fire-extinguisher",
+  "daily-housekeeping": "fa-solid fa-broom",
+  "luggage-storage": "fa-solid fa-suitcase",
+  "wheelchair-available": "fa-solid fa-wheelchair",
+  "power-backup": "fa-solid fa-plug-circle-bolt",
+  "cctv-security": "fa-solid fa-video",
+  "concierge-service": "fa-solid fa-concierge-bell",
+  "cards-accepted": "fa-solid fa-credit-card",
+  "daily-newspaper": "fa-solid fa-newspaper",
+};
+
+export interface FacilityHighlight {
+  slug: string;
+  title: string;
+  desc: string;
+  icon: string;
+}
+
+/** Homepage "At A Glance" highlights — live `services` type-1 items, short blurb from `content_0`. */
+export function toHighlightItems(services: Package[]): FacilityHighlight[] {
+  return services.map((s) => ({
+    slug: s.slug,
+    title: s.title,
+    desc: htmlToPlainText(s.content_0),
+    icon: s.icon || HIGHLIGHT_ICON_FALLBACK[s.slug] || "fa-solid fa-circle-check",
+  }));
 }
 
 export function toEventItems(spaces: Package[]): RelatedItem[] {

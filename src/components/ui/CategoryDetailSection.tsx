@@ -70,12 +70,12 @@ export default function CategoryDetailSection({
       </div>
 
       {subTitle && (
-        <p className="font-display italic text-bento-ink-soft text-sm leading-relaxed mb-4 max-w-2xl">{subTitle}</p>
+        <p className="font-display italic text-bento-ink-soft text-sm leading-relaxed mb-4 max-w-7xl">{subTitle}</p>
       )}
 
       {description && (
         <div
-          className="text-bento-ink-soft text-sm leading-relaxed mb-6 max-w-2xl [&_p]:mb-3 [&_h6]:font-semibold [&_h6]:text-bento-ink [&_h6]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1"
+          className="text-bento-ink-soft text-sm leading-relaxed mb-6 max-w-7xl"
           dangerouslySetInnerHTML={{ __html: description }}
         />
       )}
@@ -107,8 +107,12 @@ export default function CategoryDetailSection({
         {layout === "sidebar" ? (
           <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-5 items-start mt-5">
             <Reveal className="bento-card p-6 md:p-8 flex flex-col">{body}</Reveal>
-            <Reveal delay={100} className="flex flex-col gap-5">
-              {actionSlot}
+            {/* self-stretch (overriding the grid's items-start) gives this
+                column the full row height, so the inner sticky div has room
+                to follow the scroll instead of being boxed to its own
+                (shorter) content height. */}
+            <Reveal delay={100} className="self-stretch">
+              <div className="sticky top-24 md:top-28 flex flex-col gap-5">{actionSlot}</div>
             </Reveal>
           </div>
         ) : (

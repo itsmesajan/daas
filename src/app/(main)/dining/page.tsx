@@ -18,7 +18,7 @@ export default async function DiningPage() {
   return (
     <CategoryListingSection
       pillLabel="Dining & Rooftop"
-      heading="Dining at Hotel Daaas"
+      heading={category?.title || "Dining at Hotel Daaas"}
       description={category?.description || "All-day dining, Newari specialties, and a rooftop lounge above the skyline."}
       basePath="/dining"
       items={toDiningItems(venues)}

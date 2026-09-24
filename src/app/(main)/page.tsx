@@ -9,10 +9,12 @@ import OtaPartners from "@/components/home/OtaPartners";
 import ContactCta from "@/components/home/ContactCta";
 import Hall from "@/components/home/Hall";
 import Popup from "@/components/popup/Popup";
-import { getPopupItems } from "@/lib/data";
+import { getPopupItems, getServicesGrouped } from "@/lib/data";
+import { toHighlightItems } from "@/lib/listingItems";
 
 export default async function Home() {
-  const popupData = await getPopupItems();
+  const [popupData, { services }] = await Promise.all([getPopupItems(), getServicesGrouped()]);
+  const highlightItems = toHighlightItems(services.slice(0, 6));
 
   return (
     <>
@@ -20,7 +22,7 @@ export default async function Home() {
       <Hero />
       <Rooms />
       <Dining />
-      <Facilities />
+      <Facilities highlightItems={highlightItems} />
       <Hall />
       <WellnessExperiences />
       <Nearby />

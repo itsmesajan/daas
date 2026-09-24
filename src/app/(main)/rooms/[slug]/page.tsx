@@ -49,8 +49,8 @@ export default async function RoomDetailPage({
   const images = resolveHeroImages(room, room.fb_img);
 
   // Only render a real numeric price the CMS actually supplied — never invent one.
-  const priceNumber = room.price ? Number(room.price) : NaN;
-  const hasPrice = Number.isFinite(priceNumber) && priceNumber > 0;
+  const hasPrice = Boolean(room.price) && Number(room.price) > 0;
+  const priceDisplay = hasPrice ? `${room.currency ?? "$"}${room.price}` : undefined;
 
   const jsonLd = [
     {
@@ -62,7 +62,7 @@ export default async function RoomDetailPage({
       ...(hasPrice && {
         offers: {
           "@type": "Offer",
-          price: priceNumber,
+          price: room.price,
           priceCurrency: room.currency === "$" || !room.currency ? business.currency : room.currency,
           availability: "https://schema.org/InStock",
           url: `${SITE_URL}/rooms/${room.slug}`,
@@ -81,11 +81,9 @@ export default async function RoomDetailPage({
     ...buildPackageSchemas(room),
   ];
 
-  const headerExtra = hasPrice ? (
+  const headerExtra = priceDisplay ? (
     <p className="shrink-0 text-right">
-      <span className="text-2xl font-bold text-accent-orange">
-        {business.currency === "NPR" ? "Rs." : room.currency ?? "$"} {priceNumber.toLocaleString()}
-      </span>
+      <span className="text-2xl font-bold text-accent-orange">{priceDisplay}</span>
       <span className="block text-[0.65rem] text-bento-ink-soft/70">per night</span>
     </p>
   ) : undefined;
