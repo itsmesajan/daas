@@ -360,10 +360,10 @@ export const galleryImages = [
 ] as const;
 
 export const policies = {
-  checkIn: "2:00 PM",
-  checkOut: "11:00 AM",
+  checkIn: "24-Hour",
+  checkOut: "12:00 PM",
   cancellation:
-    "Free cancellation up to 24 hours before arrival. Cancellations after 2:00 PM on the day of arrival are charged the cost of the first night; the same applies to no-shows.",
+    "Guests can cancel free of charge until 2:00 PM on the day of arrival. Cancellations made after 2:00 PM or no-shows will be charged the cost of the first night",
   pets: "No pets allowed.",
 } as const;
 
