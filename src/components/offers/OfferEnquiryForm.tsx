@@ -70,6 +70,20 @@ export default function OfferEnquiryForm({ offerTitle, rate }: { offerTitle: str
     defaultValues: { checkin_date: todayISO() },
   });
 
+  // Strips anything but digits/+/-/space as the user types or pastes, so
+  // letters never make it into the field — same character set the Zod
+  // regex above validates on submit.
+  const phoneField = register("phone");
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Setting .value resets the cursor to the end, so restore it relative to
+    // how many characters were stripped before the original cursor position.
+    const cursor = e.target.selectionStart ?? e.target.value.length;
+    const cursorAfterStrip = e.target.value.slice(0, cursor).replace(/[^0-9+\-\s]/g, "").length;
+    e.target.value = e.target.value.replace(/[^0-9+\-\s]/g, "");
+    e.target.setSelectionRange(cursorAfterStrip, cursorAfterStrip);
+    phoneField.onChange(e);
+  };
+
   const onSubmit = async (formData: OfferFormData) => {
     if (!captchaToken) {
       setSubmitError("Please complete the reCAPTCHA");
@@ -265,7 +279,9 @@ export default function OfferEnquiryForm({ offerTitle, rate }: { offerTitle: str
             <input
               id="offer-phone"
               type="tel"
-              {...register("phone")}
+              inputMode="tel"
+              {...phoneField}
+              onChange={handlePhoneChange}
               className={inputClass}
               placeholder="+977 98XXXXXXXX"
             />
