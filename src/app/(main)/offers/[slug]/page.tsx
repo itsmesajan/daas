@@ -67,7 +67,7 @@ export default async function OfferDetailPage({
           <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-5 items-start">
             <div className="flex flex-col gap-5">
               {images.length > 0 && (
-                <Reveal className="relative rounded-3xl overflow-hidden bento-card h-105 md:h-140">
+                <Reveal className="relative rounded-3xl overflow-hidden bento-card aspect-4/5">
                   <ImageGallery images={images} alt={offer.title} />
                 </Reveal>
               )}
@@ -91,7 +91,7 @@ export default async function OfferDetailPage({
               </Reveal>
             </div>
 
-            <Reveal delay={100} className="bento-card p-6 md:p-8 lg:sticky lg:top-28">
+            <Reveal delay={100} className="bento-card p-6 md:p-8 lg:sticky lg:top-0">
               <OfferEnquiryForm offerTitle={offer.title} rate={offer.rate} />
             </Reveal>
           </div>
