@@ -32,8 +32,10 @@ export default function GalleryGrid({ items }: { items: GalleryImageEntry[] }) {
     for (const item of items) {
       if (item.category) counts.set(item.category, (counts.get(item.category) ?? 0) + 1);
     }
-    const sorted = Array.from(counts.entries()).sort((a, b) => b[1] - a[1]);
-    const withAll: [string, number][] = [["All", items.length], ...sorted];
+    // Map preserves insertion order, i.e. each category's first appearance in
+    // `items` — the CMS's own curated order (Hotel DAAAS, Room, ...), not an
+    // alphabetical resort that would bury it behind "Event Hall".
+    const withAll: [string, number][] = [["All", items.length], ...counts.entries()];
     return withAll;
   }, [items]);
 
