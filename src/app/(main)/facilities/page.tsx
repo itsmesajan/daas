@@ -106,7 +106,7 @@ export default async function FacilitiesPage() {
             Everything Under One Roof
           </h1>
           <p className="text-bento-ink-soft text-sm max-w-lg mx-auto">
-            Every amenity and service available to guests during their stay.
+            Thoughtfully curated amenities and personalized services designed to make your stay completely effortless.
           </p>
         </Reveal>
 

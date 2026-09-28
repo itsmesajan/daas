@@ -19,8 +19,7 @@ export default async function ContactCta() {
                 Be among the first to stay
               </h2>
               <p className="text-bento-ink-soft max-w-md mx-auto mb-8 text-sm">
-                Reach out for opening updates, bookings and event enquiries at
-                Hotel Daaas Kathmandu.
+                Connect with us for room reservations, event inquiries, and exclusive opening offers at Hotel Daaas Kathmandu.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link href="/contact-us" className="bento-btn">

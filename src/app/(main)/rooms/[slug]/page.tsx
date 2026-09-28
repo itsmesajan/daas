@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Check, Clock, Info, PawPrint } from "lucide-react";
+import { Check, Clock, Info, PawPrint, UserRound } from "lucide-react";
 import CategoryDetailSection from "@/components/ui/CategoryDetailSection";
 import Reveal from "@/components/ui/Reveal";
 import BookingWidget from "@/components/rooms/BookingWidget";
 import { buildMetadata, buildPackageSchemas } from "@/lib/metadata";
-import { findCategoryItem, getCategoryItems } from "@/lib/data";
+import { findCategoryItem, getCategoryItems, getSiteRegulars } from "@/lib/data";
 import { resolveHeroImages } from "@/lib/images";
 import { toRoomItems } from "@/lib/listingItems";
 import { CATEGORY_IDS, SITE_URL, business } from "@/config/site";
-import { roomAmenities, policies } from "@/data/hotel";
+import { roomAmenities, policies as policiesFallback } from "@/data/hotel";
 
 export async function generateStaticParams() {
   const rooms = await getCategoryItems(CATEGORY_IDS.rooms);
@@ -40,13 +40,23 @@ export default async function RoomDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [room, allRooms] = await Promise.all([
+  const [room, allRooms, siteRegulars] = await Promise.all([
     findCategoryItem(CATEGORY_IDS.rooms, slug),
     getCategoryItems(CATEGORY_IDS.rooms),
+    getSiteRegulars(),
   ]);
   if (!room) notFound();
 
   const images = resolveHeroImages(room, room.fb_img);
+
+  // Live CMS check-in/check-out/cancellation text, falling back to the
+  // static factsheet copy in data/hotel.ts when the CMS field is empty.
+  const policies = {
+    ...policiesFallback,
+    checkIn: siteRegulars?.check_in || policiesFallback.checkIn,
+    checkOut: siteRegulars?.check_out || policiesFallback.checkOut,
+    cancellation: siteRegulars?.policy || policiesFallback.cancellation,
+  };
 
   // Only render a real numeric price the CMS actually supplied — never invent one.
   const hasPrice = Boolean(room.price) && Number(room.price) > 0;
@@ -140,7 +150,7 @@ export default async function RoomDetailPage({
     <div className="flex flex-wrap items-center gap-4 text-xs text-bento-ink-soft mt-auto pt-4 border-t border-white/70">
       {room.occupancy && (
         <span className="flex items-center gap-1.5">
-          <Check size={13} className="text-accent-orange" />
+          <UserRound  size={13} className="text-accent-orange" />
           {room.occupancy}
         </span>
       )}

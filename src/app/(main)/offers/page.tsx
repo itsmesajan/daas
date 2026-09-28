@@ -22,9 +22,9 @@ export default async function OffersPage() {
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
         <Reveal className="mb-10 px-2 text-center">
           <p className="bento-pill mx-auto w-fit mb-4">Offers</p>
-          <h1 className="bento-title text-3xl md:text-5xl mb-3">Current Offers</h1>
+          <h1 className="bento-title text-3xl md:text-5xl mb-3">Special Packages</h1>
           <p className="text-bento-ink-soft text-sm max-w-lg mx-auto">
-            Special packages and seasonal offers at Hotel Daaas Kathmandu.
+            Enhance your stay with our latest room promotions, dining experiences, and event packages.
           </p>
         </Reveal>
 

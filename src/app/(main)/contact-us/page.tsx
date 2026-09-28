@@ -16,7 +16,7 @@ export default function ContactUsPage() {
           <p className="bento-pill mx-auto w-fit mb-4">Get In Touch</p>
           <h1 className="bento-title text-3xl md:text-5xl mb-3">Contact Us</h1>
           <p className="text-bento-ink-soft text-sm max-w-lg mx-auto">
-            Questions about rooms, dining, or events? Send us a message and we&apos;ll get back to you.
+            We're here to help make your stay effortless. Contact our team for room reservations, event space inquiries, or general assistance.
           </p>
         </Reveal>
 

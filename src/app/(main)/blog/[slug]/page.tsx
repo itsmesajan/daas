@@ -4,6 +4,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, CalendarDays } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
+import ShareButton from "@/components/ui/ShareButton";
 import { buildMetadata } from "@/lib/metadata";
 import { getBlogs, findBlogBySlug } from "@/lib/data";
 import { SITE_URL } from "@/config/site";
@@ -92,24 +93,7 @@ export default async function BlogDetailPage({
 
             <div className="flex items-center gap-3 mt-8 pt-6 border-t border-white/70">
               <span className="text-xs font-semibold text-bento-ink-soft">Share:</span>
-              <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Share on Facebook"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/70 bg-white/50 text-bento-ink-soft hover:bg-accent-orange hover:text-white transition-colors"
-              >
-                <i className="fa-brands fa-facebook-f text-xs" aria-hidden="true" />
-              </a>
-              <a
-                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Share on X"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/70 bg-white/50 text-bento-ink-soft hover:bg-accent-orange hover:text-white transition-colors"
-              >
-                <i className="fa-brands fa-x-twitter text-xs" aria-hidden="true" />
-              </a>
+              <ShareButton title={post.title} url={shareUrl} />
             </div>
           </Reveal>
 
