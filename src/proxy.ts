@@ -20,6 +20,16 @@ const ALWAYS_ALLOWED_ROUTES = new Set(["/reach-us", "/work-with-us"]);
  */
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // dining.<domain> is a separate single-page microsite (venues, hours,
+  // ordering menu/QR/PDF) — always served from /dining-home regardless of
+  // path, and regardless of the main site's own under-construction gate
+  // below (a diner scanning a table QR code shouldn't hit a coming-soon page).
+  const hostname = request.headers.get("host") || "";
+  if (hostname.startsWith("dining.")) {
+    return NextResponse.rewrite(new URL("/dining-home", request.url));
+  }
+
   if (pathname === "/under-construction" || ALWAYS_ALLOWED_ROUTES.has(pathname)) {
     return NextResponse.next();
   }

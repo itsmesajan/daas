@@ -381,9 +381,26 @@ export function getDealOfTheDay(): Promise<DealOfTheDay | null> {
 }
 
 // ── Virtual Tour ─────────────────────────────────────────────────────────────
+// The `virtual_tour` endpoint returns one tour entry per room (each scene set
+// matched to a room only by its own `tour.title` — there's no slug/id link
+// back to a `subpackage` room record), not a single property-wide tour.
 
-export function getVirtualTour(): Promise<VirtualTourData | null> {
-  return fetchAPI<VirtualTourData>("virtual_tour");
+export async function getVirtualTours(): Promise<VirtualTourData[]> {
+  const data = await fetchAPI<VirtualTourData[]>("virtual_tour");
+  return Array.isArray(data) ? data : [];
+}
+
+/** The /virtual-tour page's lead tour — first entry, since there's no single "whole property" tour. */
+export async function getVirtualTour(): Promise<VirtualTourData | null> {
+  const tours = await getVirtualTours();
+  return tours[0] ?? null;
+}
+
+/** One room's own 360° tour, matched by its title against `tour.title` — null when the CMS has none for it yet. */
+export async function findVirtualTourByTitle(title: string): Promise<VirtualTourData | null> {
+  const tours = await getVirtualTours();
+  const target = title.trim().toLowerCase();
+  return tours.find((t) => t.tour.title.trim().toLowerCase() === target) ?? null;
 }
 
 // ── Slideshow ─────────────────────────────────────────────────────────────────

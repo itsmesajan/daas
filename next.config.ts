@@ -17,6 +17,11 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Lets the dev server accept the dining subdomain locally (e.g.
+  // dining.localhost:3000) — Next.js blocks cross-origin dev requests by
+  // default, this only relaxes that for local testing; the real
+  // dining.hoteldaaas.com subdomain in production isn't affected by this.
+  allowedDevOrigins: ["*.localhost"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com", pathname: "/**" },

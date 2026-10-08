@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 import NavLink from "./NavLink";
 import MobileMenu from "./MobileMenu";
+import LanguageSwitcher from "@/components/i18n/LanguageSwitcher";
 import { SITE_FALLBACK } from "@/config/site";
 import { NavbarClientProps, NavItem } from "@/types";
 
@@ -236,6 +237,8 @@ export default function BentoNavbar({ site, menu, phone, phoneE164, bookingUrl }
               );
             })}
         </nav>
+
+        <LanguageSwitcher />
 
         <Link
           href={bookingUrl || SITE_FALLBACK.bookingUrl}

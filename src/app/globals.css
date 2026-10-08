@@ -323,3 +323,24 @@ section[id] {
   font-family: var(--font-bookman);
   font-weight: 700;
 }
+
+/* ============================================================
+   GOOGLE TRANSLATE — src/components/i18n/LanguageSwitcher.tsx drives the
+   widget headlessly via its own trigger UI, so Google's own injected
+   top banner/toolbar and the little "powered by Google" gadget are hidden.
+   ============================================================ */
+
+.goog-te-banner-frame,
+.skiptranslate > iframe,
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+body.skiptranslate {
+  position: static !important;
+}

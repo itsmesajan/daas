@@ -4,8 +4,9 @@ import { Check, Clock, Info, PawPrint, UserRound } from "lucide-react";
 import CategoryDetailSection from "@/components/ui/CategoryDetailSection";
 import Reveal from "@/components/ui/Reveal";
 import BookingWidget from "@/components/rooms/BookingWidget";
+import VirtualTourViewer from "@/components/virtual-tour/VirtualTourViewer";
 import { buildMetadata, buildPackageSchemas } from "@/lib/metadata";
-import { findCategoryItem, getCategoryItems, getSiteRegulars } from "@/lib/data";
+import { findCategoryItem, getCategoryItems, getSiteRegulars, findVirtualTourByTitle } from "@/lib/data";
 import { resolveHeroImages } from "@/lib/images";
 import { toRoomItems } from "@/lib/listingItems";
 import { CATEGORY_IDS, SITE_URL, business } from "@/config/site";
@@ -46,6 +47,8 @@ export default async function RoomDetailPage({
     getSiteRegulars(),
   ]);
   if (!room) notFound();
+
+  const virtualTour = await findVirtualTourByTitle(room.title);
 
   const images = resolveHeroImages(room, room.fb_img);
 
@@ -182,14 +185,25 @@ export default async function RoomDetailPage({
     </>
   );
 
-  const belowCardSlot = room.content_1 ? (
-    <Reveal delay={120} className="bento-card p-6 md:p-8 mt-5">
-      <div
-        className="text-bento-ink-soft text-sm leading-relaxed [&_h3]:bento-title [&_h3]:text-xl [&_h3]:mb-4 [&_.grid]:grid [&_.grid]:gap-3"
-        dangerouslySetInnerHTML={{ __html: room.content_1 }}
-      />
-    </Reveal>
-  ) : undefined;
+  const belowCardSlot =
+    virtualTour || room.content_1 ? (
+      <>
+        {virtualTour && (
+          <Reveal delay={120} className="mt-5">
+            <p className="bento-title text-xl mb-4">360° Room Tour</p>
+            <VirtualTourViewer data={virtualTour} />
+          </Reveal>
+        )}
+        {room.content_1 && (
+          <Reveal delay={140} className="bento-card p-6 md:p-8 mt-5">
+            <div
+              className="text-bento-ink-soft text-sm leading-relaxed [&_h3]:bento-title [&_h3]:text-xl [&_h3]:mb-4 [&_.grid]:grid [&_.grid]:gap-3"
+              dangerouslySetInnerHTML={{ __html: room.content_1 }}
+            />
+          </Reveal>
+        )}
+      </>
+    ) : undefined;
 
   return (
     <>
