@@ -249,15 +249,18 @@ export default function Popup({ popupData }: { popupData?: any[] }) {
                 return (
                   <SwiperSlide key={index} className="w-full bg-white">
                     {isImage ? (
-                      <Link href={linkHref} className="group block w-full relative">
+                      <Link href={linkHref} className="group block w-full relative aspect-4/5">
+                        {/* Fixed aspect box, not intrinsic width/height — the CMS gives no
+                            real dimensions, and letting the box follow the actual loaded
+                            image's aspect ratio made the (vertically-centered) modal jump
+                            the moment each image finished loading. */}
                         <Image
                           src={imgSrc}
                           alt={content.title || "Promotional offer"}
-                          width={800}
-                          height={800}
+                          fill
                           priority={index === 0}
                           sizes="(max-width: 640px) 90vw, (max-width: 1024px) 440px, 500px"
-                          className="w-full h-auto"
+                          className="object-cover"
                         />
                         <span className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 px-4 py-3 bg-gradient-to-t from-bento-ink/70 to-transparent text-white text-xs sm:text-sm font-medium tracking-wide opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
                           <span className="truncate">{content.title}</span>
