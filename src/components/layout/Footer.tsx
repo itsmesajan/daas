@@ -40,7 +40,7 @@ export default async function BentoFooter() {
           <NewsletterSubscribe />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.85fr_0.85fr_1fr] gap-10 pb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.85fr_0.85fr_1.2fr] gap-10 pb-10">
           <div>
             <div className="flex items-center gap-2.5 mb-5">
               <Link href="/" className="inline-block mb-4">

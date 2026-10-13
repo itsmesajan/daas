@@ -33,7 +33,7 @@ export default function WellnessTabs({ tabs }: { tabs: WellnessTabItem[] }) {
             <p className="bento-pill mb-4">Wellness Experiences</p>
             <h2 className="bento-title text-3xl md:text-4xl">Spa, fitness &amp; swimming</h2>
           </div>
-          <Link href="/facilities#wellness" className="bento-link w-fit shrink-0 mb-1 hidden sm:inline-flex">
+          <Link href="/facilities" className="bento-link w-fit shrink-0 mb-1 hidden sm:inline-flex">
             View all facilities
             <ArrowUpRight size={14} />
           </Link>
@@ -125,7 +125,7 @@ export default function WellnessTabs({ tabs }: { tabs: WellnessTabItem[] }) {
 
         {/* Mobile CTA */}
         <Reveal delay={160} className="mt-6 flex justify-center sm:hidden">
-          <Link href="/facilities#wellness" className="bento-link w-fit">
+          <Link href="/facilities" className="bento-link w-fit">
             View all facilities
             <ArrowUpRight size={14} />
           </Link>

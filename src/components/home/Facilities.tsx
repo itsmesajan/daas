@@ -22,7 +22,7 @@ function HighlightItem({
   return (
     <Reveal delay={delay} className="w-full">
       <Link
-        href={`/service/${item.slug}`}
+        href={`/facilities`}
         className={`bento-card flex items-center gap-4 p-4 md:p-5 group hover:border-accent-orange/30 transition-colors ${
           reverse ? "flex-row-reverse text-right" : ""
         }`}
