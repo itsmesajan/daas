@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Mail } from "lucide-react";
 import { getMenuItems, getSiteRegulars, getSocialGroup } from "@/lib/data";
 import { SITE_FALLBACK } from "@/config/site";
+import NewsletterSubscribe from "./NewsletterSubscribe";
 
 export default async function BentoFooter() {
   const exploreLinks = await getMenuItems(2);
@@ -23,6 +25,21 @@ export default async function BentoFooter() {
   return (
     <footer id="contact" className="p-4 pb-20 lg:pb-4">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-6 md:px-10 py-12">
+        <div className="bento-card p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 mb-10">
+          <div className="flex items-center gap-4">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent-orange/10 border border-accent-orange/20">
+              <Mail size={20} className="text-accent-orange" />
+            </span>
+            <div>
+              <p className="text-sm font-bold text-bento-ink mb-1">Stay Updated</p>
+              <p className="text-bento-ink-soft text-sm max-w-sm">
+                Subscribe for updates on offers, events, and our opening.
+              </p>
+            </div>
+          </div>
+          <NewsletterSubscribe />
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.85fr_0.85fr_1fr] gap-10 pb-10">
           <div>
             <div className="flex items-center gap-2.5 mb-5">

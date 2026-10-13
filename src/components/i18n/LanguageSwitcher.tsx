@@ -24,7 +24,7 @@ import flagNe from "@/assets/flag/nepal.png";
  */
 const LANGUAGES = [
   { code: "en", label: "English", flag: flagEn },
-  // { code: "ne", label: "नेपाली", flag: flagNe },
+  { code: "ne", label: "नेपाली", flag: flagNe },
   { code: "zh-CN", label: "中文", flag: flagZh },
   { code: "ru", label: "Русский", flag: flagRu },
   { code: "fr", label: "Français", flag: flagFr },
@@ -40,7 +40,7 @@ type LangCode = (typeof LANGUAGES)[number]["code"];
  * used to pick a sensible default on a visitor's very first visit (no
  * `googtrans` cookie yet); a manual pick always wins afterwards. */
 const COUNTRY_TO_LANG: Record<string, LangCode> = {
-  // NP: "ne",
+  NP: "ne",
   CN: "zh-CN",
   HK: "zh-CN",
   TW: "zh-CN",
