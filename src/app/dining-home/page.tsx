@@ -26,7 +26,7 @@ import { CATEGORY_IDS, SITE_URL, SITE_FALLBACK, address } from "@/config/site";
 
 // The restaurant's live menu + online ordering, hosted on Rojai (the CMS
 // vendor's own menu/ordering product) — there's no separate in-house system.
-const MENU_URL = "https://menu.rojai.com/restaurant/cCsU9d";
+const MENU_URL = "https://www.menu.rojai.com/restaurant/BjiHWi";
 
 // PLACEHOLDER — Hotel Daaas has no PDF menu of its own yet. Using the sibling
 // Courtyard property's PDF for now; swap this for the real file once one exists.
@@ -88,7 +88,7 @@ export default async function DiningHomePage() {
       {/* ── Header ── */}
       <header className="fixed top-2 sm:top-4 left-0 right-0 z-50 px-3 sm:px-4">
         <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto bento-card px-4 sm:px-5 md:px-7 h-16 flex items-center gap-2 justify-between">
-          <a href={SITE_URL} aria-label={`Back to ${siteName}`} className="relative block shrink-0">
+          <a href="/" aria-label={`Back to ${siteName}`} className="relative block shrink-0">
             {logoUrl && <Image src={logoUrl} alt={siteName} width={1500}
               height={1500}
               className="w-[160px] sm:w-[300px] lg:w-[240px] h-auto max-h-10 sm:max-h-12object-contain object-left" priority />}
