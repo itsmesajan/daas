@@ -174,7 +174,7 @@ export default async function RoomDetailPage({
 
   const actionSlot = (
     <>
-      <BookingWidget />
+      <BookingWidget bookingUrl={siteRegulars?.booking_code} />
       <div className="bento-card p-6 md:p-8 flex items-start gap-3">
         <Info size={16} className="text-accent-orange shrink-0 mt-0.5" />
         <div>

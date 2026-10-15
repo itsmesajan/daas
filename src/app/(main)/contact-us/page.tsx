@@ -13,8 +13,8 @@ export default function ContactUsPage() {
     <section className="pt-28 md:pt-32 pb-16">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
         <Reveal className="mb-10 px-2 text-center">
-          <p className="bento-pill mx-auto w-fit mb-4">Get In Touch</p>
-          <h1 className="bento-title text-3xl md:text-5xl mb-3">Contact Us</h1>
+          <p className="bento-pill mx-auto w-fit mb-4">Contact Us</p>
+          <h1 className="bento-title text-3xl md:text-5xl mb-3">Get In Touch</h1>
           <p className="text-bento-ink-soft text-sm max-w-lg mx-auto">
             We're here to help make your stay effortless. Contact our team for room reservations, event space inquiries, or general assistance.
           </p>

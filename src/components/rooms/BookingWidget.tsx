@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { CalendarCheck } from "lucide-react";
 import DateField from "@/components/ui/DateField";
 import { SITE_FALLBACK } from "@/config/site";
@@ -10,12 +9,24 @@ interface BookingWidgetProps {
   bookingUrl?: string;
 }
 
+function tomorrow(): Date {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  return d;
+}
+
 export default function BookingWidget({ bookingUrl }: BookingWidgetProps) {
-  const router = useRouter();
-  const [checkIn, setCheckIn] = useState<Date | undefined>();
-  const [checkOut, setCheckOut] = useState<Date | undefined>();
+  // Defaults to today/tomorrow so the widget is ready to submit immediately
+  // rather than forcing a guest to pick dates before they can even see
+  // availability.
+  const [checkIn, setCheckIn] = useState<Date | undefined>(() => new Date());
+  const [checkOut, setCheckOut] = useState<Date | undefined>(tomorrow);
   const [error, setError] = useState<string | null>(null);
 
+  // siteregulars.booking_code is the hotel's actual booking-engine URL, on a
+  // different domain (mayurstay.com) than this site — an external redirect,
+  // not an internal route, so it needs a real browser navigation rather than
+  // Next's client-side router (which is for in-app routes only).
   const resolvedUrl = bookingUrl || SITE_FALLBACK.bookingUrl;
 
   const onSubmit = (e: React.FormEvent) => {
@@ -25,7 +36,7 @@ export default function BookingWidget({ bookingUrl }: BookingWidgetProps) {
       return;
     }
     setError(null);
-    router.push(resolvedUrl);
+    window.location.href = resolvedUrl;
   };
 
   return (
@@ -37,7 +48,7 @@ export default function BookingWidget({ bookingUrl }: BookingWidgetProps) {
         <DateField label="Check-out date" value={checkOut} onChange={setCheckOut} minDate={checkIn ?? new Date()} />
         {error && <p className="text-red-500 text-xs">{error}</p>}
 
-        <button type="submit" className="bento-btn w-full justify-center mt-2">
+        <button type="submit" className="cursor-pointer bento-btn w-full justify-center mt-2">
           <CalendarCheck size={15} />
           Check Availability
         </button>

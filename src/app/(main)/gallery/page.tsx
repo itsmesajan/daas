@@ -20,9 +20,9 @@ export default async function GalleryPage() {
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
         <Reveal className="mb-10 px-2 text-center">
           <p className="bento-pill mx-auto w-fit mb-4">Gallery</p>
-          <h1 className="bento-title text-3xl md:text-5xl mb-3">See Hotel Daaas</h1>
+          <h1 className="bento-title text-3xl md:text-5xl mb-3">A Visual Tour</h1>
           <p className="text-bento-ink-soft text-sm max-w-lg mx-auto">
-            A closer look at our rooms, dining venues, and event spaces.
+            Browse photo highlights across our rooms, dining areas, event halls, and wellness center.
           </p>
         </Reveal>
 
