@@ -35,36 +35,6 @@ const LANGUAGES = [
 ] as const;
 
 type LangCode = (typeof LANGUAGES)[number]["code"];
-
-/** Best-effort guess at a visitor's language from their IP's country — only
- * used to pick a sensible default on a visitor's very first visit (no
- * `googtrans` cookie yet); a manual pick always wins afterwards. */
-const COUNTRY_TO_LANG: Record<string, LangCode> = {
-  NP: "ne",
-  CN: "zh-CN",
-  HK: "zh-CN",
-  TW: "zh-CN",
-  RU: "ru",
-  FR: "fr",
-  DE: "de",
-  AT: "de",
-  CH: "de",
-  ES: "es",
-  MX: "es",
-  AR: "es",
-  CO: "es",
-  CL: "es",
-  PE: "es",
-  SA: "ar",
-  AE: "ar",
-  EG: "ar",
-  QA: "ar",
-  KW: "ar",
-  OM: "ar",
-  BH: "ar",
-  IN: "hi",
-};
-
 let scriptInjected = false;
 let patchedRemoveChild = false;
 
@@ -171,20 +141,7 @@ export default function LanguageSwitcher() {
     const existing = getGoogleLangFromCookie();
     if (existing) {
       setCurrent(existing);
-      return;
     }
-
-    // No standing choice yet — this is a first visit, so guess a default
-    // from the visitor's IP country. Never overrides an explicit pick.
-    fetch("https://get.geojs.io/v1/ip/country.json")
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data: { country?: string } | null) => {
-        const lang = data?.country ? COUNTRY_TO_LANG[data.country] : undefined;
-        if (lang) translateTo(lang);
-      })
-      .catch(() => {
-        // Geo lookup failing just means we stay on English — not fatal.
-      });
   }, []);
 
   const activeLabel = LANGUAGES.find((l) => l.code === current) ?? LANGUAGES[0];

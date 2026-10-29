@@ -27,7 +27,7 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline' https://www.gstatic.com https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "frame-src https://translate.google.com https://translate.googleapis.com",
-      "connect-src 'self' https://translate.googleapis.com https://translate-pa.googleapis.com https://get.geojs.io https://www.mayurstay.com https://mayurstay.com",
+      "connect-src 'self' https://translate.googleapis.com https://translate-pa.googleapis.com https://www.mayurstay.com https://mayurstay.com",
       "img-src 'self' data: blob: https: http:",
       "worker-src blob:",
     ].join("; "),
