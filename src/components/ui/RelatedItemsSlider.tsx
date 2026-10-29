@@ -13,9 +13,9 @@ export interface RelatedItem {
   title: string;
   image: StaticImageData | string;
   badge?: string;
-  sub_title?:string;
-  size?:string;
-  price?:string;
+  sub_title?: string;
+  size?: string;
+  price?: string;
   description?: string;
   features?: { icon?: ReactNode; label: string }[];
   ctaLabel?: string;
@@ -90,7 +90,7 @@ export default function RelatedItemsSlider({
                 {item.features && item.features.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-4">
                     {item.features.map((f) => (
-                      <span key={f.label} className="flex items-center gap-1.5 bento-pill !py-1 !text-[0.6rem]">
+                      <span key={f.label} className="flex items-center gap-1.5 bento-pill !py-1 !text-[0.65rem]">
                         {f.icon}
                         {f.label}
                       </span>

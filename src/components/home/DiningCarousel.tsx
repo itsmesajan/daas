@@ -80,10 +80,10 @@ export default function DiningCarousel({ venues }: { venues: Package[] }) {
                       {v.title}
                     </p>
                     <div className="flex flex-wrap items-center gap-1.5">
-                      <span className="bento-pill !py-0.5 !text-[0.55rem] !px-2">
+                      <span className="bento-pill !py-0.5 !text-[0.75rem] !px-2">
                         {v.size}
                       </span>
-                      <span className="text-bento-ink-soft text-[0.6rem]">{v.lunch}</span>
+                      <span className="text-bento-ink-soft text-[0.75rem]">{v.lunch}</span>
                     </div>
                   </div>
                 </div>

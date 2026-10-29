@@ -101,7 +101,7 @@ export default function HallCarousel({ venues }: { venues: Package[] }) {
             <div className="flex flex-col p-4 md:p-6 bg-white/20 backdrop-blur-2xl border-l border-white/20 md:min-h-0 md:overflow-y-auto">
               {/* Top label */}
               <div className="pb-4 px-2">
-                <p className="text-[0.7rem] font-bold tracking-widest uppercase text-bento-ink-soft/80">
+                <p className="text-[0.75rem] font-bold tracking-widest uppercase text-bento-ink-soft/80">
                   Select a space
                 </p>
               </div>
@@ -123,7 +123,7 @@ export default function HallCarousel({ venues }: { venues: Package[] }) {
                     >
                       {/* Number */}
                       <div
-                        className={`shrink-0 mt-0.5 w-8 h-8 rounded-full flex items-center justify-center text-[0.65rem] font-bold transition-all duration-300 shadow-sm ${
+                        className={`shrink-0 mt-0.5 w-8 h-8 rounded-full flex items-center justify-center text-[0.75rem] font-bold transition-all duration-300 shadow-sm ${
                           isActive
                             ? "bg-accent-blue text-white shadow-accent-blue/30"
                             : "bg-white/50 backdrop-blur-sm text-bento-ink-soft group-hover:bg-white/80 group-hover:text-bento-ink"
@@ -148,11 +148,11 @@ export default function HallCarousel({ venues }: { venues: Package[] }) {
 
                         {/* Capacity + area chips */}
                         <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                          <span className="flex items-center gap-1.5 text-[0.65rem] text-bento-ink-soft font-semibold bg-white/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/50">
+                          <span className="flex items-center gap-1.5 text-[0.75rem] text-bento-ink-soft font-semibold bg-white/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/50">
                             <Maximize2 size={10} className="text-accent-orange" />
                             {s.size}
                           </span>
-                          <span className="flex items-center gap-1.5 text-[0.65rem] text-bento-ink-soft font-semibold bg-white/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/50">
+                          <span className="flex items-center gap-1.5 text-[0.75rem] text-bento-ink-soft font-semibold bg-white/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/50">
                             <Users size={10} className="text-accent-orange" />
                             {s.cover}
                           </span>

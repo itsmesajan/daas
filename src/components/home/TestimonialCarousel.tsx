@@ -96,7 +96,7 @@ export default function TestimonialCarousel({ items }: { items: TestimonialItem[
                     ))}
                   </div>
 
-                  <p className="font-display italic text-lg md:text-xl leading-relaxed text-bento-ink max-w-xl h-28 md:h-32 overflow-y-auto px-1">
+                  <p className="font-display italic text-md md:text-lg leading-relaxed text-bento-ink max-w-xl h-28 md:h-32 overflow-y-auto px-1">
                     &ldquo;{active.quote}&rdquo;
                   </p>
 

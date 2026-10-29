@@ -60,7 +60,7 @@ export default async function Rooms() {
               <div className="absolute top-5 left-5 right-5 flex items-start justify-between">
                 <span className="bento-pill-dark text-xs">Most Popular</span>
                 {firstPrice && (
-                  <span className={`text-[0.62rem] font-semibold tracking-wide px-3 py-1 rounded-full ${tagColors[0]}`}>
+                  <span className={`text-[0.75rem] font-semibold tracking-wide px-3 py-1 rounded-full ${tagColors[0]}`}>
                     {firstPrice}
                   </span>
                 )}
@@ -138,9 +138,9 @@ export default async function Rooms() {
                     <div className="flex items-end justify-between gap-3">
                       <div>
                         <h3 className="text-white font-bold text-base leading-tight mb-1">{room.title}</h3>
-                        <p className="text-white/65 text-[0.7rem] leading-relaxed line-clamp-2">
+                        {/* <p className="text-white/65 text-[0.75rem] leading-relaxed line-clamp-2">
                           {room.sub_title}
-                        </p>
+                        </p> */}
                       </div>
                       <div className="shrink-0 w-8 h-8 rounded-full bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center transition-all duration-300 group-hover:bg-accent-orange group-hover:border-accent-orange">
                         <ArrowUpRight size={13} className="text-white" />

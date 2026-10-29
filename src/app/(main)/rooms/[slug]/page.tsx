@@ -189,7 +189,7 @@ export default async function RoomDetailPage({
     virtualTour || room.content_1 ? (
       <>
         {virtualTour && (
-          <Reveal delay={120} className="mt-5">
+          <Reveal delay={120} className="mt-10">
             <p className="bento-title text-xl mb-4">360° Room Tour</p>
             <VirtualTourViewer data={virtualTour} />
           </Reveal>

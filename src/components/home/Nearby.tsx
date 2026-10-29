@@ -10,20 +10,20 @@ import { getSiteRegulars } from "@/lib/data";
 // unrelated Himalayan trekking scene and a mountain village, two more were
 // dead links). Wikimedia only serves a fixed set of thumbnail widths, hence
 // the specific "500px-" in each URL.
-const images: Record<string, string> = {
-  "Nagarjun National Park":
-    "https://images.unsplash.com/photo-1687743959595-cbe592478f9b?q=80&w=1173&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "Swayambhunath Stupa":
-    "https://images.unsplash.com/photo-1560747643-308411529b15?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "Kathmandu Durbar Square":
-    "https://images.unsplash.com/photo-1706188370039-e0cf9bd6ea16?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "Pashupatinath Temple":
-    "https://images.unsplash.com/photo-1764049768307-3c6a95d7f3b5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "Boudhanath Stupa":
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Boudhanath_stupa_%2C_Kathmandu%2C_Nepal.jpg/500px-Boudhanath_stupa_%2C_Kathmandu%2C_Nepal.jpg",
-  "Tribhuvan International Airport":
-    "https://images.unsplash.com/photo-1704870872623-472e2568a1ac?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-};
+// const images: Record<string, string> = {
+//   "Nagarjun National Park":
+//     "https://images.unsplash.com/photo-1687743959595-cbe592478f9b?q=80&w=1173&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//   "Swayambhunath Stupa":
+//     "https://images.unsplash.com/photo-1560747643-308411529b15?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//   "Kathmandu Durbar Square":
+//     "https://images.unsplash.com/photo-1706188370039-e0cf9bd6ea16?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//   "Pashupatinath Temple":
+//     "https://images.unsplash.com/photo-1764049768307-3c6a95d7f3b5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//   "Boudhanath Stupa":
+//     "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Boudhanath_stupa_%2C_Kathmandu%2C_Nepal.jpg/500px-Boudhanath_stupa_%2C_Kathmandu%2C_Nepal.jpg",
+//   "Tribhuvan International Airport":
+//     "https://images.unsplash.com/photo-1704870872623-472e2568a1ac?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+// };
 
 export default async function Nearby() {
   const nearbyLocations = await fetchAPI<any>("nearby") || []; 
@@ -48,7 +48,7 @@ export default async function Nearby() {
               <div className="bento-card group overflow-hidden h-full flex flex-col">
                 <div className="relative aspect-[4/3]">
                   <Image
-                    src={loc.image_upload || images[loc.title] || siteRegulars.logo_upload}
+                    src={loc.image_upload || siteRegulars.logo_upload}
                     alt={loc.title}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"

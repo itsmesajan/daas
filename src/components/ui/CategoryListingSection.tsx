@@ -58,7 +58,7 @@ export default function CategoryListingSection({
                   {item.features && item.features.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-4">
                       {item.features.map((f) => (
-                        <span key={f.label} className="flex items-center gap-1.5 bento-pill !py-1 !text-[0.6rem]">
+                        <span key={f.label} className="flex items-center gap-1.5 bento-pill !py-1 !text-[0.65rem]">
                           {f.icon}
                           {f.label}
                         </span>

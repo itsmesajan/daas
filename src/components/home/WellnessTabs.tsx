@@ -50,7 +50,7 @@ export default function WellnessTabs({ tabs }: { tabs: WellnessTabItem[] }) {
                   key={t.slug}
                   type="button"
                   onClick={() => setActive(t.slug)}
-                  className={`relative flex items-center gap-1.5 shrink-0 px-4 py-2 rounded-full text-[0.72rem] font-semibold tracking-wide transition-all duration-300 border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange ${
+                  className={`relative flex items-center gap-1.5 shrink-0 px-4 py-2 rounded-full text-[0.8125rem] font-semibold tracking-wide transition-all duration-300 border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange ${
                     isActive
                       ? "bg-bento-ink text-white border-bento-ink"
                       : "bg-white/50 text-bento-ink-soft border-white/80 hover:bg-white/80 hover:text-bento-ink"
@@ -105,7 +105,7 @@ export default function WellnessTabs({ tabs }: { tabs: WellnessTabItem[] }) {
                     {/* <div className="w-8 h-8 rounded-full bg-accent-orange/10 border border-accent-orange/20 flex items-center justify-center">
                       <Icon size={14} className="text-accent-orange" />
                     </div> */}
-                    <p className="bento-pill !text-[0.62rem]">{tab.label}</p>
+                    <p className="bento-pill !text-[0.75rem]">{tab.label}</p>
                   </div>
 
                   <h3 className="bento-title text-2xl md:text-[1.75rem] mb-4">{tab.title}</h3>

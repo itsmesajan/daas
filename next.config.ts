@@ -23,6 +23,7 @@ const nextConfig: NextConfig = {
   // dining.hoteldaaas.com subdomain in production isn't affected by this.
   allowedDevOrigins: ["*.localhost"],
   images: {
+    unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com", pathname: "/**" },
       { protocol: "https", hostname: "plus.unsplash.com", pathname: "/**" },

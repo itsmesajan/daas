@@ -67,6 +67,15 @@
   --font-display: var(--font-display-stack);
 }
 
+html {
+  /* Fluid root: 16px on small screens → 18px on large (1920px+).
+     Every rem value in the site scales up proportionally,
+     so 0.75rem stays 12px on mobile but reaches ~13.5px on desktop. */
+  font-size: clamp(1rem, 0.875rem + 0.417vw, 1.125rem);
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -168,7 +177,7 @@ section[id] {
   background: rgba(255, 255, 255, 0.45);
   border: 1px solid var(--glass-border);
   box-shadow: 0 20px 60px 1px #10182838, inset 0 1px 0 0px #fffc, inset 0 0 0 1px #ffffff26;
-  font-size: 0.68rem;
+  font-size: 0.8125rem; /* 13px */
   letter-spacing: 0.08em;
   font-weight: 600;
 }
@@ -184,7 +193,7 @@ section[id] {
   backdrop-filter: blur(16px) saturate(1.5);
   -webkit-backdrop-filter: blur(16px) saturate(1.5);
   color: #ffffff;
-  font-size: 0.68rem;
+  font-size: 0.75rem; /* 12px */
   letter-spacing: 0.08em;
   font-weight: 600;
 }
@@ -197,7 +206,7 @@ section[id] {
   border-radius: 999px;
   background: var(--bento-ink);
   color: #ffffff;
-  font-size: 0.8rem;
+  font-size: 0.875rem; /* 14px */
   font-weight: 600;
   transition: transform 0.25s ease, background 0.25s ease;
 }
@@ -218,7 +227,7 @@ section[id] {
   backdrop-filter: blur(16px) saturate(1.5);
   -webkit-backdrop-filter: blur(16px) saturate(1.5);
   color: var(--bento-ink);
-  font-size: 0.8rem;
+  font-size: 0.875rem; /* 14px */
   font-weight: 600;
   transition: transform 0.25s ease;
 }
@@ -231,7 +240,7 @@ section[id] {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.8rem;
+  font-size: 0.875rem; /* 14px */
   font-weight: 600;
   color: var(--bento-ink);
   border-bottom: 1px solid var(--bento-ink);

@@ -276,9 +276,9 @@ export default function HeroClient({ slideshow = [] }: HeroClientProps) {
               </span>
 
               {currentTitle && (
-                <h1 className="bento-title text-[2.2rem] sm:text-[3rem] lg:text-[3.8rem] leading-[1.15] line-clamp-2 shrink-0">
+                <p className="bento-title text-[2.2rem] sm:text-[3rem] lg:text-[3.5rem] leading-[1.15] line-clamp-2 shrink-0 pb-2">
                   {currentTitle}
-                </h1>
+                </p>
               )}
 
               {currentDesc && (

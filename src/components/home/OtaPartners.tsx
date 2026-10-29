@@ -28,7 +28,7 @@ export default async function OtaPartners() {
                 </div>
                 <p className="bento-title text-sm whitespace-nowrap">4-Star Hotel</p>
               </div>
-              <p className="hidden sm:block text-bento-ink-soft text-xs leading-relaxed max-w-[200px]">
+              <p className="hidden sm:block text-bento-ink-soft leading-relaxed max-w-[290px]">
                 A new 4-star landmark opening November 2026 in Balaju, Kathmandu.
               </p>
             </div>

@@ -57,7 +57,7 @@ export default function Facilities({ highlightItems }: { highlightItems: Facilit
             <p className="text-bento-ink-soft text-sm mt-3 max-w-md mx-auto">Every amenity, every experience — steps from your room.</p>
           </Reveal>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-6 items-center max-w-[1050px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-6 items-center max-w-[1200px] mx-auto">
             <div className="order-2 lg:order-1 flex flex-col gap-4 w-full">
               {left.map((item, i) => (
                 <HighlightItem key={item.title} item={item} delay={i * 80} reverse />
