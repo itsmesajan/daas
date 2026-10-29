@@ -13,6 +13,25 @@ const securityHeaders = [
     key: "Permissions-Policy",
     value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
   },
+  {
+    // Google Translate (legacy element.js) needs:
+    //   script-src  — to load translate_a/element.js and its follow-on chunks
+    //   frame-src   — the hidden translation iframe Google injects
+    //   connect-src — XHR/fetch calls to translate.googleapis.com
+    //   img-src     — flag / translate-bar images served from Google CDN
+    //   style-src   — inline styles the widget injects
+    key: "Content-Security-Policy",
+    value: [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://translate.google.com https://translate.googleapis.com https://www.gstatic.com",
+      "style-src 'self' 'unsafe-inline' https://www.gstatic.com https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "frame-src https://translate.google.com https://translate.googleapis.com",
+      "connect-src 'self' https://translate.googleapis.com https://get.geojs.io https://www.mayurstay.com https://mayurstay.com",
+      "img-src 'self' data: blob: https: http:",
+      "worker-src blob:",
+    ].join("; "),
+  },
 ];
 
 const nextConfig: NextConfig = {
