@@ -170,7 +170,7 @@ export default function Popup({ popupData }: { popupData?: any[] }) {
 
   // Send focus into the dialog for keyboard/screen-reader users.
   useEffect(() => {
-    if (isOpen) closeBtnRef.current?.focus();
+    if (isOpen) closeBtnRef.current?.focus({ preventScroll: true });
   }, [isOpen]);
 
   // Escape to close, arrow keys to navigate.
@@ -196,29 +196,31 @@ export default function Popup({ popupData }: { popupData?: any[] }) {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-100 flex items-center justify-center bg-bento-ink/70 backdrop-blur-sm px-3"
+          className="fixed inset-0 z-100 flex items-center justify-center bg-bento-ink/70 backdrop-blur-sm p-3 sm:p-4 overflow-y-auto transform-gpu"
           onClick={closePopup}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.25 }}
           role="presentation"
         >
-          {/* Fixed responsive width — each slide's own content sets the
-              height (images via their natural size, video via aspect
-              ratio), and Swiper's autoHeight animates the container
-              between them. */}
+          {/* Constrained responsive width ensures the entire card stays within
+              85vh without triggering scrollbars or layout thrashing in Firefox. */}
           <motion.div
             key="popup-container"
-            className="relative mx-auto w-full max-w-[440px] lg:max-w-[500px] max-h-[85vh] overflow-y-auto overflow-x-hidden rounded-3xl border border-white/70 bg-white/95 backdrop-blur-xl shadow-[0_30px_80px_-20px_rgba(16,24,40,0.4)]"
+            className="relative mx-auto w-full max-w-[min(440px,calc((85vh-48px)*0.8))] lg:max-w-[min(500px,calc((85vh-48px)*0.8))] overflow-hidden rounded-3xl border border-white/70 bg-white shadow-[0_30px_80px_-20px_rgba(16,24,40,0.4)] transform-gpu"
             onClick={(e) => e.stopPropagation()}
-            initial={{ scale: 0.92, opacity: 0 }}
+            initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.92, opacity: 0 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
+            exit={{ scale: 0.95, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
             role="dialog"
             aria-modal="true"
             aria-label="Promotional offer"
+            style={{
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+            }}
           >
             <button
               ref={closeBtnRef}
@@ -236,7 +238,13 @@ export default function Popup({ popupData }: { popupData?: any[] }) {
               onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
               loop={hasMultipleSlides}
               autoHeight
-              className="w-full"
+              observer={true}
+              observeParents={true}
+              className="w-full transform-gpu"
+              style={{
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+              }}
             >
               {allSlides.map((content: any, index: number) => {
                 const isImage = content.popupType === "image";
@@ -247,7 +255,14 @@ export default function Popup({ popupData }: { popupData?: any[] }) {
                 const isVideoLoaded = loadedVideos.has(index);
 
                 return (
-                  <SwiperSlide key={index} className="w-full bg-white">
+                  <SwiperSlide
+                    key={index}
+                    className="w-full bg-white transform-gpu overflow-hidden"
+                    style={{
+                      backfaceVisibility: "hidden",
+                      WebkitBackfaceVisibility: "hidden",
+                    }}
+                  >
                     {isImage ? (
                       <Link href={linkHref} className="group block w-full relative aspect-4/5">
                         {/* Fixed aspect box, not intrinsic width/height — the CMS gives no
