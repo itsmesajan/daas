@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Reveal from "@/components/ui/Reveal";
+import ServiceIcon from "@/components/ui/ServiceIcon";
 import hotelIllustration from "@/assets/hotel-illustration.png";
 import { banquetSpaces } from "@/data/hotel";
 import type { FacilityHighlight } from "@/lib/listingItems";
@@ -27,9 +28,10 @@ function HighlightItem({
           reverse ? "flex-row-reverse text-right" : ""
         }`}
       >
-        <div className="w-11 h-11 shrink-0 rounded-full bg-accent-orange/10 border border-accent-orange/20 flex items-center justify-center transition-all duration-300 group-hover:bg-accent-orange/15 group-hover:border-accent-orange/35">
-          <i className={`${item.icon} text-accent-orange text-base`} aria-hidden="true" />
-        </div>
+        <ServiceIcon
+          item={item}
+          className="transition-all duration-300 group-hover:bg-accent-orange/15 group-hover:border-accent-orange/35"
+        />
         <div className="min-w-0">
           <p className="text-sm font-semibold text-bento-ink">{item.title}</p>
           <p className="text-xs text-bento-ink-soft mt-0.5 leading-snug">{item.desc}</p>

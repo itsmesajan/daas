@@ -242,6 +242,8 @@ export default function BentoNavbar({ site, menu, phone, phoneE164, bookingUrl }
 
         <Link
           href={bookingUrl || SITE_FALLBACK.bookingUrl}
+          target="_blank"
+          rel="noopener noreferrer"
           className="hidden lg:inline-flex  py-3 px-5 text-sm rounded-full text-white bg-[#1176bb]"
         >
           Book Now

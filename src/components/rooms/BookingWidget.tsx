@@ -36,7 +36,7 @@ export default function BookingWidget({ bookingUrl }: BookingWidgetProps) {
       return;
     }
     setError(null);
-    window.location.href = resolvedUrl;
+    window.open(resolvedUrl, "_blank", "noopener,noreferrer");
   };
 
   return (

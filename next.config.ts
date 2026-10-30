@@ -24,8 +24,8 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com",
-      "style-src 'self' 'unsafe-inline' https://www.gstatic.com https://fonts.googleapis.com",
-      "font-src 'self' https://fonts.gstatic.com",
+      "style-src 'self' 'unsafe-inline' https://www.gstatic.com https://fonts.googleapis.com https://cdnjs.cloudflare.com",
+      "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com",
       "frame-src https://translate.google.com https://translate.googleapis.com",
       "connect-src 'self' https://translate.googleapis.com https://translate-pa.googleapis.com https://www.mayurstay.com https://mayurstay.com",
       "img-src 'self' data: blob: https: http:",

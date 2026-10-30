@@ -1,8 +1,8 @@
-import Image from "next/image";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
+import ServiceIcon from "@/components/ui/ServiceIcon";
 import { buildMetadata } from "@/lib/metadata";
 import { getServicesGrouped } from "@/lib/data";
 import type { Package } from "@/types";
@@ -17,51 +17,6 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     "/facilities",
   );
-}
-
-function CardIcon() {
-  return (
-    <div className="w-11 h-11 shrink-0 rounded-full bg-accent-orange/10 border border-accent-orange/20 flex items-center justify-center">
-      <Sparkles size={17} className="text-accent-orange" strokeWidth={1.75} />
-    </div>
-  );
-}
-
-function ServiceIcon({ item }: { item: Package }) {
-  const imgSrc =
-    item?.image ||
-    (Array.isArray(item?.gallery_images) && item.gallery_images[0]
-      ? typeof item.gallery_images[0] === "string"
-        ? item.gallery_images[0]
-        : item.gallery_images[0].src
-      : undefined);
-
-  if (imgSrc) {
-    return (
-      <div className="w-11 h-11 shrink-0 rounded-full bg-accent-orange/10 border border-accent-orange/20 flex items-center justify-center overflow-hidden p-2">
-        <Image
-          src={imgSrc}
-          alt={item.title || "Icon"}
-          width={44}
-          height={44}
-          className="object-contain w-full h-full filter-[brightness(0)_saturate(100%)_invert(58%)_sepia(96%)_saturate(902%)_hue-rotate(348deg)_brightness(98%)_contrast(88%)]"
-        />
-      </div>
-    );
-  }
-
-  if (item?.icon) {
-    return (
-      <div className="w-11 h-11 shrink-0 rounded-full bg-accent-orange/10 border border-accent-orange/20 flex items-center justify-center">
-        <i
-          className={`${item.icon} text-base text-accent-orange`}
-          aria-hidden="true"
-        />
-      </div>
-    );
-  }
-
-  return <CardIcon />;
 }
 
 function ServiceGrid({ items }: { items: Package[] }) {
