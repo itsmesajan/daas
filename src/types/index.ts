@@ -80,6 +80,8 @@ export interface Package {
   meta_keywords?: string;
   meta_description?: string;
   book_url?: string;
+  /** Menu/brochure PDF URL — empty string or null when none has been uploaded. */
+  pdf?: string | null;
 }
 
 export interface ApiResponse {

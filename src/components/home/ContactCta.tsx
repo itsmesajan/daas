@@ -7,7 +7,7 @@ export default async function ContactCta() {
   const siteRegulars = await getSiteRegulars();
   const phone = siteRegulars?.contact_info || SITE_FALLBACK.phone;
   return (
-    <section className="py-12 md:py-16">
+    <section className="py-8 md:py-10">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
         <Reveal>
           <div className="bento-card relative overflow-hidden px-8 py-14 md:py-20 text-center">

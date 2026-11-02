@@ -37,7 +37,7 @@ export default function TestimonialCarousel({ items }: { items: TestimonialItem[
   const rating = active.rating && active.rating > 0 ? active.rating : 5;
 
   return (
-    <section className="py-12 md:py-16">
+    <section className="py-8 md:py-10">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
         <Reveal className="mb-8 px-2 text-center">
           <p className="bento-pill mx-auto w-fit mb-4">Guest Experience</p>

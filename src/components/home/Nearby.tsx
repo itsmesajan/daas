@@ -30,7 +30,7 @@ export default async function Nearby() {
   const siteRegulars = await getSiteRegulars() || [];
 
   return (
-    <section className="py-12 md:py-16">
+    <section className="py-8 md:py-10">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
         <Reveal className="mb-6 px-2">
           <p className="bento-pill mb-4">The Valley</p>

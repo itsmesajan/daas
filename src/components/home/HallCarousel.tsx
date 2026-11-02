@@ -27,7 +27,7 @@ export default function HallCarousel({ venues }: { venues: Package[] }) {
   }, [paused, reduceMotion, venues.length]);
 
   return (
-    <section id="events" className="py-12 md:py-16">
+    <section id="events" className="py-8 md:py-10">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
         {/* Header */}
         <Reveal className="mb-8 px-2 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
@@ -156,7 +156,10 @@ export default function HallCarousel({ venues }: { venues: Package[] }) {
                             <Users size={10} className="text-accent-orange" />
                             {s.cover}
                           </span>
-                        </div>
+                          <p className="text-bento-ink-soft/90 text-[0.75rem] leading-relaxed pt-2 line-clamp-3">
+                            {htmlToPlainText(s.sub_title)}
+                          </p>
+                        </div>  
 
                         {/* Description — only when active */}
                         <AnimatePresence>
@@ -167,12 +170,9 @@ export default function HallCarousel({ venues }: { venues: Package[] }) {
                               exit={{ opacity: 0, height: 0 }}
                               transition={{ duration: 0.3, ease: "easeOut" }}
                             >
-                              <p className="text-bento-ink-soft/90 text-[0.75rem] leading-relaxed mb-4 pt-2 line-clamp-3">
-                                {htmlToPlainText(s.sub_title)}
-                              </p>
                               <Link
                                 href={`/events/${s.slug}`}
-                                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent-blue/10 text-[0.75rem] font-bold text-accent-blue hover:bg-accent-blue hover:text-white transition-all duration-300"
+                                className="inline-flex items-center gap-1.5 mt-4 px-4 py-2 rounded-lg bg-accent-blue/10 text-[0.75rem] font-bold text-accent-blue hover:bg-accent-blue hover:text-white transition-all duration-300"
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 View Space

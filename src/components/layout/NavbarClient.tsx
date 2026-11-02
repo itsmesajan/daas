@@ -88,7 +88,7 @@ export default function BentoNavbar({ site, menu, phone, phoneE164, bookingUrl }
 
   return (
     <header className="fixed top-2 sm:top-4 left-0 right-0 z-50 px-3 sm:px-4">
-      <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto bento-card px-4 sm:px-5 md:px-7 h-16 flex items-center gap-2 justify-between [&:hover]:transform-none! [&:hover]:bg-(--glass-bg)!">
+      <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto bento-card px-4 sm:px-5 md:px-7 h-16 sm:h-20 flex items-center gap-2 justify-between [&:hover]:transform-none! [&:hover]:bg-(--glass-bg)!">
         <Link
           href="/"
           className="flex items-center shrink-0 min-w-0"
@@ -100,7 +100,7 @@ export default function BentoNavbar({ site, menu, phone, phoneE164, bookingUrl }
               alt={site?.sitename || "Logo"}
               width={1500}
               height={1500}
-              className="w-[160px] sm:w-[300px] lg:w-[240px] h-auto max-h-10 sm:max-h-12 object-contain object-left"
+              className="w-[160px] sm:w-[300px] lg:w-[240px] h-auto max-h-12 sm:max-h-16 object-contain object-left"
               priority
             />
           )}

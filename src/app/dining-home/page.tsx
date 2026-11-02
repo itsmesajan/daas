@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import QRCode from "qrcode";
 import {
   ArrowUpRight,
-  Check,
   ChefHat,
   Clock,
   Coffee,
@@ -19,14 +17,11 @@ import {
 } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import ImageGallery from "@/components/ui/ImageGallery";
+import AmenityChips from "@/components/ui/AmenityChips";
 import GalleryGrid from "@/components/gallery/GalleryGrid";
 import { getCategoryItems, getSiteRegulars, getGalleryImages, getSocialGroup } from "@/lib/data";
 import { resolveHeroImages, toImageUrls } from "@/lib/images";
 import { CATEGORY_IDS, SITE_URL, SITE_FALLBACK, address } from "@/config/site";
-
-// The restaurant's live menu + online ordering, hosted on Rojai (the CMS
-// vendor's own menu/ordering product) — there's no separate in-house system.
-const MENU_URL = "https://www.menu.rojai.com/restaurant/BjiHWi";
 
 // PLACEHOLDER — Hotel Daaas has no PDF menu of its own yet. Using the sibling
 // Courtyard property's PDF for now; swap this for the real file once one exists.
@@ -62,14 +57,13 @@ export const metadata: Metadata = {
  * the hotel's multi-page site, but a standalone one-pager with its own
  * header/footer, built to the same bento-glass visual standard as the main
  * homepage — hero, venues, cuisine, gallery, then the ordering menu.
- */
+*/
 export default async function DiningHomePage() {
-  const [venues, siteRegulars, galleryImages, socialLinks, qrCode] = await Promise.all([
+  const [venues, siteRegulars, galleryImages, socialLinks] = await Promise.all([
     getCategoryItems(CATEGORY_IDS.restaurant),
     getSiteRegulars(),
     getGalleryImages(),
     getSocialGroup(1),
-    QRCode.toDataURL(MENU_URL, { width: 220, margin: 1 }),
   ]);
 
   const logoUrl = siteRegulars?.logo_upload || "";
@@ -77,25 +71,33 @@ export default async function DiningHomePage() {
   const phone = siteRegulars?.contact_info || SITE_FALLBACK.phone;
   const email = siteRegulars?.email_address || SITE_FALLBACK.email;
   const fiscalAddress = siteRegulars?.fiscal_address || address.full;
+  // Live menu + online ordering (Rojai), managed in the CMS. No hardcoded
+  // fallback — when the CMS value is empty or just "#", everything tied to
+  // the menu (nav link, Order Online / View Menu buttons, the menu section)
+  // is hidden rather than pointing at a blank iframe, which would re-load
+  // this very page.
+  const menuUrl = (siteRegulars?.haja_link as string | undefined)?.trim() || "";
+  const hasMenu = menuUrl !== "" && menuUrl !== "#";
+  const navLinks = NAV_LINKS.filter((link) => hasMenu || link.href !== "#menu");
 
   const diningGallery = galleryImages.filter((g) => g.category === "Restaurant & Bar");
 
   const heroVenue = venues.find((v) => v.slug === "rooftop-restaurant") || venues[0];
   const heroImage = heroVenue ? toImageUrls(heroVenue.img)[0] : undefined;
-
+  
   return (
     <div className="min-h-screen bento-bg flex flex-col">
       {/* ── Header ── */}
       <header className="fixed top-2 sm:top-4 left-0 right-0 z-50 px-3 sm:px-4">
-        <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto bento-card px-4 sm:px-5 md:px-7 h-16 flex items-center gap-2 justify-between">
+        <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto bento-card px-4 sm:px-5 md:px-7 h-16 sm:h-20 flex items-center gap-2 justify-between">
           <a href="/" aria-label={`Back to ${siteName}`} className="relative block shrink-0">
             {logoUrl && <Image src={logoUrl} alt={siteName} width={1500}
               height={1500}
-              className="w-[160px] sm:w-[300px] lg:w-[240px] h-auto max-h-10 sm:max-h-12object-contain object-left" priority />}
+              className="w-[160px] sm:w-[300px] lg:w-[240px] h-auto max-h-12 sm:max-h-16 object-contain object-left" priority />}
           </a>
 
           <nav className="hidden md:flex items-center gap-1">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -106,10 +108,12 @@ export default async function DiningHomePage() {
             ))}
           </nav>
 
-          <a href="#menu" className="bento-btn !py-2.5 !px-4 text-sm shrink-0">
-            Order Online
-            <UtensilsCrossed size={14} />
-          </a>
+          {hasMenu && (
+            <a href="#menu" className="bento-btn !py-2.5 !px-4 text-sm shrink-0">
+              Order Online
+              <UtensilsCrossed size={14} />
+            </a>
+          )}
         </div>
       </header>
 
@@ -133,10 +137,12 @@ export default async function DiningHomePage() {
               for every craving.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <a href="#menu" className="bento-btn bg-accent-orange hover:bg-amber-600 text-white px-6 py-3 rounded-full inline-flex items-center gap-2 transition-colors">
-                View Menu & Order
-                <ArrowUpRight size={15} />
-              </a>
+              {hasMenu && (
+                <a href="#menu" className="bento-btn bg-accent-orange hover:bg-amber-600 text-white px-6 py-3 rounded-full inline-flex items-center gap-2 transition-colors">
+                  View Menu & Order
+                  <ArrowUpRight size={15} />
+                </a>
+              )}
               <a
                 href="#restaurants"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/30 bg-white/10 text-white backdrop-blur-md hover:bg-white/20 transition-colors text-sm font-medium"
@@ -150,7 +156,7 @@ export default async function DiningHomePage() {
         <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
           {/* ── Restaurants ── */}
           {venues.length > 0 && (
-            <section id="restaurants" className="pt-20 pb-16 scroll-mt-20">
+            <section id="restaurants" className="pt-20 pb-16 scroll-mt-20 sm:scroll-mt-28">
               <Reveal className="mb-10 text-center">
                 <p className="bento-pill mx-auto w-fit mb-4">Our Restaurants</p>
                 <h2 className="bento-title text-3xl md:text-4xl mb-3">Three Spaces, One Address</h2>
@@ -165,8 +171,7 @@ export default async function DiningHomePage() {
                   const reverse = i % 2 === 1;
                   const VenueIcon = VENUE_ICON[venue.slug] ?? UtensilsCrossed;
                   const amenities = venue.amenities?.[0]?.items ?? [];
-                  const visibleAmenities = amenities.slice(0, MAX_VISIBLE_AMENITIES);
-                  const hiddenAmenityCount = amenities.length - visibleAmenities.length;
+                  const pdfUrl = venue.pdf?.trim() || "";
 
                   return (
                     <Reveal key={venue.slug} delay={i * 80}>
@@ -212,35 +217,28 @@ export default async function DiningHomePage() {
                             </span>
                           )}
 
-                          {visibleAmenities.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mb-5">
-                              {visibleAmenities.map((a) => (
-                                <span
-                                  key={a.title}
-                                  className="flex items-center gap-1.5 text-[0.7rem] font-medium text-bento-ink-soft bg-white/60 border border-white/70 px-2.5 py-1.5 rounded-full"
-                                >
-                                  {a.img ? (
-                                    <span className="relative h-3.5 w-3.5 shrink-0 inline-block">
-                                      <Image src={a.img} alt="" fill className="object-contain" sizes="14px" unoptimized />
-                                    </span>
-                                  ) : (
-                                    <Check size={11} className="text-accent-orange shrink-0" />
-                                  )}
-                                  {a.title}
-                                </span>
-                              ))}
-                              {hiddenAmenityCount > 0 && (
-                                <span className="flex items-center text-[0.7rem] font-medium text-bento-ink-soft/70 px-2.5 py-1.5">
-                                  +{hiddenAmenityCount} more
-                                </span>
-                              )}
-                            </div>
-                          )}
+                          <AmenityChips items={amenities} max={MAX_VISIBLE_AMENITIES} />
 
-                          <a href="#menu" className="bento-link w-fit text-sm">
-                            View Menu & Order
-                            <ArrowUpRight size={14} />
-                          </a>
+                          {/* Menu link priority: this venue's own PDF → the
+                              online-ordering menu (haja_link) → nothing. */}
+                          {pdfUrl ? (
+                            <a
+                              href={pdfUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bento-link w-fit text-sm"
+                            >
+                              View Menu (PDF)
+                              <ArrowUpRight size={14} />
+                            </a>
+                          ) : (
+                            hasMenu && (
+                              <a href="#menu" className="bento-link w-fit text-sm">
+                                View Menu & Order
+                                <ArrowUpRight size={14} />
+                              </a>
+                            )
+                          )}
                         </div>
                       </div>
                     </Reveal>
@@ -251,7 +249,7 @@ export default async function DiningHomePage() {
           )}
 
           {/* ── About Our Cuisine ── */}
-          <section id="cuisine" className="pt-4 pb-16 scroll-mt-20">
+          <section id="cuisine" className="pt-4 pb-16 scroll-mt-20 sm:scroll-mt-28">
             <Reveal className="bento-card p-6 md:p-10">
               <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-8 items-center">
                 <div className="md:text-right">
@@ -301,7 +299,7 @@ export default async function DiningHomePage() {
 
           {/* ── Gallery ── */}
           {diningGallery.length > 0 && (
-            <section id="gallery" className="pb-16 scroll-mt-20">
+            <section id="gallery" className="pb-16 scroll-mt-20 sm:scroll-mt-28">
               <Reveal className="mb-8 text-center">
                 <p className="bento-pill mx-auto w-fit mb-4">Gallery</p>
                 <h2 className="bento-title text-3xl md:text-4xl mb-3">A Closer Look</h2>
@@ -313,21 +311,23 @@ export default async function DiningHomePage() {
           )}
 
           {/* ── Menu / Order ── */}
-          <section id="menu" className="pb-20 scroll-mt-20">
-            <Reveal className="mb-8 text-center">
-              <p className="bento-pill mx-auto w-fit mb-4">Menu</p>
-              <h2 className="bento-title text-3xl md:text-4xl mb-3">Order Online or Scan to Order</h2>
-              <p className="text-bento-ink-soft text-sm max-w-lg mx-auto">
-                Browse the full menu below, order online, or scan the QR code at your table.
-              </p>
-            </Reveal>
+          {hasMenu && (
+            <section id="menu" className="pb-20 scroll-mt-20 sm:scroll-mt-28">
+              <Reveal className="mb-8 text-center">
+                <p className="bento-pill mx-auto w-fit mb-4">Menu</p>
+                <h2 className="bento-title text-3xl md:text-4xl mb-3">Order Online or Scan to Order</h2>
+                <p className="text-bento-ink-soft text-sm max-w-lg mx-auto">
+                  Browse the full menu below, order online, or scan the QR code at your table.
+                </p>
+              </Reveal>
 
-            <Reveal delay={80} className="">
-              <div className="bento-card overflow-hidden h-140 md:h-180">
-                <iframe src={MENU_URL} title={`${siteName} menu`} className="w-full h-full border-0" loading="lazy" />
-              </div>
-            </Reveal>
-          </section>
+              <Reveal delay={80} className="">
+                <div className="bento-card overflow-hidden h-140 md:h-180">
+                  <iframe src={menuUrl} title={`${siteName} menu`} className="w-full h-full border-0" loading="lazy" />
+                </div>
+              </Reveal>
+            </section>
+          )}
         </div>
       </main>
 

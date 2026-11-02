@@ -38,9 +38,7 @@ export default async function ContactInfoPanel() {
   const emails = splitContactValues(siteRegulars?.email_address);
   const displayEmails = emails.length > 0 ? emails : [SITE_FALLBACK.email];
   const fiscalAddress = siteRegulars?.fiscal_address || address.full;
-  const mapSrc = siteRegulars?.location_map
-    ? siteRegulars.location_map
-    : `https://www.google.com/maps?q=${address.geo.latitude},${address.geo.longitude}&output=embed`;
+  const mapSrc = siteRegulars?.location_map ;
   const mapLink = siteRegulars?.location_map ? "https://maps.app.goo.gl/cR1e6XET4SXndWS88" : address.mapUrl;
   return (
     <>

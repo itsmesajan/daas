@@ -13,7 +13,7 @@ import { getSocialGroup } from "@/lib/data";
 export default async function OtaPartners() {
   const otas = await getSocialGroup(2);
   return (
-    <section className="py-10 md:py-12">
+    <section className="py-6 md:py-8">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
         <Reveal>
           <div className="bento-card flex flex-col md:flex-row justify-between items-center gap-6 md:gap-10 px-6 md:px-10 py-7">

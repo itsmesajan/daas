@@ -25,7 +25,7 @@ export default function WellnessTabs({ tabs }: { tabs: WellnessTabItem[] }) {
   const imageSrc = tab.image;
 
   return (
-    <section id="wellness" className="py-12 md:py-16">
+    <section id="wellness" className="py-8 md:py-10">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
         {/* Header */}
         <Reveal className="mb-6 px-2 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">

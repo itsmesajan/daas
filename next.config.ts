@@ -16,7 +16,11 @@ const securityHeaders = [
   {
     // Google Translate (legacy element.js) needs:
     //   script-src  — to load translate_a/element.js and its follow-on chunks
-    //   frame-src   — the hidden translation iframe Google injects
+    //   frame-src   — the hidden translation iframe Google injects, plus the
+    //                 Google Maps embed (www.google.com/maps/embed) on contact pages,
+    //                 the dining menu (menu.rojai.com), the hero video
+    //                 (youtube-nocookie) and the promo popup's video embeds
+    //                 (YouTube / Instagram / Facebook / TikTok)
     //   connect-src — XHR/fetch calls to translate.googleapis.com
     //   img-src     — flag / translate-bar images served from Google CDN
     //   style-src   — inline styles the widget injects
@@ -26,7 +30,7 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com",
       "style-src 'self' 'unsafe-inline' https://www.gstatic.com https://fonts.googleapis.com https://cdnjs.cloudflare.com",
       "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com",
-      "frame-src https://translate.google.com https://translate.googleapis.com",
+      "frame-src https://translate.google.com https://translate.googleapis.com https://www.google.com https://www.menu.rojai.com https://www.youtube.com https://www.youtube-nocookie.com https://www.instagram.com https://www.facebook.com https://www.tiktok.com",
       "connect-src 'self' https://translate.googleapis.com https://translate-pa.googleapis.com https://www.mayurstay.com https://mayurstay.com",
       "img-src 'self' data: blob: https: http:",
       "worker-src blob:",

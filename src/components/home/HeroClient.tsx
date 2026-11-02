@@ -265,7 +265,7 @@ export default function HeroClient({ slideshow = [] }: HeroClientProps) {
   const currentTagline = activeSlide?.tagline || "Opening November 2026";
 
   return (
-    <section id="home" className="relative pt-28 pb-12 md:pt-32 md:pb-16">
+    <section id="home" className="relative pt-28 pb-8 md:pt-32 md:pb-10">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4 relative">
         <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_1fr] gap-5 items-stretch lg:h-[520px]">
           {/* Big Text Bento Card */}

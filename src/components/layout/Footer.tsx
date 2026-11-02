@@ -11,7 +11,7 @@ export default async function BentoFooter() {
   const siteRegulars = await getSiteRegulars();
   const socialLinks = await getSocialGroup(1);
 
-  const logoUrl = siteRegulars?.logo_upload || "";
+  const logoUrl = siteRegulars?.footer_logo_upload || "";
   const fiscalAddress = siteRegulars?.fiscal_address || "";
   const toList = (value?: string) =>
     (value ?? "")
@@ -49,8 +49,8 @@ export default async function BentoFooter() {
                     src={logoUrl}
                     alt={siteRegulars?.sitetitle || "Logo"}
                     width={1000}
-                    height={1500}
-                    className="w-60 h-auto"
+                    height={1000}
+                    className="w-30 h-auto"
                   />
                 )}
               </Link>

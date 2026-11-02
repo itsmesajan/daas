@@ -26,7 +26,7 @@ export default function DiningCarousel({ venues }: { venues: Package[] }) {
   }, [paused, reduceMotion, venues.length]);
 
   return (
-    <section id="dining" className="py-12 md:py-16">
+    <section id="dining" className="py-8 md:py-10">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
         {/* Header */}
         <Reveal className="mb-8 px-2 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">

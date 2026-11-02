@@ -50,7 +50,7 @@ export default function Facilities({ highlightItems }: { highlightItems: Facilit
   if (highlightItems.length === 0) return null;
 
   return (
-    <section className="py-12 md:py-16">
+    <section className="py-8 md:py-10">
       <div className="max-w-[1200px] 2xl:max-w-[1440px] mx-auto px-4">
         <div className="mb-8 px-2 scroll-mt-24">
           <Reveal className="text-center mb-10">
