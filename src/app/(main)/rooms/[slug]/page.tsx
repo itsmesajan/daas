@@ -149,32 +149,33 @@ export default async function RoomDetailPage({
       </div>
     ) : undefined;
 
-  const footerRow = (
-    <div className="flex flex-wrap items-center gap-4 text-xs text-bento-ink-soft mt-auto pt-4 border-t border-white/70">
-      {room.occupancy && (
-        <span className="flex items-center gap-1.5">
-          <UserRound  size={13} className="text-accent-orange" />
-          {room.occupancy}
-        </span>
-      )}
-      <span className="flex items-center gap-1.5">
-        <Clock size={13} className="text-accent-orange" />
-        Check-in {policies.checkIn}
-      </span>
-      <span className="flex items-center gap-1.5">
-        <Clock size={13} className="text-accent-orange" />
-        Check-out {policies.checkOut}
-      </span>
-      <span className="flex items-center gap-1.5">
-        <PawPrint size={13} className="text-accent-orange" />
-        {policies.pets}
-      </span>
-    </div>
-  );
+  // Shown in the sidebar as a stacked column (icon + label + value per row).
+  const stayDetails = [
+    ...(room.occupancy ? [{ label: "Occupancy", value: room.occupancy, Icon: UserRound }] : []),
+    { label: "Check-in", value: policies.checkIn, Icon: Clock },
+    { label: "Check-out", value: policies.checkOut, Icon: Clock },
+    { label: "Pets", value: policies.pets, Icon: PawPrint },
+  ];
 
   const actionSlot = (
-    <>
+      <>
       <BookingWidget bookingUrl={siteRegulars?.booking_code} />
+      <div className="bento-card p-6 md:p-8">
+        <p className="text-xs font-bold tracking-widest uppercase text-bento-ink-soft/70 mb-5">Stay Details</p>
+        <ul className="flex flex-col gap-4">
+          {stayDetails.map(({ label, value, Icon }) => (
+            <li key={label} className="flex items-start gap-3">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-orange/10 border border-accent-orange/20">
+                <Icon size={15} className="text-accent-orange" />
+              </span>
+              <div className="min-w-0">
+                <p className="text-[0.65rem] font-bold tracking-widest uppercase text-bento-ink-soft/70">{label}</p>
+                <p className="text-sm text-bento-ink">{value}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
       <div className="bento-card p-6 md:p-8 flex items-start gap-3">
         <Info size={16} className="text-accent-orange shrink-0 mt-0.5" />
         <div>
@@ -219,7 +220,6 @@ export default async function RoomDetailPage({
         amenityGroups={room.amenities}
         amenitiesFallback={amenitiesFallback}
         extraContent={extraContent}
-        footerRow={footerRow}
         layout="sidebar"
         actionSlot={actionSlot}
         belowCardSlot={belowCardSlot}

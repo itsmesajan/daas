@@ -22,7 +22,7 @@ export const SITE_FALLBACK = {
   shortName: "Hotel Daaas",
   title: "Hotel Daaas Kathmandu | A New 4-Star Landmark in Balaju",
   description:
-    "Hotel Daaas Kathmandu is a new 4-star hotel in Balaju, Kathmandu, offering 81 rooms, grand banquet halls, a wellness floor, all-day and Newari specialty dining, opening November 2026.",
+    "Hotel Daaas Kathmandu is a new 4-star hotel in Balaju, Kathmandu, offering 81 rooms, grand banquet halls, a wellness floor, all-day and Newari specialty dining, opening soon.",
   keywords:
     "Hotel Daaas Kathmandu, Hotel Daaas, hotel Balaju, 4 star hotel Kathmandu, hotel near Nagarjun National Park, Kathmandu hotel banquet",
   locale: "en",

@@ -131,9 +131,9 @@ export default function HeroClient({ slideshow = [] }: HeroClientProps) {
     const videoCtaText = videoItem?.text || "Explore More";
     const hasVideoText = Boolean(
       videoItem?.tagline ||
-        videoTitle ||
-        videoDesc ||
-        (videoCtaLink && videoCtaLink !== "#")
+      videoTitle ||
+      videoDesc ||
+      (videoCtaLink && videoCtaLink !== "#")
     );
 
     return (
@@ -144,9 +144,8 @@ export default function HeroClient({ slideshow = [] }: HeroClientProps) {
             <div className="relative w-full h-full overflow-hidden pointer-events-none scale-125 sm:scale-110">
               {isPlaying ? (
                 <iframe
-                  src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&mute=${
-                    isMuted ? 1 : 0
-                  }&loop=1&playlist=${youtubeId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&playsinline=1`}
+                  src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&mute=${isMuted ? 1 : 0
+                    }&loop=1&playlist=${youtubeId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&playsinline=1`}
                   className="absolute inset-0 w-full h-full object-cover"
                   allow="autoplay; encrypted-media"
                   title={videoItem?.title || "Hero video"}
@@ -262,7 +261,7 @@ export default function HeroClient({ slideshow = [] }: HeroClientProps) {
   const currentDesc = cleanText(activeSlide?.description);
   const currentCtaLink = cleanLink(activeSlide?.buttonLink);
   const currentCtaText = activeSlide?.text || "Explore More";
-  const currentTagline = activeSlide?.tagline || "Opening November 2026";
+  const currentTagline = activeSlide?.tagline || "Opening Soon";
 
   return (
     <section id="home" className="relative pt-28 pb-8 md:pt-32 md:pb-10">

@@ -29,34 +29,34 @@ export default async function OtaPartners() {
                 <p className="bento-title text-sm whitespace-nowrap">4-Star Hotel</p>
               </div>
               <p className="hidden sm:block text-bento-ink-soft leading-relaxed max-w-[290px]">
-                A new 4-star landmark opening November 2026 in Balaju, Kathmandu.
+                A new 4-star landmark opening soon in Balaju, Kathmandu.
               </p>
             </div>
 
             {/* Flat OTA logo row */}
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-7 gap-y-4">
               {otas?.items?.map((item: any, index: number) => (
-                    <a
-                      key={index}
-                      href={item?.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={item?.title || "Social media link"}
-                      className="relative w-10 h-10 md:w-11 md:h-11 shrink-0"
-                    >
-                      {item?.image ? (
-                        <Image
-                          src={item?.image}
-                          alt={item?.title}
-                          width={100}
-                          height={100}
-                          className="object-contain w-full h-full"
-                        />
-                      ) : (
-                        <i className={item?.icon}></i>
-                      )}
-                    </a>
-                  ))}
+                <a
+                  key={index}
+                  href={item?.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={item?.title || "Social media link"}
+                  className="relative w-10 h-10 md:w-11 md:h-11 shrink-0"
+                >
+                  {item?.image ? (
+                    <Image
+                      src={item?.image}
+                      alt={item?.title}
+                      width={100}
+                      height={100}
+                      className="object-contain w-full h-full"
+                    />
+                  ) : (
+                    <i className={item?.icon}></i>
+                  )}
+                </a>
+              ))}
             </div>
           </div>
         </Reveal>

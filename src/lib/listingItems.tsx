@@ -26,12 +26,15 @@ export function toRoomItems(rooms: Package[]): RelatedItem[] {
       sub_title: room.sub_title,
       description: htmlToPlainText(room.description),
       features: amenities.map((a) => ({
+        // Explicit keys: these elements are created on the server and rendered
+        // client-side next to the label in RelatedItemsSlider, where React
+        // otherwise warns "each child in a list should have a unique key".
         icon: a.img ? (
-          <span className="relative h-3.5 w-3.5 shrink-0 inline-block">
+          <span key={`icon-${a.title}`} className="relative h-3.5 w-3.5 shrink-0 inline-block">
             <Image src={a.img} alt="" fill className="object-contain" sizes="14px" unoptimized />
           </span>
         ) : (
-          <Check size={11} className="text-accent-orange shrink-0" />
+          <Check key={`icon-${a.title}`} size={11} className="text-accent-orange shrink-0" />
         ),
         label: a.title,
       })),
@@ -48,13 +51,13 @@ export function toDiningItems(venues: Package[]): RelatedItem[] {
     const features: NonNullable<RelatedItem["features"]> = [];
     if (venue.lunch) {
       features.push({
-        icon: <Users size={11} className="text-accent-orange" />,
+        icon: <Users key="icon-lunch" size={11} className="text-accent-orange" />,
         label: venue.lunch,
       });
     }
     if (venue.breakfast) {
       features.push({
-        icon: <Clock size={11} className="text-accent-orange" />,
+        icon: <Clock key="icon-breakfast" size={11} className="text-accent-orange" />,
         label: venue.breakfast,
       });
     }
@@ -98,13 +101,13 @@ export function toEventItems(spaces: Package[]): RelatedItem[] {
     const features: NonNullable<RelatedItem["features"]> = [];
     if (space.size) {
       features.push({
-        icon: <Maximize2 size={11} className="text-accent-orange" />,
+        icon: <Maximize2 key="icon-size" size={11} className="text-accent-orange" />,
         label: space.size,
       });
     }
     if (space.cover) {
       features.push({
-        icon: <Users size={11} className="text-accent-orange" />,
+        icon: <Users key="icon-cover" size={11} className="text-accent-orange" />,
         label: space.cover,
       });
     }

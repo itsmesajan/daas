@@ -110,17 +110,27 @@ export default function HallCarousel({ venues }: { venues: Package[] }) {
                 {venues.map((s, i) => {
                   const isActive = i === index;
                   return (
-                    <button
+                    // A <div>, not a <button>: the "View Space" link below is
+                    // interactive too, and a link nested inside a button is
+                    // invalid HTML — browsers (Firefox especially) then don't
+                    // deliver hover/click to it. Selecting the space is done by
+                    // the stretched <button> overlay; the link sits above it.
+                    <div
                       key={s.slug}
-                      type="button"
-                      onClick={() => setIndex(i)}
-                      aria-label={`Select ${s.title}`}
-                      className={`group text-left px-5 py-4 flex items-start gap-4 transition-all duration-300 rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange ${
+                      className={`group relative text-left px-5 py-4 flex items-start gap-4 transition-all duration-300 rounded-2xl ${
                         isActive
                           ? "bg-white/60 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.06)] border border-white/60 scale-[1.02] z-10"
                           : "bg-white/10 border border-white/10 hover:bg-white/30 hover:border-white/30 hover:scale-[1.01]"
                       }`}
                     >
+                      <button
+                        type="button"
+                        onClick={() => setIndex(i)}
+                        aria-label={`Select ${s.title}`}
+                        aria-pressed={isActive}
+                        className="absolute inset-0 rounded-2xl cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange"
+                      />
+
                       {/* Number */}
                       <div
                         className={`shrink-0 mt-0.5 w-8 h-8 rounded-full flex items-center justify-center text-[0.75rem] font-bold transition-all duration-300 shadow-sm ${
@@ -159,30 +169,22 @@ export default function HallCarousel({ venues }: { venues: Package[] }) {
                           <p className="text-bento-ink-soft/90 text-[0.75rem] leading-relaxed pt-2 line-clamp-3">
                             {htmlToPlainText(s.sub_title)}
                           </p>
-                        </div>  
-
-                        {/* Description — only when active */}
-                        <AnimatePresence>
-                          {isActive && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3, ease: "easeOut" }}
-                            >
-                              <Link
+                          <Link
                                 href={`/events/${s.slug}`}
-                                className="inline-flex items-center gap-1.5 mt-4 px-4 py-2 rounded-lg bg-accent-blue/10 text-[0.75rem] font-bold text-accent-blue hover:bg-accent-blue hover:text-white transition-all duration-300"
+                                className={`relative z-10 inline-flex items-center gap-1.5 mt-4 px-4 py-2 rounded-lg text-[0.75rem] font-bold transition-all duration-300 ${
+                                  isActive
+                                    ? "bg-accent-blue text-white"
+                                    : "text-accent-blue bg-accent-blue/10 hover:bg-accent-blue hover:text-white"
+                                }`}
+
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 View Space
                                 <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                               </Link>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                        </div>  
                       </div>
-                    </button>
+                    </div>
                   );
                 })}
               </div>

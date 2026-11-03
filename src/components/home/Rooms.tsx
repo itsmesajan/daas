@@ -28,7 +28,7 @@ export default async function Rooms() {
         <Reveal className="mb-8 px-2 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
             <p className="bento-pill mb-4">Accommodations</p>
-            <h2 className="bento-title text-3xl md:text-4xl">Stay with us in style</h2>
+            <h2 className="bento-title text-3xl md:text-4xl">Room designed for comfort</h2>
           </div>
           <Link href="/rooms" className="bento-link w-fit shrink-0 mb-1 hidden sm:inline-flex">
             View all rooms

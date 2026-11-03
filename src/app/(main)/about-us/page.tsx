@@ -59,23 +59,23 @@ export default async function AboutUsPage() {
   // resolveHeroImages path the /rooms, /dining, /events detail pages use —
   // so a photo update in the CMS shows up here too, with the local shot as
   // a guaranteed fallback while that slug isn't live yet.
-const offerings = packages.map((item:any) => ({
-  title: item.title,
-  slug: `/${item.slug}`,
-  image:
-    item.banner_img?.[0]?.url ||
-    item.fb_img ||
-    "/images/placeholder.jpg",
-  label:
-    item.slug === "rooms"
-      ? "Stay"
-      : item.slug === "events"
-      ? "Celebrate"
-      : item.slug === "dining"
-      ? "Dine"
-      : "Explore",
-  description: item.description,
-}));
+  const offerings = packages.map((item: any) => ({
+    title: item.title,
+    slug: `/${item.slug}`,
+    image:
+      item.banner_img?.[0]?.url ||
+      item.fb_img ||
+      "/images/placeholder.jpg",
+    label:
+      item.slug === "rooms"
+        ? "Stay"
+        : item.slug === "events"
+          ? "Celebrate"
+          : item.slug === "dining"
+            ? "Dine"
+            : "Explore",
+    description: item.description,
+  }));
 
 
 
@@ -112,7 +112,7 @@ const offerings = packages.map((item:any) => ({
             article has it; otherwise fall back to the coded layout below,
             which uses real-time business stats instead of frozen HTML. */}
         {about.description ? (
-          <div dangerouslySetInnerHTML={{ __html: about. description }} />
+          <div dangerouslySetInnerHTML={{ __html: about.description }} />
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-6">
 
@@ -121,13 +121,13 @@ const offerings = packages.map((item:any) => ({
               <h2 className="text-2xl md:text-3xl font-bold font-sans text-bento-ink mb-6 pb-6 border-b border-bento-ink/10">
                 A New Benchmark in Kathmandu
               </h2>
-                <p
-                  className="text-bento-ink-soft text-[0.95rem] md:text-base leading-loose
+              <p
+                className="text-bento-ink-soft text-[0.95rem] md:text-base leading-loose
                   [&_p]:mb-6 [&_p:last-child]:mb-0
                   [&_h6]:font-bold [&_h6]:text-bento-ink [&_h6]:text-lg [&_h6]:mt-8 [&_h6]:mb-3
                   [&_ul]:list-none [&_ul]:space-y-3 [&_ul]:my-6
                   [&_li]:relative [&_li]:pl-6 [&_li]:before:content-[''] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-[0.6em] [&_li]:before:w-1.5 [&_li]:before:h-1.5 [&_li]:before:bg-accent-orange [&_li]:before:rounded-full"
-                >Hotel Daaas Kathmandu is a new 4-star hotel in Balaju, Kathmandu, offering 81 rooms, grand banquet halls, a wellness floor, all-day and Newari specialty dining, opening November 2026.</p>
+              >Hotel Daaas Kathmandu is a new 4-star hotel in Balaju, Kathmandu, offering 81 rooms, grand banquet halls, a wellness floor, all-day and Newari specialty dining, opening soon.</p>
 
               <div className="mt-8 pt-8 border-t border-bento-ink/10">
                 <h3 className="font-bold text-bento-ink text-lg mb-3">Our Vision</h3>
@@ -186,7 +186,7 @@ const offerings = packages.map((item:any) => ({
           </p>
         </Reveal>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
-          {offerings.map((offer:any, i:any) => (
+          {offerings.map((offer: any, i: any) => (
             <Reveal key={offer.title} delay={i * 80}>
               <Link
                 href={offer.slug}
@@ -235,7 +235,7 @@ const offerings = packages.map((item:any) => ({
                 {address.full}
               </p>
               <div className="flex flex-wrap gap-2 mb-6">
-                {nearby.slice(0, 3).map((loc:any) => (
+                {nearby.slice(0, 3).map((loc: any) => (
                   <span key={loc.name} className="text-[0.65rem] font-semibold tracking-wide text-white/80 border border-white/20 rounded-full px-3 py-1 bg-white/10 backdrop-blur-sm">
                     {loc.title} · {loc.distance}
                   </span>
@@ -250,7 +250,7 @@ const offerings = packages.map((item:any) => ({
           <Reveal delay={250} className="bento-card p-8 md:p-10 flex flex-col justify-center items-center text-center bg-gradient-to-br from-white/80 to-white/40">
             <h2 className="bento-title text-2xl md:text-3xl mb-4">Experience Hotel Daaas</h2>
             <p className="text-bento-ink-soft text-sm max-w-sm mx-auto mb-8">
-              Opening November 2026 in Balaju, Kathmandu — get in touch to learn more or plan your stay.
+              Opening Soon in Balaju, Kathmandu — get in touch to learn more or plan your stay.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link href={SITE_FALLBACK.bookingUrl} className="bento-btn shadow-lg shadow-bento-ink/20">
