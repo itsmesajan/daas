@@ -6,11 +6,22 @@ const SETUP_LABELS: { key: keyof Package; label: string }[] = [
   { key: "class_room_style", label: "Classroom" },
   { key: "u_shape", label: "U-Shape" },
   { key: "round_table", label: "Round Table" },
+  { key: "t_shape", label: "T Shape" },
   { key: "cover", label: "Cover" },
 ];
 
+/** Treats null/undefined, empty, whitespace-only and `&nbsp;` values as empty. */
+function getValue(value: unknown): string {
+  if (typeof value !== "string" && typeof value !== "number") return "";
+  return String(value).replace(/&nbsp;| /gi, " ").trim();
+}
+
 export default function SetupStylesTable({ space }: { space: Package }) {
-  const rows = SETUP_LABELS.filter(({ key }) => space[key]);
+  const rows = SETUP_LABELS.map(({ key, label }) => ({
+    key,
+    label,
+    value: getValue(space[key]),
+  })).filter(({ value }) => value !== "");
   if (rows.length === 0) return null;
 
   return (
@@ -35,9 +46,9 @@ export default function SetupStylesTable({ space }: { space: Package }) {
           </thead>
           <tbody>
             <tr>
-              {rows.map(({ key }) => (
+              {rows.map(({ key, value }) => (
                 <td key={key} className="whitespace-nowrap px-4 py-4 text-sm font-medium text-bento-ink">
-                  {space[key] as string}
+                  {value}
                 </td>
               ))}
             </tr>

@@ -31,7 +31,7 @@ export default function DiningCarousel({ venues }: { venues: Package[] }) {
         {/* Header */}
         <Reveal className="mb-8 px-2 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
-            <p className="bento-pill mb-4">Dining &amp; Rooftop</p>
+            <p className="bento-pill mb-4">Dining &amp; Lounge</p>
             <h2 className="bento-title text-3xl md:text-4xl">Above the city skyline</h2>
           </div>
           <Link href="/dining" className="bento-link w-fit shrink-0 mb-1 hidden sm:inline-flex">

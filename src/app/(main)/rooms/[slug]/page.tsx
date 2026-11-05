@@ -158,7 +158,7 @@ export default async function RoomDetailPage({
   ];
 
   const actionSlot = (
-      <>
+    <>
       <BookingWidget bookingUrl={siteRegulars?.booking_code} />
       <div className="bento-card p-6 md:p-8">
         <p className="text-xs font-bold tracking-widest uppercase text-bento-ink-soft/70 mb-5">Stay Details</p>
@@ -180,7 +180,10 @@ export default async function RoomDetailPage({
         <Info size={16} className="text-accent-orange shrink-0 mt-0.5" />
         <div>
           <p className="text-sm font-semibold text-bento-ink mb-1">Cancellation Policy</p>
-          <p className="text-bento-ink-soft text-xs leading-relaxed">{policies.cancellation}</p>
+          <div
+            className="text-bento-ink-soft text-xs leading-relaxed [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_li]:mb-1 [&_a]:underline [&_strong]:font-semibold"
+            dangerouslySetInnerHTML={{ __html: policies.cancellation }}
+          />
         </div>
       </div>
     </>

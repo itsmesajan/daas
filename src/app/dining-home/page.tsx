@@ -84,7 +84,7 @@ export default async function DiningHomePage() {
 
   const heroVenue = venues.find((v) => v.slug === "rooftop-restaurant") || venues[0];
   const heroImage = heroVenue ? toImageUrls(heroVenue.img)[0] : undefined;
-  
+
   return (
     <div className="min-h-screen bento-bg flex flex-col">
       {/* ── Header ── */}
@@ -191,7 +191,7 @@ export default async function DiningHomePage() {
                               <VenueIcon size={17} className="text-white" />
                             </div>
                             {venue.breakfast && (
-                              <span className="absolute top-4 right-4 z-10 flex items-center gap-1.5 text-[0.7rem] font-semibold text-white bg-black/50 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-full pointer-events-none">
+                              <span className="absolute top-4 right-4 z-10 flex items-center gap-1.5 text-[0.7rem] font-semibold text-white bg-[#eb9022] backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-full pointer-events-none">
                                 <Clock size={11} />
                                 {venue.breakfast}
                               </span>

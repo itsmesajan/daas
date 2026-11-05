@@ -72,6 +72,7 @@ export interface Package {
   theater?: string | null;
   class_room_style?: string | null;
   u_shape?: string | null;
+  t_shape?: string | null;
   round_table?: string | null;
   /** Full <script type="application/ld+json"> block from the CMS. */
   schema_code?: string;
