@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Check, Clock, Info, PawPrint, UserRound } from "lucide-react";
+import { Check, Clock, Info, PawPrint, UserRound, ConciergeBell } from "lucide-react";
 import CategoryDetailSection from "@/components/ui/CategoryDetailSection";
 import Reveal from "@/components/ui/Reveal";
 import BookingWidget from "@/components/rooms/BookingWidget";
@@ -59,6 +59,7 @@ export default async function RoomDetailPage({
     checkIn: siteRegulars?.check_in || policiesFallback.checkIn,
     checkOut: siteRegulars?.check_out || policiesFallback.checkOut,
     cancellation: siteRegulars?.policy || policiesFallback.cancellation,
+    roomservice: "24hrs Room Service",
   };
 
   // Only render a real numeric price the CMS actually supplied — never invent one.
@@ -155,6 +156,7 @@ export default async function RoomDetailPage({
     { label: "Check-in", value: policies.checkIn, Icon: Clock },
     { label: "Check-out", value: policies.checkOut, Icon: Clock },
     { label: "Pets", value: policies.pets, Icon: PawPrint },
+    { label: "Room Service", value: policies.roomservice, Icon: ConciergeBell },
   ];
 
   const actionSlot = (

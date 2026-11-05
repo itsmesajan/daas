@@ -365,6 +365,7 @@ export const policies = {
   cancellation:
     "Guests can cancel free of charge until 2:00 PM on the day of arrival. Cancellations made after 2:00 PM or no-shows will be charged the cost of the first night",
   pets: "No pets allowed.",
+  roomservice: "24hr Room Service",
 } as const;
 
 // LOCAL FALLBACK — shown only until the CMS has real FAQ entries of its own
