@@ -59,7 +59,7 @@ export default async function RoomDetailPage({
     checkIn: siteRegulars?.check_in || policiesFallback.checkIn,
     checkOut: siteRegulars?.check_out || policiesFallback.checkOut,
     cancellation: siteRegulars?.policy || policiesFallback.cancellation,
-    roomservice: "24hrs Room Service",
+    roomservice: "24hrs",
   };
 
   // Only render a real numeric price the CMS actually supplied — never invent one.
