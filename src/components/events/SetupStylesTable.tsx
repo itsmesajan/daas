@@ -6,7 +6,7 @@ const SETUP_LABELS: { key: keyof Package; label: string }[] = [
   { key: "class_room_style", label: "Classroom" },
   { key: "u_shape", label: "U-Shape" },
   { key: "round_table", label: "Round Table" },
-  { key: "t_shape", label: "T Shape" },
+  { key: "t_shape", label: "T-Shape" },
   { key: "cover", label: "Cover" },
 ];
 
